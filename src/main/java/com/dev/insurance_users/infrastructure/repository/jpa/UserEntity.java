@@ -21,6 +21,8 @@ public class UserEntity {
     private String phone;
     @Column(unique = true, nullable = false)
     private String email;
+    @Column(unique = true, nullable = false)
+    private String dni;
     @Column(nullable = false)
     private String password;
     @Column(nullable = false)
@@ -34,10 +36,9 @@ public class UserEntity {
     @Column(name = "date_of_registration", nullable = false)
     private LocalDate dateOfRegistration;
 
-    public UserEntity(Long id, String name, String surname, String phone, String email,
+    public UserEntity(String name, String surname, String phone, String email,
                       String password, LocalDate dateOfBirth, LocalDate dateOfRegistration,
-                      String address, String city, String country) {
-        this.id = id;
+                      String address, String city, String country, String dni) {
         this.name = name;
         this.surname = surname;
         this.phone = phone;
@@ -48,6 +49,10 @@ public class UserEntity {
         this.address = address;
         this.city = city;
         this.country = country;
+        this.dni = dni;
+    }
+
+    public UserEntity() {
     }
 
 

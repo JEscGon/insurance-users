@@ -14,23 +14,16 @@ public interface UserJpaRepository extends JpaRepository<UserEntity, Long> {
 
     Optional<UserEntity> findUserById(Long id);
 
-    Optional<UserEntity> findUserByEmail(String email);
-
-    Optional<UserEntity> findByPhone(String phone);
+    Optional<UserEntity> findUserByDni(String dni);
 
     List<UserEntity> findAll();
 
-    void deleteByEmail(String email);
-
     void deleteById(Long id);
 
-    // Métodos de actualización personalizados
     @Modifying
-    @Query("UPDATE UserEntity u SET u.email = :email, u.phone = :phone WHERE u.id = :id")
+    @Query("UPDATE UserEntity u SET u.email = COALESCE(:email, u.email), u.phone = COALESCE(:phone, u.phone) WHERE u.id = :id")
     void updateById(@Param("id") Long id, @Param("email") String email, @Param("phone") String phone);
 
-    @Modifying
-    @Query("UPDATE UserEntity u SET u.email = :email, u.phone = :phone WHERE u.email = :oldEmail")
-    void updateByEmail(@Param("oldEmail") String oldEmail, @Param("email") String email, @Param("phone") String phone);
+
 
 }
