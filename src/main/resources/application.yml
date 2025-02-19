@@ -1,3 +1,5 @@
 spring:
   application:
     name: insurance-users
+  profiles:
+    active: local

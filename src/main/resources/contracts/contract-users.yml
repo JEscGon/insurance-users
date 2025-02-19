@@ -1,0 +1,111 @@
+description: |
+  Contract for the user management service.
+
+request:
+  method: POST
+  url: /users
+  body:
+    name: "John"
+    surname: "Doe"
+    phone: "1234567890"
+    email: "john.doe@example.com"
+    password: "password123"
+    city: "New York"
+    country: "USA"
+    address: "123 Main St"
+    dateOfBirth: "1990-01-01"
+  headers:
+    Content-Type: application/json
+
+response:
+  status: 201
+  body:
+    id: 1
+    name: "John"
+    surname: "Doe"
+    phone: "1234567890"
+    email: "john.doe@example.com"
+    city: "New York"
+    country: "USA"
+    address: "123 Main St"
+    dateOfBirth: "1990-01-01"
+    dateOfRegistration: "2023-10-01"
+  headers:
+    Content-Type: application/json
+---
+description: |
+  Contract for getting user details.
+
+request:
+  method: GET
+  url: /users/1
+  headers:
+    Accept: application/json
+
+response:
+  status: 200
+  body:
+    id: 1
+    name: "John"
+    surname: "Doe"
+    phone: "1234567890"
+    email: "john.doe@example.com"
+    city: "New York"
+    country: "USA"
+    address: "123 Main St"
+    dateOfBirth: "1990-01-01"
+    dateOfRegistration: "2023-10-01"
+  headers:
+    Content-Type: application/json
+---
+description: |
+  Contract for updating user details.
+
+request:
+  method: PUT
+  url: /users/1
+  body:
+    email: "updated.email@example.com"
+    phone: "0987654321"
+  headers:
+    Content-Type: application/json
+
+response:
+  status: 200
+  body:
+    id: 1
+    name: "John"
+    surname: "Doe"
+    phone: "0987654321"
+    email: "updated.email@example.com"
+    city: "New York"
+    country: "USA"
+    address: "123 Main St"
+    dateOfBirth: "1990-01-01"
+    dateOfRegistration: "2023-10-01"
+  headers:
+    Content-Type: application/json
+---
+description: |
+  Contract for deleting a user.
+
+request:
+  method: DELETE
+  url: /users/1
+  headers:
+    Accept: application/json
+
+response:
+  status: 204
+---
+description: |
+  Contract for deleting a user by email.
+
+request:
+  method: DELETE
+  url: /users/{email}
+  headers:
+    Accept: application/json
+
+response:
+  status: 204
