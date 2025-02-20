@@ -21,8 +21,11 @@ public interface UserJpaRepository extends JpaRepository<UserEntity, Long> {
     void deleteById(Long id);
 
     @Modifying
-    @Query("UPDATE UserEntity u SET u.email = COALESCE(:email, u.email), u.phone = COALESCE(:phone, u.phone) WHERE u.id = :id")
-    void updateById(@Param("id") Long id, @Param("email") String email, @Param("phone") String phone);
+    @Query("UPDATE UserEntity u SET u.email = COALESCE(:email, u.email), u.phone = COALESCE(:phone, u.phone)," +
+            " u.address = COALESCE(:address, u.address), u.city = COALESCE(:city, u.city)," +
+            " u.country = COALESCE(:country, u.country) WHERE u.id = :id")
+    void updateById(@Param("id") Long id, @Param("email") String email, @Param("phone") String phone,
+                    @Param("address") String address, @Param("city") String city, @Param("country") String country);
 
 
 

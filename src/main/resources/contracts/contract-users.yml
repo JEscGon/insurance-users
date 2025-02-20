@@ -1,149 +1,143 @@
-description: |
-  Contrato para el servicio de gestión de usuarios.
+openapi: 3.0.0
+info:
+  title: Gestión de Usuarios
+  description: API para el servicio de gestión de usuarios.
+  version: 1.0.0
 
----
-description: |
-  Contrato para la creación de un usuario.
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        surname:
+          type: string
+        phone:
+          type: string
+        email:
+          type: string
+        dni:
+          type: string
+        city:
+          type: string
+        country:
+          type: string
+        address:
+          type: string
+        dateOfBirth:
+          type: string
+          format: date
+        dateOfRegistration:
+          type: string
+          format: date
 
-request:
-  method: POST
-  url: /users
-  body:
-    name: "John"
-    surname: "Doe"
-    phone: "1234567890"
-    email: "john.doe@example.com"
-    dni: "12345678A"
-    password: "password123"
-    city: "New York"
-    country: "USA"
-    address: "123 Main St"
-    dateOfBirth: "1990-01-01"
-  headers:
-    Content-Type: application/json
+paths:
+  /users:
+    post:
+      summary: Creación de un usuario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: Usuario creado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+    get:
+      summary: Obtener todos los usuarios
+      responses:
+        '200':
+          description: Lista de usuarios
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
 
-response:
-  status: 201
-  body:
-    id: 1
-    name: "John"
-    surname: "Doe"
-    phone: "1234567890"
-    email: "john.doe@example.com"
-    dni: "12345678A"
-    city: "New York"
-    country: "USA"
-    address: "123 Main St"
-    dateOfBirth: "1990-01-01"
-    dateOfRegistration: "2023-10-01"
-  headers:
-    Content-Type: application/json
+  /users/{id}:
+    get:
+      summary: Obtener los detalles de un usuario
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Detalles del usuario
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
 
----
-description: |
-  Contrato para obtener los detalles de un usuario.
+    put:
+      summary: Actualizar los detalles de un usuario
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                phone:
+                  type: string
+                address:
+                  type: string
+                city:
+                  type: string
+                country:
+                  type: string
+      responses:
+        '200':
+          description: Usuario actualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
 
-request:
-  method: GET
-  url: /users/1
-  headers:
-    Accept: application/json
+    delete:
+      summary: Eliminar un usuario
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Usuario eliminado
 
-response:
-  status: 200
-  body:
-    id: 1
-    name: "John"
-    surname: "Doe"
-    phone: "1234567890"
-    email: "john.doe@example.com"
-    dni: "12345678A"
-    city: "New York"
-    country: "USA"
-    address: "123 Main St"
-    dateOfBirth: "1990-01-01"
-    dateOfRegistration: "2023-10-01"
-  headers:
-    Content-Type: application/json
-
----
-description: |
-  Contrato para actualizar los detalles de un usuario.
-
-request:
-  method: PUT
-  url: /users/1
-  body:
-    email: "updated.email@example.com"
-    phone: "0987654321"
-  headers:
-    Content-Type: application/json
-
-response:
-  status: 200
-  body:
-    id: 1
-    name: "John"
-    surname: "Doe"
-    phone: "0987654321"
-    email: "updated.email@example.com"
-    city: "New York"
-    country: "USA"
-    address: "123 Main St"
-    dateOfBirth: "1990-01-01"
-    dateOfRegistration: "2023-10-01"
-  headers:
-    Content-Type: application/json
-
----
-description: |
-  Contrato para eliminar un usuario.
-
-request:
-  method: DELETE
-  url: /users/1
-  headers:
-    Accept: application/json
-
-response:
-  status: 204
-
----
-description: |
-  Contrato para eliminar un usuario por email.
-
-request:
-  method: DELETE
-  url: /users/{email}
-  headers:
-    Accept: application/json
-
-response:
-  status: 204
-
----
-description: |
-  Contrato para obtener un usuario por DNI.
-
-request:
-  method: GET
-  url: /users/dni/{dni}
-  headers:
-    Accept: application/json
-
-response:
-  status: 200
-  body:
-    id: 1
-    name: "John"
-    surname: "Doe"
-    phone: "1234567890"
-    email: "john.doe@example.com"
-    dni: "12345678A"
-    city: "New York"
-    country: "USA"
-    address: "123 Main St"
-    dateOfBirth: "1990-01-01"
-    dateOfRegistration: "2023-10-01"
-  headers:
-    Content-Type: application/json
+  /users/dni/{dni}:
+    get:
+      summary: Obtener un usuario por DNI
+      parameters:
+        - in: path
+          name: dni
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Detalles del usuario
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'

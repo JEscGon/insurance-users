@@ -31,10 +31,12 @@ public class UserService {
 
     @Transactional
     public Optional<UserEntity> updateUserById(Long id, UserEntity user) {
-        UserEntity existingUser = userJpaRepository.findUserById(id).orElseThrow(() -> new RuntimeException("User not found"));
-        String email = (user.getEmail() == null || user.getEmail().isEmpty()) ? existingUser.getEmail() : user.getEmail();
+        UserEntity existingUser = userJpaRepository.findUserById(id).orElseThrow(() -> new RuntimeException("User not found"));String email = (user.getEmail() == null || user.getEmail().isEmpty()) ? existingUser.getEmail() : user.getEmail();
         String phone = (user.getPhone() == null || user.getPhone().isEmpty()) ? existingUser.getPhone() : user.getPhone();
-        userJpaRepository.updateById(id, email, phone);
+        String address = (user.getAddress() == null || user.getAddress().isEmpty()) ? existingUser.getAddress() : user.getAddress();
+        String city = (user.getCity() == null || user.getCity().isEmpty()) ? existingUser.getCity() : user.getCity();
+        String country = (user.getCountry() == null || user.getCountry().isEmpty()) ? existingUser.getCountry() : user.getCountry();
+        userJpaRepository.updateById(id, email, phone, address, city, country);
         return userJpaRepository.findUserById(id);
     }
 
