@@ -1,6 +1,10 @@
 package com.dev.insurance_users.infrastructure.rest.controller;
 
+import com.dev.insurance_users.application.domain.User;
 import com.dev.insurance_users.application.service.UserService;
+import com.dev.insurance_users.generated.model.UserDto;
+import com.dev.insurance_users.infrastructure.rest.controller.mapper.UserDtoMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dev.insurance_users.infrastructure.repository.jpa.UserEntity;
@@ -11,38 +15,44 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+//TODO: Cambiar a dto / domain y mapear
 @RestController
 @RequestMapping("/users")
 public class UserController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private UserDtoMapper userDtoMapper;
 
     @PostMapping
-    public ResponseEntity<UserEntity> createUser(@RequestBody UserEntity user) {
-        UserEntity savedUser = userService.createUser(user);
-        return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
+    public ResponseEntity<UserDto> createUser(@RequestBody UserDto user) {
+        User createdUser = userDtoMapper.fromDtoToDomain(user);
+        userService.createUser(null, createdUser);
+        return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserEntity> getUserById(@PathVariable Long id) {
-        Optional<UserEntity> user = userService.getUserById(id);
-        return user.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
-                   .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    public ResponseEntity<UserDto> getUserById(@PathVariable Long id) {
+        Optional<User> aux = userService.getUserById(id);
+        return aux.map(user -> new ResponseEntity<>(userDtoMapper.fromDomainToDto(user), HttpStatus.OK))
+        .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @GetMapping
-    public ResponseEntity<List<UserEntity>> getAllUsers() {
-        List<UserEntity> users = userService.getAllUsers();
-        return new ResponseEntity<>(users, HttpStatus.OK);
+    public ResponseEntity<List<UserDto>> getAllUsers() {
+        List<User> users = userService.getAllUsers();
+        List<UserDto> list = users.stream().map(userDtoMapper::fromDomainToDto).collect(Collectors.toList());
+        return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserEntity> updateUserById(@PathVariable Long id, @RequestBody UserEntity user) {
-        Optional<UserEntity> updatedUser = userService.updateUserById(id, user);
-        return updatedUser.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
-                          .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    public ResponseEntity<UserDto> updateUserById(@PathVariable Long id, @RequestBody UserDto user) {
+        User updatedUser = userDtoMapper.fromDtoToDomain(user);
+        userService.createUser(id, updatedUser);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
@@ -52,10 +62,9 @@ public class UserController {
     }
 
     @GetMapping("/dni/{dni}")
-    public ResponseEntity<UserEntity> getUserByDni(@PathVariable String dni) {
-        Optional<UserEntity> user = userService.getUserByDni(dni);
-        return user.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
-                   .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    public ResponseEntity<UserDto> getUserByDni(@PathVariable String dni) {
+        Optional<User> user = Optional.ofNullable(userService.getUserByDni(dni));
+        return user.map(value -> new ResponseEntity<>(userDtoMapper.fromDomainToDto(value), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
 }

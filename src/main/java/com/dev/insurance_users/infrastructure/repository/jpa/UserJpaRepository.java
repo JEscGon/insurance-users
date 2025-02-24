@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
+// obj dom --> obj entity
 @Repository
 public interface UserJpaRepository extends JpaRepository<UserEntity, Long> {
 
@@ -26,7 +27,5 @@ public interface UserJpaRepository extends JpaRepository<UserEntity, Long> {
             " u.country = COALESCE(:country, u.country) WHERE u.id = :id")
     void updateById(@Param("id") Long id, @Param("email") String email, @Param("phone") String phone,
                     @Param("address") String address, @Param("city") String city, @Param("country") String country);
-
-
 
 }

@@ -2,9 +2,7 @@ package com.dev.insurance_users.infrastructure.repository.jpa;
 
 import jakarta.persistence.*;
 import lombok.Data;
-
 import java.time.LocalDate;
-
 
 @Data
 @Entity
@@ -35,6 +33,8 @@ public class UserEntity {
     private LocalDate dateOfBirth;
     @Column(name = "date_of_registration", nullable = false)
     private LocalDate dateOfRegistration;
+    @Column(name = "date_of_last_update")
+    private LocalDate dateOfLastUpdate;
 
     public UserEntity(String name, String surname, String phone, String email,
                       String password, LocalDate dateOfBirth, LocalDate dateOfRegistration,
