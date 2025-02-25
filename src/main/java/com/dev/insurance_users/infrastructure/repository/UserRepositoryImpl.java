@@ -30,10 +30,18 @@ public class UserRepositoryImpl implements UserRepository {
                 .orElse(null);
     }
     public User findByDni(String dni) {
-       return userJpaRepository.findUserByDni(dni)
+       return userJpaRepository.findByDni(dni)
             .map(userMapper::fromEntityToDomain)
             .orElse(null);
     }
+
+    @Override
+    public User findByEmail(String email) {
+        return userJpaRepository.findByEmail(email)
+                .map(userMapper::fromEntityToDomain)
+                .orElse(null);
+    }
+
     public List<User> findAll() {
         return userJpaRepository.findAll().stream()
                 .map(userMapper::fromEntityToDomain)
@@ -42,6 +50,7 @@ public class UserRepositoryImpl implements UserRepository {
     public void deleteById(Long id) {
         userJpaRepository.deleteById(id);
     }
+
     public void updateById(Long id, String email, String phone, String address, String city, String country){
         userJpaRepository.updateById(id, email, phone, address, city, country);
     }

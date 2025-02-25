@@ -2,7 +2,6 @@ package com.dev.insurance_users.application.service;
 
 import com.dev.insurance_users.application.domain.User;
 import com.dev.insurance_users.application.repository.UserRepository;
-import com.dev.insurance_users.infrastructure.repository.jpa.UserEntity;
 import com.dev.insurance_users.infrastructure.repository.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +18,7 @@ public class UserService {
     @Autowired
     private UserMapper userMapper;
 
-    public void createUser(Long id ,User user) {
+    public void save(Long id , User user) {
         if (id == null) {
             userRepository.save(null, user);
         } else {
@@ -34,12 +33,12 @@ public class UserService {
         }
     }
 
-    public Optional<User> getUserById(Long id) {
+    public Optional<User> findById(Long id) {
         return Optional.ofNullable(userRepository.findById(id));
     }
 
-    public User getUserByDni(String dni) {
-        return userRepository.findByDni(dni);
+    public Optional<User> getUserByDni(String dni) {
+        return Optional.ofNullable(userRepository.findByDni(dni));
     }
 
     public void deleteUserById(Long id) {

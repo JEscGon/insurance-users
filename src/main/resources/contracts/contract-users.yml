@@ -17,7 +17,7 @@ paths:
         - users
       summary: Creación de un usuario
       description: Creación de un usuario en la base de datos
-      operationId: createUser
+      operationId: save
       requestBody:
         required: true
         description: Usuario a crear
@@ -52,7 +52,7 @@ paths:
       tags:
         - users
       summary: Obtener los detalles de un usuario
-      operationId: getUserById
+      operationId: findById
       parameters:
         - in: path
           name: id
