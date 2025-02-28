@@ -14,8 +14,14 @@ import java.util.stream.Collectors;
 @Repository
 public class UserRepositoryImpl implements UserRepository {
 
+
+    private final UserMapper userMapper;
+
     @Autowired
-    private UserMapper userMapper;
+    public UserRepositoryImpl(UserMapper userMapper) {
+        this.userMapper = userMapper;
+    }
+
     @Autowired
     private UserJpaRepository userJpaRepository;
 
@@ -51,8 +57,6 @@ public class UserRepositoryImpl implements UserRepository {
         userJpaRepository.deleteById(id);
     }
 
-    public void updateById(Long id, String email, String phone, String address, String city, String country){
-        userJpaRepository.updateById(id, email, phone, address, city, country);
-    }
+
 
 }

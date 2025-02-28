@@ -15,11 +15,17 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    private final UserMapper userMapper;
+
     @Autowired
-    private UserMapper userMapper;
+    public UserService(UserMapper userMapper) {
+        this.userMapper = userMapper;
+    }
 
     public void save(Long id , User user) {
         if (id == null) {
+            user.setDateOfRegistration(LocalDate.now());
             userRepository.save(null, user);
         } else {
             Optional<User> existingUser = Optional.ofNullable(userRepository.findById(id));

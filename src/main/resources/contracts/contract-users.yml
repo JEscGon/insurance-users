@@ -93,41 +93,6 @@ paths:
       responses:
         '204':
           description: Usuario eliminado
-    put:
-      tags:
-        - users
-      summary: Actualizar los detalles de un usuario
-      operationId: updateUserById
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                email:
-                  type: string
-                phone:
-                  type: string
-                address:
-                  type: string
-                city:
-                  type: string
-                country:
-                  type: string
-      responses:
-        '200':
-          description: Usuario actualizado
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
 
   /users/dni/{dni}:
     get:
@@ -165,6 +130,8 @@ components:
         email:
           type: string
         dni:
+          type: string
+        password:
           type: string
         city:
           type: string

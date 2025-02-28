@@ -29,15 +29,15 @@ public class UserEntity {
     private String country;
     @Column(nullable = false)
     private String address;
-    @Column(name = "date_of_birth", nullable = false)
+    @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
-    @Column(name = "date_of_registration", nullable = false)
+    @Column(name = "date_of_registration" ,nullable = true)
     private LocalDate dateOfRegistration;
-    @Column(name = "date_of_last_update")
+    @Column(name = "date_of_last_update" ,nullable = true)
     private LocalDate dateOfLastUpdate;
 
     public UserEntity(String name, String surname, String phone, String email,
-                      String password, LocalDate dateOfBirth, LocalDate dateOfRegistration,
+                      String password, LocalDate dateOfBirth,
                       String address, String city, String country, String dni) {
         this.name = name;
         this.surname = surname;
@@ -50,6 +50,7 @@ public class UserEntity {
         this.city = city;
         this.country = country;
         this.dni = dni;
+        this.dateOfLastUpdate = null;
     }
 
     public UserEntity() {
