@@ -4,6 +4,7 @@ import com.dev.insurance_users.application.domain.User;
 import com.dev.insurance_users.application.service.UserService;
 import com.dev.insurance_users.generated.model.UserDto;
 import com.dev.insurance_users.infrastructure.rest.controller.mapper.UserDtoMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,16 +19,11 @@ import java.util.stream.Collectors;
 //TODO: Cambiar a dto / domain y mapear
 @RestController
 @RequestMapping("/users")
+@RequiredArgsConstructor
 public class UserController {
 
-    @Autowired
-    private UserService userService;
-
+    private final UserService userService;
     private final UserDtoMapper userDtoMapper;
-    @Autowired
-    public UserController(UserDtoMapper userDtoMapper) {
-        this.userDtoMapper = userDtoMapper;
-    }
 
     @PostMapping
     public ResponseEntity<UserDto> createUser(@RequestBody UserDto user) {

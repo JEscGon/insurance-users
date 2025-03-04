@@ -5,6 +5,7 @@ import com.dev.insurance_users.application.repository.UserRepository;
 import com.dev.insurance_users.infrastructure.repository.jpa.UserEntity;
 import com.dev.insurance_users.infrastructure.repository.jpa.UserJpaRepository;
 import com.dev.insurance_users.infrastructure.repository.mapper.UserMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -12,18 +13,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Repository
+@RequiredArgsConstructor
+
 public class UserRepositoryImpl implements UserRepository {
 
-
     private final UserMapper userMapper;
-
-    @Autowired
-    public UserRepositoryImpl(UserMapper userMapper) {
-        this.userMapper = userMapper;
-    }
-
-    @Autowired
-    private UserJpaRepository userJpaRepository;
+    private final UserJpaRepository userJpaRepository;
 
     public User save(Long id, User user) {
         UserEntity userEntity = userMapper.fromDomainToEntity(user);

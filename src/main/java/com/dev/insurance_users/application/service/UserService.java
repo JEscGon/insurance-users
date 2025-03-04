@@ -3,6 +3,7 @@ package com.dev.insurance_users.application.service;
 import com.dev.insurance_users.application.domain.User;
 import com.dev.insurance_users.application.repository.UserRepository;
 import com.dev.insurance_users.infrastructure.repository.mapper.UserMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,17 +12,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
 
-    @Autowired
-    private UserRepository userRepository;
-
+    private final UserRepository userRepository;
     private final UserMapper userMapper;
-
-    @Autowired
-    public UserService(UserMapper userMapper) {
-        this.userMapper = userMapper;
-    }
 
     public void save(Long id , User user) {
         Optional<User> existingUser = Optional.ofNullable(userRepository.findById(id));
