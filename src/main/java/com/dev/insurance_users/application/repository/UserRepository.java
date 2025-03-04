@@ -10,5 +10,5 @@ public interface UserRepository {
     public User findByDni(String dni);
     public List<User> findAll();
     public void deleteById(Long id);
-
+    public User findByEmail(String email);
 }

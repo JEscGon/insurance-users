@@ -49,6 +49,7 @@ public class UserController {
     }
     @PutMapping("/{id}")
     public ResponseEntity<UserDto> updateUserById(@PathVariable Long id, @RequestBody UserDto user) {
+        user.setId(Math.toIntExact(id));
         User updatedUser = userDtoMapper.fromDtoToDomain(user);
         userService.save(id, updatedUser);
         return new ResponseEntity<>(user, HttpStatus.OK);
@@ -61,6 +62,12 @@ public class UserController {
     @GetMapping("/dni/{dni}")
     public ResponseEntity<UserDto> getUserByDni(@PathVariable String dni) {
         Optional<User> user = userService.getUserByDni(dni);
+        return user.map(value -> new ResponseEntity<>(userDtoMapper.fromDomainToDto(value), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @GetMapping("/email/{email}")
+    public ResponseEntity<UserDto> getUserByEmail(@PathVariable String email) {
+        Optional<User> user = userService.getUserByEmail(email);
         return user.map(value -> new ResponseEntity<>(userDtoMapper.fromDomainToDto(value), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 

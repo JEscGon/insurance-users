@@ -24,12 +24,24 @@ public class UserService {
     }
 
     public void save(Long id , User user) {
+        Optional<User> existingUser = Optional.ofNullable(userRepository.findById(id));
         if (id == null) {
             user.setDateOfRegistration(LocalDate.now());
             userRepository.save(null, user);
         } else {
-            Optional<User> existingUser = Optional.ofNullable(userRepository.findById(id));
+
             if (existingUser.isPresent()) {
+                if (user.getName() == null) user.setName(existingUser.get().getName());
+                if (user.getSurname() == null) user.setSurname(existingUser.get().getSurname());
+                if (user.getPhone() == null) user.setPhone(existingUser.get().getPhone());
+                if (user.getEmail() == null) user.setEmail(existingUser.get().getEmail());
+                if (user.getDni() == null) user.setDni(existingUser.get().getDni());
+                if (user.getPassword() == null) user.setPassword(existingUser.get().getPassword());
+                if (user.getCity() == null) user.setCity(existingUser.get().getCity());
+                if (user.getCountry() == null) user.setCountry(existingUser.get().getCountry());
+                if (user.getAddress() == null) user.setAddress(existingUser.get().getAddress());
+                if (user.getDateOfBirth() == null) user.setDateOfBirth(existingUser.get().getDateOfBirth());
+                if (user.getDateOfRegistration() == null) user.setDateOfRegistration(existingUser.get().getDateOfRegistration());
                 user.setDateOfLastUpdate(LocalDate.now());
                 userMapper.fromDomainToEntity(user);
                 userRepository.save(id, user);
@@ -55,6 +67,9 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    public Optional<User> getUserByEmail(String email) {
+        return Optional.ofNullable(userRepository.findByEmail(email));
+    }
 
 
 }
