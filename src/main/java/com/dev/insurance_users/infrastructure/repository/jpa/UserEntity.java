@@ -1,12 +1,17 @@
 package com.dev.insurance_users.infrastructure.repository.jpa;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDate;
 
 @Data
 @Entity
 @Table(name = "users")
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,26 +40,5 @@ public class UserEntity {
     private LocalDate dateOfRegistration;
     @Column(name = "date_of_last_update" ,nullable = true)
     private LocalDate dateOfLastUpdate;
-
-    public UserEntity(String name, String surname, String phone, String email,
-                      String password, LocalDate dateOfBirth,
-                      String address, String city, String country, String dni) {
-        this.name = name;
-        this.surname = surname;
-        this.phone = phone;
-        this.email = email;
-        this.password = password;
-        this.dateOfBirth = dateOfBirth;
-        this.dateOfRegistration = LocalDate.now();
-        this.address = address;
-        this.city = city;
-        this.country = country;
-        this.dni = dni;
-        this.dateOfLastUpdate = null;
-    }
-
-    public UserEntity() {
-    }
-
 
 }

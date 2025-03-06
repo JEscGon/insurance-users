@@ -7,7 +7,6 @@ import com.dev.insurance_users.infrastructure.rest.controller.mapper.UserDtoMapp
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,10 +25,10 @@ public class UserController {
     private final UserDtoMapper userDtoMapper;
 
     @PostMapping
-    public ResponseEntity<UserDto> createUser(@RequestBody UserDto user) {
+    public ResponseEntity<Void> createUser(@RequestBody UserDto user) {
         User createdUser = userDtoMapper.fromDtoToDomain(user);
-        userService.save(null, createdUser);
-        return new ResponseEntity<>(user, HttpStatus.CREATED);
+        userService.save(createdUser);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
     @GetMapping("/{id}")
     public ResponseEntity<UserDto> getUserById(@PathVariable Long id) {
@@ -44,11 +43,11 @@ public class UserController {
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
     @PutMapping("/{id}")
-    public ResponseEntity<UserDto> updateUserById(@PathVariable Long id, @RequestBody UserDto user) {
+    public ResponseEntity<Void> updateUserById(@PathVariable Long id, @RequestBody UserDto user) {
         user.setId(Math.toIntExact(id));
         User updatedUser = userDtoMapper.fromDtoToDomain(user);
-        userService.save(id, updatedUser);
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        userService.save(updatedUser);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUserById(@PathVariable Long id) {
