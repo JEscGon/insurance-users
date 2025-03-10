@@ -28,10 +28,6 @@ paths:
       responses:
         '201':
           description: Usuario creado
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
     get:
       tags:
         - users
@@ -142,6 +138,26 @@ paths:
       parameters:
         - in: path
           name: dni
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Detalles del usuario
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
+  /users/email/{email}:
+    get:
+      tags:
+        - users
+      summary: Obtener un usuario por email
+      operationId: getUserByEmail
+      parameters:
+        - in: path
+          name: email
           required: true
           schema:
             type: string
