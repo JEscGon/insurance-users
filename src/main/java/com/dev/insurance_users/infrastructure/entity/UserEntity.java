@@ -13,6 +13,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserEntity {
+    private static final long serialVersionUID = -912412431249214L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

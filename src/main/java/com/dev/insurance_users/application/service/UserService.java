@@ -25,27 +25,22 @@ public class UserService {
         }
     }
 
-    @Transactional(readOnly = true)
     public Optional<User> findById(Long id) {
         return userRepository.findById(id);
     }
 
-    @Transactional(readOnly = true)
     public Optional<User> getUserByDni(String dni) {
         return userRepository.findByDni(dni);
     }
 
-    @Transactional
     public void deleteUserById(Long id) {
         userRepository.deleteById(id);
     }
 
-    @Transactional(readOnly = true)
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
-    @Transactional(readOnly = true)
     public Optional<User> getUserByEmail(String email) {
         return userRepository.findByEmail(email);
     }

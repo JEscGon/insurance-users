@@ -23,6 +23,11 @@ public class UserRepositoryImpl implements UserRepository {
         if(user.getId() == null) {
             user.setDateOfRegistration(LocalDate.now());
         } else {
+            var aux = userJpaRepository.findById(user.getId());
+            if(aux.isPresent()) {
+                User existingUser = userMapper.fromEntityToDomain(aux.get());
+                userMapper.updateUserFromExisting(user, existingUser);
+            }
             user.setDateOfLastUpdate(LocalDate.now());
         }
         userJpaRepository.save(userMapper.fromDomainToEntity(user));

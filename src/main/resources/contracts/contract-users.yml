@@ -43,6 +43,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/User'
 
+
   /users/{id}:
     get:
       tags:
@@ -64,7 +65,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/User'
         '400':
-          description: Invalid username supplied
+          description: Invalid id supplied
           content:
             application/json:
               schema:
@@ -112,12 +113,8 @@ paths:
       responses:
         '200':
           description: Usuario actualizado correctamente
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
         '400':
-          description: Datos de usuario inválidos
+          description: Datos de entrada inválidos
           content:
             application/json:
               schema:

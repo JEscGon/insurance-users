@@ -78,13 +78,13 @@ public class UserController implements UsersApi {
     }
 
     @Override
-    public ResponseEntity<UserDto> updateUser(String id, UserDto userDto) {
+    public ResponseEntity<Void> updateUser(String id, UserDto userDto) {
         try {
             Long userId = Long.parseLong(id);
             userDto.setId(Math.toIntExact(userId));
             User updatedUser = userDtoMapper.fromDtoToDomain(userDto);
             userService.save(updatedUser);
-            return new ResponseEntity<>(userDtoMapper.fromDomainToDto(updatedUser), HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (NumberFormatException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
