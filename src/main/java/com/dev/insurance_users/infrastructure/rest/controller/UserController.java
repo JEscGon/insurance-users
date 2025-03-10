@@ -2,6 +2,7 @@ package com.dev.insurance_users.infrastructure.rest.controller;
 
 import com.dev.insurance_users.application.domain.User;
 import com.dev.insurance_users.application.service.UserService;
+import com.dev.insurance_users.generated.api.UsersApi;
 import com.dev.insurance_users.generated.model.UserDto;
 import com.dev.insurance_users.infrastructure.rest.controller.mapper.UserDtoMapper;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
-public class UserController {
+public class UserController implements UsersApi {
 
     private final UserService userService;
     private final UserDtoMapper userDtoMapper;

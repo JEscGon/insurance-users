@@ -1,4 +1,4 @@
-package com.dev.insurance_users.infrastructure.repository.jpa.entity;
+package com.dev.insurance_users.infrastructure.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

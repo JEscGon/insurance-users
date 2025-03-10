@@ -93,6 +93,45 @@ paths:
       responses:
         '204':
           description: Usuario eliminado
+    put:
+      tags:
+        - users
+      summary: Actualizar un usuario existente
+      description: Actualiza la información de un usuario identificado por su ID
+      operationId: updateUser
+      parameters:
+        - in: path
+          name: id
+          description: 'ID del usuario a actualizar'
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        description: Datos actualizados del usuario
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: Usuario actualizado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Datos de usuario inválidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '404':
+          description: Usuario no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
 
   /users/dni/{dni}:
     get:

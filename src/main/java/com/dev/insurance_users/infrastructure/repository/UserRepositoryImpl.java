@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
-
 public class UserRepositoryImpl implements UserRepository {
 
     private final UserMapper userMapper;
