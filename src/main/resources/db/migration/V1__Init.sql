@@ -9,7 +9,18 @@ CREATE TABLE users (
     city VARCHAR(255) NOT NULL,
     country VARCHAR(255) NOT NULL,
     address VARCHAR(255) NOT NULL,
-    date_of_birth DATE, -- En PostgreSQL, DATE es adecuado para fechas sin hora
+    date_of_birth DATE,
     date_of_registration DATE DEFAULT CURRENT_DATE, -- Asegura que la fecha de registro sea la fecha actual por defecto
     date_of_last_update DATE DEFAULT CURRENT_DATE -- Lo mismo para la última actualización
+);
+
+CREATE TABLE vehicles (
+    id BIGSERIAL PRIMARY KEY,
+    id_user BIGINT NOT NULL,
+    matricula VARCHAR(255) UNIQUE NOT NULL,
+    km BIGINT NOT NULL,
+    marca VARCHAR(255) NOT NULL,
+    fecha_fabricacion DATE NOT NULL,
+    date_of_registration DATE,
+    date_of_last_update DATE
 );

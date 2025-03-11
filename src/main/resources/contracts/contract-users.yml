@@ -1,14 +1,17 @@
 openapi: 3.0.0
 info:
-  title: Gestión de Usuarios
-  description: API para el servicio de gestión de usuarios.
+  title: Gestión de Usuarios & Vehiculos
+  description: API para el servicio de gestión de usuarios y vehiculos.
   version: 1.0.0
 servers:
   - url: https://localhost:8080/users
-    description: Servidor de desarrollo
+  - url: https://localhost:8080/vehicles
+
 tags:
   - name: users
     description: Operations about users
+  - name: vehicles
+    description: Operations about vehicles
 
 paths:
   /users:
@@ -166,6 +169,166 @@ paths:
               schema:
                 $ref: '#/components/schemas/User'
 
+  /vehicles:
+    get:
+      tags:
+        - vehicles
+      summary: Obtener todos los vehículos
+      description: Devuelve una lista con todos los vehículos registrados
+      operationId: getAllVehicles
+      responses:
+        '200':
+          description: Lista de vehículos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Vehicle'
+    post:
+      tags:
+        - vehicles
+      summary: Añade un nuevo vehículo
+      description: Registra un nuevo vehículo en el sistema
+      operationId: saveVehicle
+      requestBody:
+        required: true
+        description: Vehículo a añadir
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Vehicle'
+      responses:
+        '201':
+          description: Vehículo creado correctamente
+
+  /vehicles/{id}:
+    get:
+      tags:
+        - vehicles
+      summary: Encuentra un vehículo por ID
+      description: Devuelve un único vehículo
+      operationId: getVehicleById
+      parameters:
+        - in: path
+          name: id
+          description: 'The id that needs to be fetched.'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Operación OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vehicle'
+        '404':
+          description: Vehículo no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+
+    put:
+      tags:
+        - vehicles
+      summary: Actualiza un vehículo existente
+      description: Actualiza un vehículo identificado por su id con los nuevos datos
+      operationId: updateVehicle
+      parameters:
+        - in: path
+          name: id
+          description: 'ID del vehículo a actualizar'
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Datos actualizados del vehículo
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Vehicle'
+      responses:
+        '200':
+          description: Vehículo actualizado correctamente
+        '400':
+          description: Datos de entrada inválidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '404':
+          description: Vehículo no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    delete:
+      tags:
+        - vehicles
+      summary: Elimina un vehículo
+      description: Elimina un vehículo del sistema
+      operationId: deleteVehicleById
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Vehículo eliminado correctamente
+
+  /vehicles/matricula/{matricula}:
+    get:
+      tags:
+        - vehicles
+      summary: Encuentra un vehículo por matrícula
+      description: Devuelve un vehículo buscando por su matrícula
+      operationId: findByMatricula
+      parameters:
+        - name: matricula
+          in: path
+          description: Matrícula del vehículo
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Operación exitosa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vehicle'
+        '404':
+          description: Vehículo no encontrado
+
+  /vehicles/user/{idUser}:
+    get:
+      tags:
+        - vehicles
+      summary: Encuentra vehículos por ID de usuario
+      description: Devuelve una lista de vehículos que pertenecen a un usuario específico
+      operationId: getVehiclesByUserId
+      parameters:
+        - name: idUser
+          in: path
+          description: ID del usuario
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Operación exitosa
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Vehicle'
+
 components:
   schemas:
     User:
@@ -200,6 +363,43 @@ components:
         dateOfLastUpdate:
           type: string
           format: date
+
+    Vehicle:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 10
+        idUser:
+          type: integer
+          example: 5
+        matricula:
+          type: string
+          example: "1234ABC"
+        km:
+          type: integer
+          example: 50000
+        marca:
+          type: string
+          example: "Toyota"
+        fechaFabricacion:
+          type: string
+          format: date
+          example: "2020-01-01"
+        dateOfRegistration:
+          type: string
+          format: date
+          example: "2023-05-15"
+        dateOfLastUpdate:
+          type: string
+          format: date
+          example: "2024-02-20"
+      required:
+        - idUser
+        - matricula
+        - km
+        - marca
+        - fechaFabricacion
 
     ErrorMessage:
       type: object

@@ -3,8 +3,6 @@ package com.dev.insurance_users.infrastructure.rest.controller.mapper;
 import com.dev.insurance_users.application.domain.User;
 import com.dev.insurance_users.generated.model.UserDto;
 import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
-import org.springframework.stereotype.Component;
 
 @Mapper(componentModel = "spring")
 public interface UserDtoMapper {
