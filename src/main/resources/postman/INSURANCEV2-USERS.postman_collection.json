@@ -3,7 +3,7 @@
 		"_postman_id": "757685d9-1949-4ce0-b942-bd16d835deab",
 		"name": "INSURANCEV2-USERS",
 		"description": "Crear un usuario: POST [http://localhost:8080/users](http://localhost:8080/users)  \nObtener un usuario por ID: GET [http://localhost:8080/users/{id}](http://localhost:8080/users/{id})  \nObtener todos los usuarios: GET [http://localhost:8080/users](http://localhost:8080/users)  \nActualizar un usuario por ID: PUT [http://localhost:8080/users/{id}](http://localhost:8080/users/{id})  \nEliminar un usuario por ID: DELETE [http://localhost:8080/users/{id}](http://localhost:8080/users/{id})",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
 		"_exporter_id": "21757430"
 	},
 	"item": [
@@ -41,17 +41,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "http://localhost:8080/users",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"users"
-							]
-						},
+						"url": "http://localhost:8080/users",
 						"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
 					},
 					"response": []
@@ -78,30 +68,20 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"John Doe\",\n    \"surname\": \"Doe\",\n    \"phone\": \"23456749\",\n    \"email\": \"john.d2oe2@example.com\",\n    \"dni\": \"123425628A\",\n    \"password\": \"password123\",\n    \"city\": \"City\",\n    \"country\": \"Country\",\n    \"address\": \"123 Main St\",\n    \"dateOfBirth\": \"1990-01-01\"\n}",
+							"raw": "{\n  \"name\": \"John Doe\",\n  \"surname\": \"pepo\",\n  \"email\": \"john.33@example.com\",\n  \"dni\": \"1233845A\",\n  \"dateOfBirth\": \"1990-01-01\",\n  \"address\": \"123 Main St, Anytown, USA\",\n  \"city\": \"narnia\",\n  \"country\": \"kakaka\",\n  \"password\": \"123412341234\",\n  \"phone\": \"1233398\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
 								}
 							}
 						},
-						"url": {
-							"raw": "http://localhost:8080/users",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"users"
-							]
-						},
+						"url": "http://localhost:8080/users",
 						"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
 					},
 					"response": []
 				},
 				{
-					"name": "Update USER",
+					"name": "Update USER - OK",
 					"event": [
 						{
 							"listen": "test",
@@ -122,31 +102,20 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\n    \"phone\": \"12345678232323290000000\",\n    \"email\": \"\"\n}",
+							"raw": "{\n  \"name\": \"John Doe\",\n  \"surname\": \"pepo\",\n  \"email\": \"john.de@exaaample.com\",\n  \"dni\": \"\",\n  \"dateOfBirth\": \"1990-01-01\",\n  \"address\": \"123 Main St, Anytown, USA\",\n  \"city\": \"narnia\",\n  \"country\": \"kakaka\",\n  \"password\": \"123412341234\",\n  \"phone\": \"12341998\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
 								}
 							}
 						},
-						"url": {
-							"raw": "http://localhost:8080/users/1",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"users",
-								"1"
-							]
-						},
+						"url": "http://localhost:8080/users/3",
 						"description": "This is a PUT request and it is used to overwrite an existing piece of data. For instance, after you create an entity with a POST request, you may want to modify that later. You can do that using a PUT request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful PUT request typically returns a `200 OK`, `201 Created`, or `204 No Content` response code."
 					},
 					"response": []
 				},
 				{
-					"name": "Delete USER by ID",
+					"name": "Delete USER by ID - OK",
 					"event": [
 						{
 							"listen": "test",
@@ -174,81 +143,35 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "http://localhost:8080/users/1",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"users",
-								"1"
-							]
-						},
+						"url": "http://localhost:8080/users/1",
 						"description": "This is a DELETE request, and it is used to delete data that was previously created via a POST request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful DELETE request typically returns a `200 OK`, `202 Accepted`, or `204 No Content` response code."
 					},
 					"response": []
 				},
 				{
-					"name": "findByID",
+					"name": "findByID - Ok",
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": {
-							"raw": "http://localhost:8080/users/2",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"users",
-								"2"
-							]
-						}
+						"url": "http://localhost:8080/users/1"
 					},
 					"response": []
 				},
 				{
-					"name": "FindByDNI",
+					"name": "FindByDNI - OK",
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": {
-							"raw": "http://localhost:8080/users/email/alice.johnson@example.com",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"users",
-								"email",
-								"alice.johnson@example.com"
-							]
-						}
+						"url": "http://localhost:8080/users/dni/1233845A"
 					},
 					"response": []
 				},
 				{
-					"name": "findByEmail",
+					"name": "findByEmail - OK",
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": {
-							"raw": "http://localhost:8080/users/email/34567890C",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"users",
-								"email",
-								"34567890C"
-							]
-						}
+						"url": "http://localhost:8080/users/email/john.33@example.com"
 					},
 					"response": []
 				}
@@ -257,6 +180,83 @@
 		{
 			"name": "Auth-JWT",
 			"item": []
+		},
+		{
+			"name": "Vehicles",
+			"item": [
+				{
+					"name": "CrearVehiculo - OK",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"idUser\": 2,\r\n  \"matricula\": \"1233ABC\",\r\n  \"km\": 50000,\r\n  \"marca\": \"Hyundai\",\r\n  \"fechaFabricacion\": \"2000-03-10\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/vehicles"
+					},
+					"response": []
+				},
+				{
+					"name": "FindById-OK",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/vehicles/1"
+					},
+					"response": []
+				},
+				{
+					"name": "FindByMatricula-OK",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/vehicles/matricula/12334ABC"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete-OK",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:8080/vehicles/2"
+					},
+					"response": []
+				},
+				{
+					"name": "Update -OK (dateregistration lost on mapping)",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"idUser\": 1,\r\n  \"matricula\": \"1231214C\",\r\n  \"km\": 5020020,\r\n  \"marca\": \"1111\",\r\n  \"fechaFabricacion\": \"2000-03-10\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/vehicles/3"
+					},
+					"response": []
+				},
+				{
+					"name": "findAll-OK",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/vehicles"
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"event": [

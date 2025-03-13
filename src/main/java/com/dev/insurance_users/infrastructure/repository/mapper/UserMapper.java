@@ -13,5 +13,6 @@ public interface UserMapper {
 
     UserEntity fromDomainToEntity(User user);
 
-    void updateUserFromExisting(@MappingTarget User target, User source);
+    void updateUserFromExisting(@MappingTarget UserEntity target, UserEntity source);
+
 }

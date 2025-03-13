@@ -1,4 +1,4 @@
-package com.dev.insurance_users.infrastructure.mapper;
+package com.dev.insurance_users.infrastructure.repository.mapper;
 
 import com.dev.insurance_users.application.domain.Vehicle;
 import com.dev.insurance_users.infrastructure.entity.VehicleEntity;
@@ -14,5 +14,6 @@ public interface VehicleMapper {
     VehicleEntity fromDomainToEntity(Vehicle vehicle);
 
     void updateVehicleFromExisting(@MappingTarget Vehicle target, Vehicle source);
+    void updateVehicleFromExisting(@MappingTarget VehicleEntity target, VehicleEntity source);
 
 }

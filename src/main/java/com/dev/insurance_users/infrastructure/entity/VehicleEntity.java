@@ -1,8 +1,10 @@
 package com.dev.insurance_users.infrastructure.entity;
 
+import com.dev.insurance_users.application.domain.Vehicle;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -16,8 +18,9 @@ public class VehicleEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "id_user", nullable = false)
-    private Long idUser;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private UserEntity user;
 
     @Column(unique = true , nullable = false)
     private String matricula;
@@ -27,10 +30,8 @@ public class VehicleEntity {
 
     @Column(nullable = false)
     private String marca;
-
     @Column(name = "fecha_fabricacion",nullable = false)
     private LocalDate fechaFabricacion;
-
     @Column(name = "date_of_registration" ,nullable = true)
     private LocalDate dateOfRegistration;
     @Column(name = "date_of_last_update" ,nullable = true)

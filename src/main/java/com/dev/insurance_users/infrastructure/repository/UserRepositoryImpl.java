@@ -19,39 +19,48 @@ public class UserRepositoryImpl implements UserRepository {
     private final UserMapper userMapper;
     private final UserJpaRepository userJpaRepository;
 
+    @Override
     public void save(User user) {
         if(user.getId() == null) {
             user.setDateOfRegistration(LocalDate.now());
         } else {
-            var aux = userJpaRepository.findById(user.getId());
-            if(aux.isPresent()) {
-                User existingUser = userMapper.fromEntityToDomain(aux.get());
-                userMapper.updateUserFromExisting(user, existingUser);
+            var existingUser = userJpaRepository.findById(user.getId());
+            var aux = existingUser.get().getDateOfRegistration();
+            user.setDateOfRegistration(aux);
+            if(existingUser.isPresent()) {
+                userMapper.updateUserFromExisting(userMapper.fromDomainToEntity(user), existingUser.get());
             }
             user.setDateOfLastUpdate(LocalDate.now());
         }
         userJpaRepository.save(userMapper.fromDomainToEntity(user));
     }
 
+    @Override
     public Optional<User> findById(Long id) {
         return userJpaRepository.findById(id)
                 .map(userMapper::fromEntityToDomain);
     }
+
+    @Override
     public Optional<User> findByDni(String dni) {
        return userJpaRepository.findByDni(dni)
             .map(userMapper::fromEntityToDomain);
     }
 
+    @Override
     public Optional<User> findByEmail(String email) {
         return userJpaRepository.findByEmail(email)
                 .map(userMapper::fromEntityToDomain);
     }
 
+    @Override
     public List<User> findAll() {
         return userJpaRepository.findAll().stream()
                 .map(userMapper::fromEntityToDomain)
                 .collect(Collectors.toList());
     }
+
+    @Override
     public void deleteById(Long id) {
         userJpaRepository.deleteById(id);
     }

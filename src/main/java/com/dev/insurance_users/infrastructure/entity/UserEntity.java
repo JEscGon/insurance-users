@@ -1,11 +1,12 @@
 package com.dev.insurance_users.infrastructure.entity;
 
+import com.dev.insurance_users.application.domain.Vehicle;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @Entity
@@ -41,5 +42,7 @@ public class UserEntity {
     private LocalDate dateOfRegistration;
     @Column(name = "date_of_last_update" ,nullable = true)
     private LocalDate dateOfLastUpdate;
+    @OneToMany(mappedBy = "user")
+    private List<VehicleEntity> vehicles;
 
 }

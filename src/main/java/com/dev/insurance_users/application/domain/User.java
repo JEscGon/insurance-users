@@ -23,4 +23,6 @@ public class User {
     private LocalDate dateOfRegistration;
     private LocalDate dateOfLastUpdate;
 
+
+
 }
