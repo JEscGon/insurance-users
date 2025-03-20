@@ -13,7 +13,6 @@ import java.time.LocalDate;
 public class VehicleThird {
 
     private Long id;
-//    private UserThird user;
     private Long userThirdId;
     private String matricula;
     private String aseguradora;

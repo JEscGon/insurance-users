@@ -43,7 +43,7 @@ public class UserEntity {
     @Column(name = "date_of_last_update" ,nullable = true)
     private LocalDate dateOfLastUpdate;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user")
     private List<VehicleEntity> vehicles;
 
 }

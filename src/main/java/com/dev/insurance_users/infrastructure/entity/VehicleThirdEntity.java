@@ -20,11 +20,9 @@ public class VehicleThirdEntity {
     @Column(nullable = false)
     private Long id;
 
-//    @ManyToOne
-//    @JoinColumn(name = "user_third_id", nullable = false)
-//    private UserThirdEntity user;
-    @Column(name = "user_third_id", nullable = false)
-    private Long userThirdId;
+    @ManyToOne
+    @JoinColumn(name = "user_third_id", nullable = false)
+    private UserThirdEntity userThird;
 
     @Column(unique = true , nullable = false)
     private String matricula;

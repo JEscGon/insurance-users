@@ -19,7 +19,7 @@ public class VehicleEntity {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id",nullable = false)
     private UserEntity user;
 
     @Column(unique = true , nullable = false)
@@ -36,5 +36,7 @@ public class VehicleEntity {
     private LocalDate dateOfRegistration;
     @Column(name = "date_of_last_update" ,nullable = true)
     private LocalDate dateOfLastUpdate;
+
+
 
 }

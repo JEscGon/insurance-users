@@ -24,6 +24,6 @@ public class UserThird {
     private LocalDate dateOfRegistration;
     private LocalDate dateOfLastUpdate;
 
-//    private List<VehicleThird> vehicles;
+    private List<VehicleThird> vehicles;
 
 }

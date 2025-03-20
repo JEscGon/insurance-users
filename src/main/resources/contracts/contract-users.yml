@@ -602,8 +602,9 @@ components:
         id:
           type: integer
           example: 10
-        user:
-          $ref: '#/components/schemas/User'
+        userId:
+          type: integer
+          example: 1
         matricula:
           type: string
           example: "1234ABC"
@@ -662,6 +663,10 @@ components:
         dateOfLastUpdate:
           type: string
           format: date
+        vehicles:
+          type: array
+          items:
+            $ref: '#/components/schemas/VehicleThird'
 
     VehicleThird:
       type: object

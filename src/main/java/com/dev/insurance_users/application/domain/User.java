@@ -26,7 +26,6 @@ public class User {
     private LocalDate dateOfRegistration;
     private LocalDate dateOfLastUpdate;
 
-    @OneToMany
     private List<Vehicle> vehicles;
 
 }

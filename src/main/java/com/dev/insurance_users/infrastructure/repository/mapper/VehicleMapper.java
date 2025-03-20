@@ -1,18 +1,24 @@
 package com.dev.insurance_users.infrastructure.repository.mapper;
 
 import com.dev.insurance_users.application.domain.Vehicle;
+import com.dev.insurance_users.infrastructure.entity.UserEntity;
 import com.dev.insurance_users.infrastructure.entity.VehicleEntity;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.*;
 
-@Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+@Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,uses = {UserMapper.class})
 public interface VehicleMapper {
 
+    @Mapping(source = "user.id", target = "userId")
     Vehicle fromEntityToDomain(VehicleEntity vehicleEntity);
 
     VehicleEntity fromDomainToEntity(Vehicle vehicle);
 
     void updateVehicleFromExisting(@MappingTarget VehicleEntity target, VehicleEntity source);
 
+    @Named("userEntityToLong")
+    default Long userEntityToLong(UserEntity userEntity) {
+        return userEntity != null ? userEntity.getId() : null;
+    }
 }
+
+

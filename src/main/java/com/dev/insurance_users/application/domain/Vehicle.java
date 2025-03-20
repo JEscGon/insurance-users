@@ -22,7 +22,7 @@ public class Vehicle {
     private LocalDate dateOfRegistration;
     private LocalDate dateOfLastUpdate;
 
-    @ManyToOne
-    private UserEntity user;
+    private Integer userId;
+
 
 }

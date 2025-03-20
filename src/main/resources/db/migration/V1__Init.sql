@@ -24,7 +24,7 @@ CREATE TABLE vehicles (
     fecha_fabricacion DATE NOT NULL,
     date_of_registration DATE DEFAULT CURRENT_DATE,
     date_of_last_update DATE DEFAULT CURRENT_DATE,
-    CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(id)
+    FOREIGN KEY (user_id) REFERENCES users (id)
 );
 
 CREATE TABLE third_users (
