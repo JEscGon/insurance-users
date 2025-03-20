@@ -1,28 +1,26 @@
 package com.dev.insurance_users.application.domain;
 
-import com.dev.insurance_users.infrastructure.entity.UserEntity;
-import jakarta.persistence.ManyToOne;
+
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+
 import java.time.LocalDate;
 
-@Getter
-@Setter
-@NoArgsConstructor
+@Data
 @AllArgsConstructor
-public class Vehicle {
+@NoArgsConstructor
+public class VehicleThird {
 
     private Long id;
+//    private UserThird user;
+    private Long userThirdId;
     private String matricula;
+    private String aseguradora;
     private Long km;
     private String marca;
     private LocalDate fechaFabricacion;
     private LocalDate dateOfRegistration;
     private LocalDate dateOfLastUpdate;
-
-    @ManyToOne
-    private UserEntity user;
 
 }

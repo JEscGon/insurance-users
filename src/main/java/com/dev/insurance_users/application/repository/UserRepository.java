@@ -1,7 +1,6 @@
 package com.dev.insurance_users.application.repository;
 
 import com.dev.insurance_users.application.domain.User;
-
 import java.util.List;
 import java.util.Optional;
 

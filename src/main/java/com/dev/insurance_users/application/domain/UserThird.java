@@ -1,16 +1,15 @@
 package com.dev.insurance_users.application.domain;
 
-import com.dev.insurance_users.infrastructure.entity.VehicleEntity;
-import jakarta.persistence.OneToMany;
-import lombok.*;
-
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+public class UserThird {
 
     private Long id;
     private String name;
@@ -18,7 +17,6 @@ public class User {
     private String phone;
     private String email;
     private String dni;
-    private String password;
     private String city;
     private String country;
     private String address;
@@ -26,7 +24,6 @@ public class User {
     private LocalDate dateOfRegistration;
     private LocalDate dateOfLastUpdate;
 
-    @OneToMany
-    private List<Vehicle> vehicles;
+//    private List<VehicleThird> vehicles;
 
 }
