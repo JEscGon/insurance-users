@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/insurance
+    url: jdbc:postgresql://localhost:5432/insurance-users
     username: 'postgres'
     password: 'root'
     driver-class-name: org.postgresql.Driver

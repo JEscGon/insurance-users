@@ -46,7 +46,7 @@ public class VehicleController implements VehiclesApi {
     }
 
     @Override
-    public ResponseEntity<Void> updateVehicle(String id, VehicleDto vehicleDto) {
+    public ResponseEntity<Void> updateVehicle(String id, VehicleDto vehicleDto) { // TODO: cambiar id a number
         try {
             Long vehicleId = Long.parseLong(id);
             vehicleDto.setId(vehicleId.intValue());
@@ -55,7 +55,7 @@ public class VehicleController implements VehiclesApi {
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (NumberFormatException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } catch (Exception e) {
+        } catch (Exception e) {  // TODO evitar capturar excepciones genericas
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
