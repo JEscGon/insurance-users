@@ -30,6 +30,9 @@ public class VehicleEntity {
 
     @Column(nullable = false)
     private String marca;
+
+    private String color;
+
     @Column(name = "fecha_fabricacion",nullable = false)
     private LocalDate fechaFabricacion;
     @Column(name = "date_of_registration" ,nullable = true)

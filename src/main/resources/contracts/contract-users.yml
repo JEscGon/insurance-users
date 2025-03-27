@@ -639,6 +639,9 @@ components:
         km:
           type: integer
           example: 50000
+        color:
+          type: string
+          example: "Rojo"
         marca:
           type: string
           example: "Toyota"

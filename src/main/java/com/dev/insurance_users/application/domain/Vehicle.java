@@ -18,6 +18,7 @@ public class Vehicle {
     private String matricula;
     private Long km;
     private String marca;
+    private String color;
     private LocalDate fechaFabricacion;
     private LocalDate dateOfRegistration;
     private LocalDate dateOfLastUpdate;
