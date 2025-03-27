@@ -15,4 +15,6 @@ public interface VehicleThirdJpaRepository extends JpaRepository<VehicleThirdEnt
 
     void deleteById(Long id);
 
+    Optional<VehicleThirdEntity> findByMatricula(String matricula);
+
 }

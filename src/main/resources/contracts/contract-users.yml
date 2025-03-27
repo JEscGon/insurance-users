@@ -557,6 +557,34 @@ paths:
         '204':
           description: Tercer vehículo eliminado correctamente
 
+  /third_vehicles/matricula/{matricula}:
+    get:
+      tags:
+        - third_vehicles
+      summary: Encuentra un tercer vehículo por matrícula
+      description: Devuelve un tercer vehículo buscando por su matrícula
+      operationId: findByMatriculaThird
+      parameters:
+        - name: matricula
+          in: path
+          description: Matrícula del tercer vehículo
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Operación exitosa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VehicleThird'
+        '404':
+          description: Tercer vehículo no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+
 components:
   schemas:
     User:

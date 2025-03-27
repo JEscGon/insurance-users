@@ -16,7 +16,6 @@ public class VehicleThirdService {
 
     private final VehicleThirdRepository vehicleThirdRepository;
 
-    @Transactional
     public void save(VehicleThird vehicleThird) {
         vehicleThirdRepository.save(vehicleThird);
     }

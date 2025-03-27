@@ -14,7 +14,6 @@ public class UserThirdService {
 
     private final UserThirdRepository userThirdRepository;
 
-    @Transactional
     public void save(UserThird user) {
         userThirdRepository.save(user);
     }

@@ -27,9 +27,12 @@ public class UserThirdRepositoryImpl implements UserThirdRepository {
         } else {
             var existingUser = userThirdJpaRepository.findById(user.getId());
             if(existingUser.isPresent()) {
-                user.setDateOfLastUpdate(LocalDate.now());
+                var auxDate = existingUser.get().getDateOfRegistration();
                 userThirdMapper.updateUserThirdFromExisting(userThirdMapper.fromDomainToEntity(user), existingUser.get());
+                user.setDateOfLastUpdate(LocalDate.now());
+                user.setDateOfRegistration(auxDate);
             }
+            userThirdJpaRepository.save(userThirdMapper.fromDomainToEntity(user));
         }
     }
 

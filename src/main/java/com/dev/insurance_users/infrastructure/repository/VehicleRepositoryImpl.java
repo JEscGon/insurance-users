@@ -25,6 +25,7 @@ public class VehicleRepositoryImpl implements VehicleRepository {
 
     @Override
     public void save(Vehicle vehicle) {
+
         VehicleEntity vehicleEntity = vehicleMapper.fromDomainToEntity(vehicle);
         Optional<UserEntity> userEntity = userJpaRepository.findById(Long.valueOf(vehicle.getUserId()));
 
@@ -37,6 +38,7 @@ public class VehicleRepositoryImpl implements VehicleRepository {
             }
             vehicleJpaRepository.save(vehicleEntity);
         } else {
+
             var existingVehicleOpt = vehicleJpaRepository.findById(vehicle.getId()); //TODO: orElseThrow
 
             if(existingVehicleOpt.isPresent()){
@@ -48,6 +50,7 @@ public class VehicleRepositoryImpl implements VehicleRepository {
                 updatedEntity.setUser(existingVehicle.getUser());
 
                 vehicleJpaRepository.save(updatedEntity);
+
                 //TODO : NO USAR RUNTIME EXCEPTION usar excepciones personalizadas.
             } else {
                 throw new RuntimeException("Vehicle not found");

@@ -15,4 +15,5 @@ public interface VehicleThirdRepository {
 
     public void deleteById(Long id);
 
+    Optional<VehicleThird> findByMatricula(String matricula);
 }
