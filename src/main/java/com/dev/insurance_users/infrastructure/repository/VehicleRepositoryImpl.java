@@ -1,6 +1,7 @@
 package com.dev.insurance_users.infrastructure.repository;
 
 import com.dev.insurance_users.application.domain.Vehicle;
+import com.dev.insurance_users.application.exception.VehicleNotFoundException;
 import com.dev.insurance_users.application.repository.VehicleRepository;
 
 import com.dev.insurance_users.infrastructure.entity.UserEntity;
@@ -8,6 +9,7 @@ import com.dev.insurance_users.infrastructure.entity.VehicleEntity;
 import com.dev.insurance_users.infrastructure.repository.jpa.UserJpaRepository;
 import com.dev.insurance_users.infrastructure.repository.jpa.VehicleJpaRepository;
 import com.dev.insurance_users.infrastructure.repository.mapper.VehicleMapper;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
@@ -25,36 +27,22 @@ public class VehicleRepositoryImpl implements VehicleRepository {
 
     @Override
     public void save(Vehicle vehicle) {
-
-        VehicleEntity vehicleEntity = vehicleMapper.fromDomainToEntity(vehicle);
-        Optional<UserEntity> userEntity = userJpaRepository.findById(Long.valueOf(vehicle.getUserId()));
-
-        if(vehicle.getId() == null){
-            vehicleEntity.setDateOfRegistration(LocalDate.now()); //TODO: orElseThrow
-            if(userEntity.isPresent()){
-                vehicleEntity.setUser(userEntity.get());
-            } else {
-                throw new RuntimeException("User not found");
-            }
+        if(vehicle.getId() == null) { // nuevo vehículo
+            UserEntity userEntity = userJpaRepository.findById(Long.valueOf(vehicle.getUserId()))
+                    .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado con id: " + vehicle.getUserId()));
+            VehicleEntity vehicleEntity = vehicleMapper.fromDomainToEntity(vehicle);
+            vehicleEntity.setDateOfRegistration(LocalDate.now());
+            vehicleEntity.setUser(userEntity);
             vehicleJpaRepository.save(vehicleEntity);
-        } else {
-
-            var existingVehicleOpt = vehicleJpaRepository.findById(vehicle.getId()); //TODO: orElseThrow
-
-            if(existingVehicleOpt.isPresent()){
-                var existingVehicle = existingVehicleOpt.get();
-                vehicle.setDateOfRegistration(existingVehicle.getDateOfRegistration());
-                vehicle.setDateOfLastUpdate(LocalDate.now());
-
-                VehicleEntity updatedEntity = vehicleMapper.fromDomainToEntity(vehicle);
-                updatedEntity.setUser(existingVehicle.getUser());
-
-                vehicleJpaRepository.save(updatedEntity);
-
-                //TODO : NO USAR RUNTIME EXCEPTION usar excepciones personalizadas.
-            } else {
-                throw new RuntimeException("Vehicle not found");
-            }
+        } else { // actualización
+            VehicleEntity existingVehicle = vehicleJpaRepository.findById(vehicle.getId())
+                    .orElseThrow(() -> new VehicleNotFoundException("Vehículo no encontrado con id: " + vehicle.getId()));
+            // Mantener fecha de registro original y actualizar fecha de última modificación
+            vehicle.setDateOfRegistration(existingVehicle.getDateOfRegistration());
+            vehicle.setDateOfLastUpdate(LocalDate.now());
+            VehicleEntity updatedEntity = vehicleMapper.fromDomainToEntity(vehicle);
+            updatedEntity.setUser(existingVehicle.getUser());
+            vehicleJpaRepository.save(updatedEntity);
         }
     }
 
@@ -81,5 +69,8 @@ public class VehicleRepositoryImpl implements VehicleRepository {
         return vehicleJpaRepository.findByMatricula(matricula)
                 .map(vehicleMapper::fromEntityToDomain);
     }
+
+    @Override
+    public void deleteByUserId(Long userId) { vehicleJpaRepository.deleteByUserId(userId); }
 
 }

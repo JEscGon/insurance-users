@@ -16,6 +16,7 @@ public class VehicleThird {
     private Long userThirdId;
     private String matricula;
     private String aseguradora;
+    private String color;
     private Long km;
     private String marca;
     private LocalDate fechaFabricacion;

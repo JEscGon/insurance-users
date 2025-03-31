@@ -28,16 +28,15 @@ public class VehicleController implements VehiclesApi {
     }
 
     @Override
-    public ResponseEntity<Void> deleteVehicleById(String Id){
-        vehicleService.deleteVehicleById(Id);
+    public ResponseEntity<Void> deleteVehicleById(Long id){
+        vehicleService.deleteVehicleById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<VehicleDto> getVehicleById(String id) {
+    public ResponseEntity<VehicleDto> getVehicleById(Long id) {
         try {
-            Long vehicleId = Long.parseLong(id);
-            return vehicleService.findById(vehicleId)
+            return vehicleService.findById(id)
                     .map(vehicle -> new ResponseEntity<>(vehicleDtoMapper.fromDomainToDto(vehicle), HttpStatus.OK))
                     .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
         } catch (NumberFormatException e) {
@@ -46,10 +45,9 @@ public class VehicleController implements VehiclesApi {
     }
 
     @Override
-    public ResponseEntity<Void> updateVehicle(String id, VehicleDto vehicleDto) { // TODO: cambiar id a number
+    public ResponseEntity<Void> updateVehicle(Long id, VehicleDto vehicleDto) {
         try {
-            Long vehicleId = Long.parseLong(id);
-            vehicleDto.setId(vehicleId.intValue());
+            vehicleDto.setId(Math.toIntExact(id));
             Vehicle vehicle = vehicleDtoMapper.fromDtoToDomain(vehicleDto);
             vehicleService.save(vehicle);
             return new ResponseEntity<>(HttpStatus.OK);

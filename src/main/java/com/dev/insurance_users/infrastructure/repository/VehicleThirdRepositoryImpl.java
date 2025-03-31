@@ -36,15 +36,12 @@ public class VehicleThirdRepositoryImpl implements VehicleThirdRepository {
                 vehicleThirdJpaRepository.save(vehicleThirdEntity);
             } else {
                 var existingVehicleOpt = vehicleThirdJpaRepository.findById(vehicle.getId());
-
-                if(existingVehicleOpt.isPresent()){
+            if(existingVehicleOpt.isPresent()){
                     var existingVehicle = existingVehicleOpt.get();
                     vehicle.setDateOfRegistration(existingVehicle.getDateOfRegistration());
                     vehicle.setDateOfLastUpdate(LocalDate.now());
-
                     var updatedEntity = vehicleThirdMapper.fromDomainToEntity(vehicle);
                     updatedEntity.setUserThird(existingVehicle.getUserThird());
-
                     vehicleThirdJpaRepository.save(updatedEntity);
                 } else {
                     throw new RuntimeException("Vehicle not found");

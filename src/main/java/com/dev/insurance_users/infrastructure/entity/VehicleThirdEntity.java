@@ -31,6 +31,9 @@ public class VehicleThirdEntity {
     private String aseguradora;
 
     @Column(nullable = false)
+    private String color;
+
+    @Column(nullable = false)
     private Long km;
 
     @Column(nullable = false)

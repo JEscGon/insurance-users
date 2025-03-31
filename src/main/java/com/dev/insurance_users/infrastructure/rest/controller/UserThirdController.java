@@ -23,8 +23,8 @@ public class UserThirdController implements ThirdUsersApi {
     private final UserThirdDtoMapper userThirdDtoMapper;
 
     @Override
-    public ResponseEntity<Void> deleteThirdUserById(String id){
-        userThirdService.deleteUserById(Long.valueOf(id));
+    public ResponseEntity<Void> deleteThirdUserById(Long id){
+        userThirdService.deleteUserById(id);
         return ResponseEntity.noContent().build();
     }
 
@@ -38,10 +38,9 @@ public class UserThirdController implements ThirdUsersApi {
     }
 
     @Override
-    public ResponseEntity<UserThirdDto> findThirdUserById(String id){
+    public ResponseEntity<UserThirdDto> findThirdUserById(Long id){
         try{
-            Long vehicleId = Long.parseLong(id);
-            Optional<UserThird> userThirdOpt = userThirdService.findById(vehicleId);
+            Optional<UserThird> userThirdOpt = userThirdService.findById(id);
             return userThirdOpt
                     .map(userThird -> new ResponseEntity<>(userThirdDtoMapper.fromDomainToDto(userThird), HttpStatus.OK))
                     .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
@@ -58,10 +57,9 @@ public class UserThirdController implements ThirdUsersApi {
     }
 
     @Override
-    public ResponseEntity<Void> updateThirdUser(String id, UserThirdDto userThirdDto){
-        try{
-            Long userId = Long.parseLong(id);
-            userThirdDto.setId(Math.toIntExact(userId));
+    public ResponseEntity<Void> updateThirdUser(Long id, UserThirdDto userThirdDto){
+        try {
+            userThirdDto.setId(Math.toIntExact(id));
             UserThird userThird = userThirdDtoMapper.fromDtoToDomain(userThirdDto);
             userThirdService.save(userThird);
             return new ResponseEntity<>(HttpStatus.OK);

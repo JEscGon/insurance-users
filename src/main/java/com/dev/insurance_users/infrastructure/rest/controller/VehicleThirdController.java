@@ -21,8 +21,8 @@ public class VehicleThirdController implements ThirdVehiclesApi {
     private final VehicleThirdDtoMapper vehicleThirdDtoMapper;
 
     @Override
-    public ResponseEntity<Void> deleteThirdVehicleById(String id) {
-        vehicleThirdService.deleteVehicleById(Long.valueOf(id));
+    public ResponseEntity<Void> deleteThirdVehicleById(Long id) {
+        vehicleThirdService.deleteVehicleById(id);
         return ResponseEntity.noContent().build();
     }
 
@@ -36,9 +36,9 @@ public class VehicleThirdController implements ThirdVehiclesApi {
     }
 
     @Override
-    public ResponseEntity<VehicleThirdDto> getThirdVehicleById(String id){
+    public ResponseEntity<VehicleThirdDto> getThirdVehicleById(Long id){
         try {
-            Optional<VehicleThird> vehicleOpt = vehicleThirdService.findById(Long.valueOf(id));
+            Optional<VehicleThird> vehicleOpt = vehicleThirdService.findById(id);
             return vehicleOpt.map(vehicleThird ->
                     new ResponseEntity<>(vehicleThirdDtoMapper.fromDomainToDto(vehicleThird), HttpStatus.OK))
                     .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
@@ -55,10 +55,9 @@ public class VehicleThirdController implements ThirdVehiclesApi {
     }
 
     @Override
-    public ResponseEntity<Void> updateThirdVehicle(String id ,VehicleThirdDto vehicleThirdDto){
+    public ResponseEntity<Void> updateThirdVehicle(Long id ,VehicleThirdDto vehicleThirdDto){
         try {
-            Long vehicleId = Long.valueOf(id);
-            vehicleThirdDto.setId(Math.toIntExact(vehicleId));
+            vehicleThirdDto.setId(Math.toIntExact(id));
             VehicleThird vehicle = vehicleThirdDtoMapper.fromDtoToDomain(vehicleThirdDto);
             vehicleThirdService.save(vehicle);
             return new ResponseEntity<>(HttpStatus.OK);

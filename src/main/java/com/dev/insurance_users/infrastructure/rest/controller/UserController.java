@@ -38,10 +38,9 @@ public class UserController implements UsersApi {
     }
 
     @Override
-    public ResponseEntity<UserDto> findById(String id) {
+    public ResponseEntity<UserDto> findById(Long id) {
         try {
-            Long userId = Long.parseLong(id);
-            Optional<User> userOptional = userService.findById(userId);
+            Optional<User> userOptional = userService.findById(id);
             return userOptional
                     .map(user -> new ResponseEntity<>(userDtoMapper.fromDomainToDto(user), HttpStatus.OK))
                     .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
@@ -67,10 +66,9 @@ public class UserController implements UsersApi {
     }
 
     @Override
-    public ResponseEntity<Void> deleteUserById(String id) {
+    public ResponseEntity<Void> deleteUserById(Long id) {
         try {
-            Long userId = Long.parseLong(id);
-            userService.deleteUserById(userId);
+            userService.deleteUserById(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (NumberFormatException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -78,10 +76,9 @@ public class UserController implements UsersApi {
     }
 
     @Override
-    public ResponseEntity<Void> updateUser(String id, UserDto userDto) {
+    public ResponseEntity<Void> updateUser(Long id, UserDto userDto) {
         try {
-            Long userId = Long.parseLong(id);
-            userDto.setId(Math.toIntExact(userId));
+            userDto.setId(Math.toIntExact(id));
             User updatedUser = userDtoMapper.fromDtoToDomain(userDto);
             userService.save(updatedUser);
             return new ResponseEntity<>(HttpStatus.OK);

@@ -18,6 +18,8 @@ public interface VehicleJpaRepository extends JpaRepository<VehicleEntity, Long>
 
     void deleteById(Long id);
 
+    void deleteByUserId(Long userId);
+
 
 
 

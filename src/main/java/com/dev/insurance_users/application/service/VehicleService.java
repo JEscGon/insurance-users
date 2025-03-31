@@ -32,7 +32,7 @@ public class VehicleService {
         return vehicleRepository.findAll();
     }
     
-    public void deleteVehicleById(String id) {
+    public void deleteVehicleById(Long id) {
         vehicleRepository.deleteById(Long.valueOf(id));
     }
 

@@ -21,16 +21,14 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public void save(User user) {
-        if(user.getId() == null) {
+        if (user.getId() == null) { // nuevo usuario
             user.setDateOfRegistration(LocalDate.now());
-        } else {
-            var existingUser = userJpaRepository.findById(user.getId());
-            var aux = existingUser.get().getDateOfRegistration();
-            user.setDateOfRegistration(aux);
-            if(existingUser.isPresent()) {
-                userMapper.updateUserFromExisting(userMapper.fromDomainToEntity(user), existingUser.get());
-            }
-            user.setDateOfLastUpdate(LocalDate.now());
+        } else { // actualización
+            userJpaRepository.findById(user.getId())
+                .ifPresent(existingUser -> {
+                    user.setDateOfRegistration(existingUser.getDateOfRegistration());
+                    user.setDateOfLastUpdate(LocalDate.now());
+                });
         }
         userJpaRepository.save(userMapper.fromDomainToEntity(user));
     }
@@ -64,7 +62,5 @@ public class UserRepositoryImpl implements UserRepository {
     public void deleteById(Long id) {
         userJpaRepository.deleteById(id);
     }
-
-
 
 }

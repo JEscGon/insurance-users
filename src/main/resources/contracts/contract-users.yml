@@ -62,7 +62,8 @@ paths:
           description: 'The id that needs to be fetched.'
           required: true
           schema:
-            type: string
+            type: integer
+            format: int64
       responses:
         '200':
           description: operation OK
@@ -92,7 +93,8 @@ paths:
           name: id
           required: true
           schema:
-            type: string
+            type: integer
+            format: int64
       responses:
         '204':
           description: Usuario eliminado
@@ -108,7 +110,8 @@ paths:
           description: 'ID del usuario a actualizar'
           required: true
           schema:
-            type: string
+            type: integer
+            format: int64
       requestBody:
         required: true
         description: Datos actualizados del usuario
@@ -218,7 +221,8 @@ paths:
           description: 'The id that needs to be fetched.'
           required: true
           schema:
-            type: string
+            type: integer
+            format: int64
       responses:
         '200':
           description: Operación OK
@@ -245,7 +249,8 @@ paths:
           description: 'ID del vehículo a actualizar'
           required: true
           schema:
-            type: string
+            type: integer
+            format: int64
       requestBody:
         description: Datos actualizados del vehículo
         required: true
@@ -279,7 +284,8 @@ paths:
           name: id
           required: true
           schema:
-            type: string
+            type: integer
+            format: int64
       responses:
         '204':
           description: Vehículo eliminado correctamente
@@ -321,7 +327,8 @@ paths:
           description: ID del usuario
           required: true
           schema:
-            type: string
+            type: integer
+            format: int64
       responses:
         '200':
           description: Operación exitosa
@@ -376,7 +383,8 @@ paths:
           description: 'El id que necesita ser buscado.'
           required: true
           schema:
-            type: string
+            type: integer
+            format: int64
       responses:
         '200':
           description: Operación OK
@@ -406,7 +414,8 @@ paths:
           name: id
           required: true
           schema:
-            type: string
+            type: integer
+            format: int64
       responses:
         '204':
           description: Tercer usuario eliminado
@@ -422,7 +431,8 @@ paths:
           description: 'ID del tercer usuario a actualizar'
           required: true
           schema:
-            type: string
+            type: integer
+            format: int64
       requestBody:
         required: true
         description: Datos actualizados del tercer usuario
@@ -492,7 +502,8 @@ paths:
           description: 'El id que necesita ser buscado.'
           required: true
           schema:
-            type: string
+            type: integer
+            format: int64
       responses:
         '200':
           description: Operación OK
@@ -518,7 +529,8 @@ paths:
           description: 'ID del tercer vehículo a actualizar'
           required: true
           schema:
-            type: string
+            type: integer
+            format: int64
       requestBody:
         description: Datos actualizados del tercer vehículo
         required: true
@@ -552,7 +564,8 @@ paths:
           name: id
           required: true
           schema:
-            type: string
+            type: integer
+            format: int64
       responses:
         '204':
           description: Tercer vehículo eliminado correctamente
@@ -719,6 +732,9 @@ components:
         aseguradora:
           type: string
           example: "Mapfre"
+        color:
+          type: string
+          example: "Rojo"
         fechaFabricacion:
           type: string
           format: date
