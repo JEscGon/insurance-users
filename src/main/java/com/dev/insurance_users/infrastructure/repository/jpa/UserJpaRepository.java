@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
-// obj dom --> obj entity
 @Repository
 public interface UserJpaRepository extends JpaRepository<UserEntity, Long> {
 

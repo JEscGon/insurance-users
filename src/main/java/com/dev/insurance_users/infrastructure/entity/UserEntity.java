@@ -1,15 +1,19 @@
 package com.dev.insurance_users.infrastructure.entity;
 
-import com.dev.insurance_users.application.domain.Vehicle;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import java.time.LocalDate;
 import java.util.List;
 
 @Data
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "users")
 @NoArgsConstructor
 @AllArgsConstructor
@@ -38,8 +42,12 @@ public class UserEntity {
     private String address;
     @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
+
+    @CreatedDate
     @Column(name = "date_of_registration" ,nullable = true)
     private LocalDate dateOfRegistration;
+
+    @LastModifiedDate
     @Column(name = "date_of_last_update" ,nullable = true)
     private LocalDate dateOfLastUpdate;
 
