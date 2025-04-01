@@ -3,12 +3,17 @@ package com.dev.insurance_users.infrastructure.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import java.time.LocalDate;
 
 
 @Getter
 @Setter
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "vehicles")
@@ -20,7 +25,7 @@ public class VehicleEntity {
 
     @ManyToOne
     @JoinColumn(name = "user_id",nullable = false)
-    private UserEntity user;
+    private UserEntity user; //TODO: cambiar a userId  ¿?¿?
 
     @Column(unique = true , nullable = false)
     private String matricula;
@@ -34,11 +39,15 @@ public class VehicleEntity {
     @Column(nullable = false)
     private String color;
 
-    @Column(name = "fecha_fabricacion",nullable = false)
+    @Column(name = "fecha_fabricacion", nullable = false)
     private LocalDate fechaFabricacion;
-    @Column(name = "date_of_registration" ,nullable = true)
+
+    @CreatedDate
+    @Column(name = "date_of_registration" , nullable = false)
     private LocalDate dateOfRegistration;
-    @Column(name = "date_of_last_update" ,nullable = true)
+
+    @LastModifiedDate
+    @Column(name = "date_of_last_update" , nullable = false)
     private LocalDate dateOfLastUpdate;
 
 

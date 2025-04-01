@@ -2,6 +2,7 @@ package com.dev.insurance_users.infrastructure.repository;
 
 import com.dev.insurance_users.application.domain.UserThird;
 import com.dev.insurance_users.application.repository.UserThirdRepository;
+import com.dev.insurance_users.infrastructure.entity.UserThirdEntity;
 import com.dev.insurance_users.infrastructure.repository.jpa.UserThirdJpaRepository;
 import com.dev.insurance_users.infrastructure.repository.mapper.UserThirdMapper;
 import lombok.RequiredArgsConstructor;
@@ -21,18 +22,13 @@ public class UserThirdRepositoryImpl implements UserThirdRepository {
 
     @Override
     public void save(UserThird user) {
+        UserThirdEntity userAux = userThirdMapper.fromDomainToEntity(user);
         if(user.getId() == null) {
-            user.setDateOfRegistration(LocalDate.now());
-            userThirdJpaRepository.save(userThirdMapper.fromDomainToEntity(user));
+            userThirdJpaRepository.save(userAux);
         } else {
-            var existingUser = userThirdJpaRepository.findById(user.getId());
-            if(existingUser.isPresent()) {
-                var auxDate = existingUser.get().getDateOfRegistration();
-                userThirdMapper.updateUserThirdFromExisting(userThirdMapper.fromDomainToEntity(user), existingUser.get());
-                user.setDateOfLastUpdate(LocalDate.now());
-                user.setDateOfRegistration(auxDate);
-            }
-            userThirdJpaRepository.save(userThirdMapper.fromDomainToEntity(user));
+            var aux = userThirdJpaRepository.findById(user.getId());
+            userThirdMapper.updateUserThirdFromExisting(aux.get(), userAux);
+            userThirdJpaRepository.save(aux.get());
         }
     }
 

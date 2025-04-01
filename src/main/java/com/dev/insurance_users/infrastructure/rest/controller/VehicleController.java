@@ -43,7 +43,7 @@ public class VehicleController implements VehiclesApi {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
-
+// TODO evitar capturar excepciones genericas
     @Override
     public ResponseEntity<Void> updateVehicle(Long id, VehicleDto vehicleDto) {
         try {
@@ -53,8 +53,6 @@ public class VehicleController implements VehiclesApi {
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (NumberFormatException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } catch (Exception e) {  // TODO evitar capturar excepciones genericas
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -73,8 +71,6 @@ public class VehicleController implements VehiclesApi {
                 .map(vehicle -> new ResponseEntity<>(vehicleDtoMapper.fromDomainToDto(vehicle), HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
-
-
 
 
 }

@@ -3,6 +3,7 @@ package com.dev.insurance_users.infrastructure.repository;
 import com.dev.insurance_users.application.domain.VehicleThird;
 import com.dev.insurance_users.application.repository.VehicleThirdRepository;
 import com.dev.insurance_users.infrastructure.entity.UserThirdEntity;
+import com.dev.insurance_users.infrastructure.entity.VehicleThirdEntity;
 import com.dev.insurance_users.infrastructure.repository.jpa.UserThirdJpaRepository;
 import com.dev.insurance_users.infrastructure.repository.jpa.VehicleThirdJpaRepository;
 import com.dev.insurance_users.infrastructure.repository.mapper.VehicleThirdMapper;
@@ -24,29 +25,19 @@ public class VehicleThirdRepositoryImpl implements VehicleThirdRepository {
 
     @Override
     public void save(VehicleThird vehicle) {
-        var vehicleThirdEntity = vehicleThirdMapper.fromDomainToEntity(vehicle);
-        Optional<UserThirdEntity> userThirdEntity = userThirdJpaRepository.findById(Long.valueOf(vehicle.getUserThirdId()));
-            if(vehicle.getId() == null){
-                vehicleThirdEntity.setDateOfRegistration(LocalDate.now());
-                if(userThirdEntity.isPresent()){
-                    vehicleThirdEntity.setUserThird(userThirdEntity.get());
-                } else {
-                    throw new RuntimeException("User not found");
-                }
-                vehicleThirdJpaRepository.save(vehicleThirdEntity);
-            } else {
-                var existingVehicleOpt = vehicleThirdJpaRepository.findById(vehicle.getId());
-            if(existingVehicleOpt.isPresent()){
-                    var existingVehicle = existingVehicleOpt.get();
-                    vehicle.setDateOfRegistration(existingVehicle.getDateOfRegistration());
-                    vehicle.setDateOfLastUpdate(LocalDate.now());
-                    var updatedEntity = vehicleThirdMapper.fromDomainToEntity(vehicle);
-                    updatedEntity.setUserThird(existingVehicle.getUserThird());
-                    vehicleThirdJpaRepository.save(updatedEntity);
-                } else {
-                    throw new RuntimeException("Vehicle not found");
-                }
-            }
+        VehicleThirdEntity vehicleThirdEntity = vehicleThirdMapper.fromDomainToEntity(vehicle);
+        if(vehicle.getId() == null) { // nuevo vehículo
+            UserThirdEntity userThirdEntity = userThirdJpaRepository.findById(vehicle.getUserThirdId())
+                    .orElseThrow(() -> new RuntimeException("Usuario no encontrado con id: " + vehicle.getUserThirdId()));
+            vehicleThirdEntity.setUserThird(userThirdEntity);
+            vehicleThirdJpaRepository.save(vehicleThirdEntity);
+        } else { // actualización
+            VehicleThirdEntity existingVehicle = vehicleThirdJpaRepository.findById(vehicle.getId())
+                    .orElseThrow(() -> new RuntimeException("Vehículo no encontrado con id: " + vehicle.getId()));
+            vehicleThirdMapper.updateVehicleThirdFromExisting(existingVehicle, vehicleThirdEntity);
+            existingVehicle.setUserThird(existingVehicle.getUserThird()); // mantiene la referencia original del usuario
+            vehicleThirdJpaRepository.save(existingVehicle);
+        }
     }
 
     @Override

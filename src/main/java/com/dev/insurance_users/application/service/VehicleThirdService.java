@@ -32,5 +32,4 @@ public class VehicleThirdService {
         vehicleThirdRepository.deleteById(id);
     }
 
-
 }

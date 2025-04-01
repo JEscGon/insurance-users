@@ -7,21 +7,23 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
 import java.time.LocalDate;
 import java.util.List;
 
 @Data
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "users")
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "users")
 public class UserEntity {
+
     private static final long serialVersionUID = -912412431249214L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(nullable = false)
     private String name;
     @Column(nullable = false)
