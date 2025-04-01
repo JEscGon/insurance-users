@@ -54,11 +54,12 @@ public class VehicleThirdController implements ThirdVehiclesApi {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+ //TODO : FIX
     @Override
     public ResponseEntity<Void> updateThirdVehicle(Long id ,VehicleThirdDto vehicleThirdDto){
         try {
-            vehicleThirdDto.setId(Math.toIntExact(id));
             VehicleThird vehicle = vehicleThirdDtoMapper.fromDtoToDomain(vehicleThirdDto);
+            vehicle.setId(id);
             vehicleThirdService.save(vehicle);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e){

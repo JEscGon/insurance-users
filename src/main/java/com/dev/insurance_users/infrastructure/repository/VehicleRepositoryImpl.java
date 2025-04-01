@@ -27,22 +27,18 @@ public class VehicleRepositoryImpl implements VehicleRepository {
 
     @Override
     public void save(Vehicle vehicle) {
+        VehicleEntity vehicleEntity = vehicleMapper.fromDomainToEntity(vehicle);
         if(vehicle.getId() == null) { // nuevo vehículo
             UserEntity userEntity = userJpaRepository.findById(Long.valueOf(vehicle.getUserId()))
                     .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado con id: " + vehicle.getUserId()));
-            VehicleEntity vehicleEntity = vehicleMapper.fromDomainToEntity(vehicle);
-            vehicleEntity.setDateOfRegistration(LocalDate.now());
             vehicleEntity.setUser(userEntity);
             vehicleJpaRepository.save(vehicleEntity);
         } else { // actualización
             VehicleEntity existingVehicle = vehicleJpaRepository.findById(vehicle.getId())
                     .orElseThrow(() -> new VehicleNotFoundException("Vehículo no encontrado con id: " + vehicle.getId()));
-            // Mantener fecha de registro original y actualizar fecha de última modificación
-            vehicle.setDateOfRegistration(existingVehicle.getDateOfRegistration());
-            vehicle.setDateOfLastUpdate(LocalDate.now());
-            VehicleEntity updatedEntity = vehicleMapper.fromDomainToEntity(vehicle);
-            updatedEntity.setUser(existingVehicle.getUser());
-            vehicleJpaRepository.save(updatedEntity);
+            vehicleMapper.updateVehicleFromExisting(existingVehicle, vehicleEntity);
+            vehicleEntity.setUser(existingVehicle.getUser());
+            vehicleJpaRepository.save(existingVehicle);
         }
     }
 

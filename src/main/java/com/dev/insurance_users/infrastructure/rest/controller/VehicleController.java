@@ -44,6 +44,7 @@ public class VehicleController implements VehiclesApi {
         }
     }
 
+    //TODO: FIX
     @Override
     public ResponseEntity<Void> updateVehicle(Long id, VehicleDto vehicleDto) {
         try {
@@ -73,8 +74,6 @@ public class VehicleController implements VehiclesApi {
                 .map(vehicle -> new ResponseEntity<>(vehicleDtoMapper.fromDomainToDto(vehicle), HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
-
-
 
 
 }

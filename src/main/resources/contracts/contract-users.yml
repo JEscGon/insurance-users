@@ -241,7 +241,7 @@ paths:
       tags:
         - vehicles
       summary: Actualiza un vehículo existente
-      description: Actualiza un vehículo identificado por su id con los nuevos datos
+      description: Actualiza un vehículo identificado por su id con los nuevos datos.
       operationId: updateVehicle
       parameters:
         - in: path
@@ -252,7 +252,7 @@ paths:
             type: integer
             format: int64
       requestBody:
-        description: Datos actualizados del vehículo
+        description: Nuevos datos del vehiculo.
         required: true
         content:
           application/json:

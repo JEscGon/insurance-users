@@ -44,6 +44,7 @@
 			<artifactId>flyway-core</artifactId>
 			<version>9.10.0</version>
 		</dependency>
+		<!-- Lombok -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
@@ -62,17 +63,12 @@
 			<artifactId>jackson-databind-nullable</artifactId>
 			<version>0.2.6</version>
 		</dependency>
-		<!-- Testing -->
+		<!-- Dependencias de JUnit 5 (ALL) -->
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<version>5.9.3</version>
 			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-			<scope>runtime</scope>
-			<optional>true</optional>
 		</dependency>
 		<!-- MapStruct : https://mvnrepository.com/artifact/org.mapstruct/mapstruct -->
 		<dependency>

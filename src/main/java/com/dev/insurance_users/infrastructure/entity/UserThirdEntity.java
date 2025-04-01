@@ -1,19 +1,21 @@
 package com.dev.insurance_users.infrastructure.entity;
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.LocalDate;
 import java.util.List;
 
 @Data
 @Entity
-@Table(name = "third_users")
+@EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "third_users")
 public class UserThirdEntity {
 
     @Id
@@ -47,8 +49,11 @@ public class UserThirdEntity {
 
     @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
+
+    @CreatedDate
     @Column(name = "date_of_registration" ,nullable = true)
     private LocalDate dateOfRegistration;
+    @LastModifiedDate
     @Column(name = "date_of_last_update" ,nullable = true)
     private LocalDate dateOfLastUpdate;
 
@@ -56,3 +61,4 @@ public class UserThirdEntity {
     private List<VehicleThirdEntity> vehicles;
 
 }
+

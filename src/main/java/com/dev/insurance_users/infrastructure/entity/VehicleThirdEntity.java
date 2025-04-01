@@ -5,11 +5,14 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.LocalDate;
 
 @Data
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "thirds_vehicles")
 @NoArgsConstructor
 @AllArgsConstructor
@@ -39,13 +42,15 @@ public class VehicleThirdEntity {
     @Column(nullable = false)
     private String marca;
 
-    @Column(name = "fecha_fabricacion",nullable = false)
+    @Column(name = "fecha_fabricacion", nullable = false)
     private LocalDate fechaFabricacion;
 
-    @Column(name = "date_of_registration" ,nullable = true)
+    @CreatedDate
+    @Column(name = "date_of_registration" , nullable = false)
     private LocalDate dateOfRegistration;
 
-    @Column(name = "date_of_last_update" ,nullable = true)
+    @LastModifiedDate
+    @Column(name = "date_of_last_update" , nullable = false)
     private LocalDate dateOfLastUpdate;
 
 }
