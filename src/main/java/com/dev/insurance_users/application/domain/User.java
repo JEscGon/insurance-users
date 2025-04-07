@@ -1,9 +1,6 @@
 package com.dev.insurance_users.application.domain;
 
-import com.dev.insurance_users.infrastructure.entity.VehicleEntity;
-import jakarta.persistence.OneToMany;
 import lombok.*;
-
 import java.time.LocalDate;
 import java.util.List;
 

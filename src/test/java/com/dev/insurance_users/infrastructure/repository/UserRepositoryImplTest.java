@@ -122,6 +122,12 @@ public class UserRepositoryImplTest {
         assertEquals(2L, result.get(1).getId());
     }
     @Test
+    void findAll_EmptyList_ReturnsEmptyList() {
+        when(userJpaRepository.findAll()).thenReturn(List.of());
+        List<User> result = userRepositoryImpl.findAll();
+        assertTrue(result.isEmpty());
+    }
+    @Test
     void save_newUser_savesUser() {
         User domainUser = new User();
         domainUser.setName("John");

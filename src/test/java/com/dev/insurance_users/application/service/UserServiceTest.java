@@ -8,22 +8,20 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
+
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
 
     @Mock
     private UserRepository userRepository;
-
     @InjectMocks
     private UserService userService;
 
@@ -31,20 +29,15 @@ public class UserServiceTest {
     void findById_UserExists_ReturnsUser() {
         User user = new User();
         user.setId(1L);
-
         when(userRepository.findById(2L)).thenReturn(Optional.of(user));
-
         Optional<User> result = userService.findById(2L);
-
         assertTrue(result.isPresent());
         assertEquals(1L, result.get().getId());
     }
     @Test
     void findById_UserDoesNotExist_ReturnsEmpty() {
         when(userRepository.findById(99L)).thenReturn(Optional.empty());
-
         Optional<User> result = userService.findById(99L);
-
         assertTrue(result.isEmpty());
     }
     @Test
@@ -53,11 +46,8 @@ public class UserServiceTest {
             createUser(1L, "user1@test.com"),
             createUser(2L, "user2@test.com")
         );
-
         when(userRepository.findAll()).thenReturn(users);
-
         List<User> result = userService.getAllUsers();
-
         assertEquals(2, result.size());
         assertEquals(1L, result.get(0).getId());
         assertEquals(2L, result.get(1).getId());
@@ -67,11 +57,8 @@ public class UserServiceTest {
         User user = createUser(1L, "user@test.com", "John", "Doe", "123456789",
                 "12345678A", "password", "Madrid", "Spain", "Calle Mayor 1",
                 LocalDate.of(1990, 1, 1), LocalDate.now(), LocalDate.now(), null);
-
         when(userRepository.findByDni("12345678A")).thenReturn(Optional.of(user));
-
         Optional<User> result = userService.getUserByDni("12345678A");
-
         assertTrue(result.isPresent());
         assertEquals("12345678A", result.get().getDni());
     }
@@ -109,6 +96,30 @@ public class UserServiceTest {
         userService.save(user);
 
         org.mockito.Mockito.verify(userRepository).save(user);
+    }
+    @Test
+    void save_IncrementalIdUser(){
+        // Crear un usuario sin ID establecido (usando cero como valor por defecto)
+        User userWithoutId = createUser(0L, "newuser@test.com");
+        userWithoutId.setId(null); // Forzar ID a null para simular un nuevo usuario
+
+        // Usuario con ID asignado tras guardarlo
+        User savedUser = createUser(1L, "newuser@test.com");
+
+        // Utilizar doAnswer para simular el comportamiento de guardado
+        org.mockito.Mockito.doAnswer(invocation -> {
+            User userArg = invocation.getArgument(0);
+            // Simulamos que el repositorio asigna un ID
+            userArg.setId(1L);
+            return null; // El método save devuelve void
+        }).when(userRepository).save(userWithoutId);
+
+        // Ejecutar el method a probar
+        userService.save(userWithoutId);
+
+        // Verificar resultados
+        assertEquals(1L, userWithoutId.getId());
+        org.mockito.Mockito.verify(userRepository).save(userWithoutId);
     }
     @Test
     void deleteUserById_ShouldCallRepositoryDeleteById() {

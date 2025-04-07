@@ -10,9 +10,7 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 public interface UserMapper {
 
     User fromEntityToDomain(UserEntity userEntity);
-
     UserEntity fromDomainToEntity(User user);
-
     void updateUserFromExisting(@MappingTarget UserEntity target, UserEntity source);
 
 }
