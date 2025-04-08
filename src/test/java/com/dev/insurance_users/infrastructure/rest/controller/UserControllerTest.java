@@ -28,10 +28,8 @@ class UserControllerTest {
 
     @Mock
     private UserService userService;
-
     @Mock
     private UserDtoMapper userDtoMapper;
-
     @InjectMocks
     private UserController userController;
 

@@ -49,4 +49,14 @@ public class UserThirdRepositoryImpl implements UserThirdRepository {
     public void deleteById(Long id) {
         userThirdJpaRepository.deleteById(id);
     }
+
+    @Override
+    public Optional<UserThird> findByDni(String dni) {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<UserThird> findByEmail(String email) {
+        return Optional.empty();
+    }
 }

@@ -4,7 +4,7 @@ import com.dev.insurance_users.application.domain.UserThird;
 import com.dev.insurance_users.application.repository.UserThirdRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -29,5 +29,14 @@ public class UserThirdService {
     public List<UserThird> findAll() {
         return userThirdRepository.findAll();
     }
+
+    public Optional<UserThird> findByDni(String dni) {
+        return userThirdRepository.findByDni(dni);
+    }
+    public Optional<UserThird> findByEmail(String email) {
+        return userThirdRepository.findByEmail(email);
+    }
+
+
 
 }

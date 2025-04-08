@@ -15,5 +15,7 @@ public interface UserThirdRepository {
     public List<UserThird> findAll();
 
     public void deleteById(Long id);
+    public Optional<UserThird> findByDni(String dni);
+    public Optional<UserThird> findByEmail(String email);
 
 }
