@@ -1,7 +1,7 @@
 package com.dev.insurance_users.infrastructure.repository.mapper;
 
 import com.dev.insurance_users.application.domain.UserThird;
-import com.dev.insurance_users.infrastructure.entity.UserThirdEntity;
+import com.dev.insurance_users.infrastructure.repository.jpa.entity.UserThirdEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;

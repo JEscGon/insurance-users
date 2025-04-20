@@ -1,7 +1,7 @@
 package com.dev.insurance_users.infrastructure.repository;
 
 import com.dev.insurance_users.application.domain.User;
-import com.dev.insurance_users.infrastructure.entity.UserEntity;
+import com.dev.insurance_users.infrastructure.repository.jpa.entity.UserEntity;
 import com.dev.insurance_users.infrastructure.repository.jpa.UserJpaRepository;
 import com.dev.insurance_users.infrastructure.repository.mapper.UserMapper;
 import org.junit.jupiter.api.Test;

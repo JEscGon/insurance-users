@@ -2,7 +2,7 @@ package com.dev.insurance_users.infrastructure.repository;
 
 
 import com.dev.insurance_users.application.domain.UserThird;
-import com.dev.insurance_users.infrastructure.entity.UserThirdEntity;
+import com.dev.insurance_users.infrastructure.repository.jpa.entity.UserThirdEntity;
 import com.dev.insurance_users.infrastructure.repository.jpa.UserThirdJpaRepository;
 import com.dev.insurance_users.infrastructure.repository.mapper.UserThirdMapper;
 import org.junit.jupiter.api.Test;

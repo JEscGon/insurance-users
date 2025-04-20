@@ -2,15 +2,14 @@ package com.dev.insurance_users.infrastructure.repository;
 
 import com.dev.insurance_users.application.domain.VehicleThird;
 import com.dev.insurance_users.application.repository.VehicleThirdRepository;
-import com.dev.insurance_users.infrastructure.entity.UserThirdEntity;
-import com.dev.insurance_users.infrastructure.entity.VehicleThirdEntity;
+import com.dev.insurance_users.infrastructure.repository.jpa.entity.UserThirdEntity;
+import com.dev.insurance_users.infrastructure.repository.jpa.entity.VehicleThirdEntity;
 import com.dev.insurance_users.infrastructure.repository.jpa.UserThirdJpaRepository;
 import com.dev.insurance_users.infrastructure.repository.jpa.VehicleThirdJpaRepository;
 import com.dev.insurance_users.infrastructure.repository.mapper.VehicleThirdMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;

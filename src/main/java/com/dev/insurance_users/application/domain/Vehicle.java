@@ -1,7 +1,5 @@
 package com.dev.insurance_users.application.domain;
 
-import com.dev.insurance_users.infrastructure.entity.UserEntity;
-import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

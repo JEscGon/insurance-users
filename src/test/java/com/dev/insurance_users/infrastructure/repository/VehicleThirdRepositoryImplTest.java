@@ -1,8 +1,8 @@
 package com.dev.insurance_users.infrastructure.repository;
 
 import com.dev.insurance_users.application.domain.VehicleThird;
-import com.dev.insurance_users.infrastructure.entity.UserThirdEntity;
-import com.dev.insurance_users.infrastructure.entity.VehicleThirdEntity;
+import com.dev.insurance_users.infrastructure.repository.jpa.entity.UserThirdEntity;
+import com.dev.insurance_users.infrastructure.repository.jpa.entity.VehicleThirdEntity;
 import com.dev.insurance_users.infrastructure.repository.jpa.UserThirdJpaRepository;
 import com.dev.insurance_users.infrastructure.repository.jpa.VehicleThirdJpaRepository;
 import com.dev.insurance_users.infrastructure.repository.mapper.VehicleThirdMapper;

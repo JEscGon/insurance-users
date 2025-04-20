@@ -12,6 +12,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -91,7 +92,6 @@ class UserControllerTest {
         verify(userService).findById(1L);
         verify(userDtoMapper).fromDomainToDto(user);
     }
-
     @Test
     void getUserById_deberiaDevolverNotFound_cuandoUsuarioNoExiste() throws Exception {
         // GIVEN
@@ -103,10 +103,8 @@ class UserControllerTest {
 
         verify(userService).findById(99L);
     }
-
     @Test
     void getUserById_deberiaDevolverBadRequest_cuandoIdNoValido() throws Exception {
-
         // WHEN/THEN
         mockMvc.perform(get("/users/invalid"))
                 .andExpect(status().isBadRequest());

@@ -2,13 +2,12 @@ package com.dev.insurance_users.infrastructure.repository;
 
 import com.dev.insurance_users.application.domain.UserThird;
 import com.dev.insurance_users.application.repository.UserThirdRepository;
-import com.dev.insurance_users.infrastructure.entity.UserThirdEntity;
+import com.dev.insurance_users.infrastructure.repository.jpa.entity.UserThirdEntity;
 import com.dev.insurance_users.infrastructure.repository.jpa.UserThirdJpaRepository;
 import com.dev.insurance_users.infrastructure.repository.mapper.UserThirdMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;

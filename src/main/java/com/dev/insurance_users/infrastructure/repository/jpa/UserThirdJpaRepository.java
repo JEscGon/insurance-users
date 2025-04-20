@@ -1,6 +1,6 @@
 package com.dev.insurance_users.infrastructure.repository.jpa;
 
-import com.dev.insurance_users.infrastructure.entity.UserThirdEntity;
+import com.dev.insurance_users.infrastructure.repository.jpa.entity.UserThirdEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

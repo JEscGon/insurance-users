@@ -2,8 +2,8 @@ package com.dev.insurance_users.infrastructure.repository;
 
 import com.dev.insurance_users.application.domain.Vehicle;
 import com.dev.insurance_users.application.exception.VehicleNotFoundException;
-import com.dev.insurance_users.infrastructure.entity.UserEntity;
-import com.dev.insurance_users.infrastructure.entity.VehicleEntity;
+import com.dev.insurance_users.infrastructure.repository.jpa.entity.UserEntity;
+import com.dev.insurance_users.infrastructure.repository.jpa.entity.VehicleEntity;
 import com.dev.insurance_users.infrastructure.repository.jpa.UserJpaRepository;
 import com.dev.insurance_users.infrastructure.repository.jpa.VehicleJpaRepository;
 import com.dev.insurance_users.infrastructure.repository.mapper.VehicleMapper;
