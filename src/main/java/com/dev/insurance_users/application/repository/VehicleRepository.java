@@ -11,5 +11,5 @@ public interface VehicleRepository {
     public void deleteById(Long id);
     public Optional<Vehicle> findByMatricula(String matricula);
     void deleteByUserId(Long userId);
-
+    List<Vehicle> findByUserId(Long userId);
 }

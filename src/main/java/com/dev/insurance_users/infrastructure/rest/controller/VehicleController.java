@@ -72,5 +72,17 @@ public class VehicleController implements VehiclesApi {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    @Override
+    public ResponseEntity<List<VehicleDto>> getVehiclesByUserId(Long userId) {
+        List<Vehicle> vehicles = vehicleService.findByUserId(userId);
+        if (vehicles.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        List<VehicleDto> vehicleDtoList = vehicles.stream()
+                .map(vehicleDtoMapper::fromDomainToDto)
+                .collect(Collectors.toList());
+        return new ResponseEntity<>(vehicleDtoList, HttpStatus.OK);
+    }
+
 
 }

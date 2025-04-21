@@ -69,4 +69,11 @@ public class VehicleRepositoryImpl implements VehicleRepository {
     @Override
     public void deleteByUserId(Long userId) { vehicleJpaRepository.deleteByUserId(userId); }
 
+@Override
+public List<Vehicle> findByUserId(Long userId) {
+    return vehicleJpaRepository.findByUserId(userId).stream()
+            .map(vehicleMapper::fromEntityToDomain)
+            .collect(Collectors.toList());
+}
+
 }

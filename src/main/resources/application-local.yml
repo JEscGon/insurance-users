@@ -1,4 +1,8 @@
 spring:
+  h2:
+    console:
+      path: /h2-console
+      enabled: true
   datasource:
     url: jdbc:postgresql://localhost:5432/insurance-users
     username: 'postgres'

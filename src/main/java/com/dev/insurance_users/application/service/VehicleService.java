@@ -36,4 +36,7 @@ public class VehicleService {
         vehicleRepository.deleteById(Long.valueOf(id));
     }
 
+    public List<Vehicle> findByUserId(Long userId) {
+        return vehicleRepository.findByUserId(userId);
+    }
 }

@@ -5,7 +5,6 @@ import com.dev.insurance_users.application.domain.VehicleThird;
 import com.dev.insurance_users.application.repository.VehicleThirdRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,6 +29,10 @@ public class VehicleThirdService {
 
     public void deleteVehicleById(Long id) {
         vehicleThirdRepository.deleteById(id);
+    }
+
+    public Optional<VehicleThird> findByMatriculaThird(String matricula) {
+        return vehicleThirdRepository.findByMatricula(matricula);
     }
 
 }

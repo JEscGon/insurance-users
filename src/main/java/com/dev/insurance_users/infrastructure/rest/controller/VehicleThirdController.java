@@ -54,7 +54,7 @@ public class VehicleThirdController implements ThirdVehiclesApi {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
- //TODO : FIX
+ //TODO : FIX ID
     @Override
     public ResponseEntity<Void> updateThirdVehicle(Long id ,VehicleThirdDto vehicleThirdDto){
         try {
@@ -65,6 +65,17 @@ public class VehicleThirdController implements ThirdVehiclesApi {
         } catch (Exception e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+    }
+    //TODO : findAllThirdVehiclesByUserId Contract.yml
+
+
+    @Override
+    public ResponseEntity<VehicleThirdDto> findByMatriculaThird(String matricula) {
+        Optional<VehicleThird> vehicleOpt = vehicleThirdService.findByMatriculaThird(matricula);
+        return vehicleOpt
+            .map(vehicleThirdDtoMapper::fromDomainToDto)
+            .map(vehicleDto -> new ResponseEntity<>(vehicleDto, HttpStatus.OK))
+            .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
 }
