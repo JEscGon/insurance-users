@@ -94,7 +94,7 @@ public class VehicleApiIntegracionTest {
                 .content(newVehicleJson))
                 .andExpect(status().isCreated());
     }
-    @Test  //TODO: Verificar manejo de excepciones en el controlador a la hora de meter una matricula duplicada.
+    @Test
     public void saveVehicleDuplicateKeyTest() throws Exception {
         String existingVehicleJson = """
             {
@@ -111,21 +111,10 @@ public class VehicleApiIntegracionTest {
                 .content(existingVehicleJson))
                 .andExpect(status().isCreated());
 
-        // Intentar insertar otro vehículo con la misma matrícula
-        String duplicateVehicleJson = """
-            {
-                "marca": "Chevrolet",
-                "color": "Rojo",
-                "fechaFabricacion": "2021-01-01",
-                "matricula": "UNIQUE123",
-                "km": 5000,
-                "userId": 2
-            }
-        """;
         mockMvc.perform(post("/vehicles")
                 .contentType("application/json")
-                .content(duplicateVehicleJson))
-                .andExpect(status().isInternalServerError());
+                .content(existingVehicleJson))
+                .andExpect(status().isConflict());
     }
 
     @Test

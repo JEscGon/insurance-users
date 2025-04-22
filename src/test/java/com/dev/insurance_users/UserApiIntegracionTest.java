@@ -71,10 +71,10 @@ public class UserApiIntegracionTest {
         mockMvc.perform(get("/users/999"))
                 .andExpect(status().isNotFound());
     }
-    @Test     //-TODO: Test invalid ID supplied ERROR 400
+    @Test
     public void findInvalidUserByIdTest() throws Exception {
-        mockMvc.perform(get("/users/4434").contentType("application/json"))
-                .andExpect(status().isNotFound());
+        mockMvc.perform(get("/users/0").contentType("application/json"))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -104,9 +104,26 @@ public class UserApiIntegracionTest {
             .content(newUserJson))
             .andExpect(status().isCreated());
     }
-    @Test // - TODO:
+    @Test
     public void createUserDuplicateKeyTest() throws Exception {
-
+        String existingUserJson = """
+            {
+                "name": "Juan",
+                "surname": "Pérez",
+                "phone": "123456789",
+                "email": "juan@example.com",
+                "dni": "12345678A",
+                "password": "securePass123",
+                "city": "Madrid",
+                "country": "Spain",
+                "address": "Calle Falsa 123",
+                "dateOfBirth": "1990-01-01"
+            }
+        """;
+        mockMvc.perform(post("/users")
+                .contentType("application/json")
+                .content(existingUserJson))
+                .andExpect(status().isConflict());
     }
 
     @Test

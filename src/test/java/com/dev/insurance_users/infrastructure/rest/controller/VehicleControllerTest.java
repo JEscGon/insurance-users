@@ -4,7 +4,7 @@ package com.dev.insurance_users.infrastructure.rest.controller;
 import com.dev.insurance_users.application.domain.Vehicle;
 import com.dev.insurance_users.application.service.VehicleService;
 import com.dev.insurance_users.generated.model.VehicleDto;
-import com.dev.insurance_users.infrastructure.rest.controller.mapper.VehicleDtoMapper;
+import com.dev.insurance_users.infrastructure.rest.mapper.VehicleDtoMapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

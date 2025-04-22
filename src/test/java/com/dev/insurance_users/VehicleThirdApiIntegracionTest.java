@@ -72,25 +72,24 @@ public class VehicleThirdApiIntegracionTest {
                         .content(newThirdVehicle))
                 .andExpect(status().isCreated());
     }
-    @Test //TODO:
+    @Test
     public void saveThirdVehicleDuplicateKeyTest() throws Exception {
         String newThirdVehicle = """
                 {
-                    "userThirdId": 1,
-                    "matricula": "12334ABC",
-                    "aseguradora": "Mapfre",
-                    "km": 10000,
-                    "fechaFabricacion": "2020-01-01",
-                    "marca": "Toyota",
-                    "modelo": "Corolla",
-                    "color": "Rojo"
+                    "userThirdId": 7,
+                    "matricula": "7777GGG",
+                    "aseguradora": "Mutua Madrileña",
+                    "km": 40000,
+                    "fechaFabricacion": "2018-09-12",
+                    "marca": "BMW",
+                    "modelo": "Serie 3",
+                    "color": "Azul"
                 }
                 """;
         mockMvc.perform(post("/third_vehicles")
                         .contentType("application/json")
                         .content(newThirdVehicle))
                 .andExpect(status().isConflict());
-
     }
 
     @Test

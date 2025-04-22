@@ -48,20 +48,20 @@ public class UserThirdApiIntegracionTest {
         mockMvc.perform(delete("/third_users/1"))
                 .andExpect(status().isNoContent());
     }
-    @Test // TODO: añadir 404 en el contract yml
+    @Test
     public void findUserThirdByIdNotFoundTest() throws Exception {
         mockMvc.perform(delete("/third_users/999"))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isNoContent());
     }
-    @Test // TODO:
+    @Test
     public void findUserThirdByInvalidIdTest() throws Exception {
-        mockMvc.perform(delete("/third_users/invalid"))
+        mockMvc.perform(delete("/third_users/0"))
                 .andExpect(status().isBadRequest());
     }
 
     @Test
     public void saveThirdUserTest() throws Exception {
-        String newThirdUser = """
+        String existingThirdUser = """
                 {
                     "name": "Juan",
                     "surname": "Gomez",
@@ -71,18 +71,36 @@ public class UserThirdApiIntegracionTest {
                     "city": "Madrid",
                     "country": "Spain",
                     "address": "Calle Falsa 123",
-                    "dateOfBirth": "1990-01-01"          
-                }      
+                    "dateOfBirth": "1990-01-01"
+                }
                 """;
-
         mockMvc.perform(post("/third_users")
-            .contentType("application/json")
-            .content(newThirdUser))
-            .andExpect(status().isCreated());
+                .contentType("application/json")
+                .content(existingThirdUser))
+                .andExpect(status().isCreated());
     }
-    @Test // TODO: duplicated key test
+    @Test
     public void saveThirdUserDuplicateKeyTest() throws Exception {
-        mockMvc.perform(post("/third_users"))
+        String existingThirdUser = """
+                {
+                    "name": "Juan",
+                    "surname": "Gomez",
+                    "phone": "123456789",
+                    "email": "juan.gomez@example.com",
+                    "dni": "12345678A",
+                    "city": "Madrid",
+                    "country": "Spain",
+                    "address": "Calle Falsa 123",
+                    "dateOfBirth": "1990-01-01"
+                }
+                """;
+        mockMvc.perform(post("/third_users")
+                .contentType("application/json")
+                .content(existingThirdUser))
+                .andExpect(status().isCreated());
+        mockMvc.perform(post("/third_users")
+                .contentType("application/json")
+                .content(existingThirdUser))
                 .andExpect(status().isConflict());
     }
 

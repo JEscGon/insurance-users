@@ -4,7 +4,7 @@ import com.dev.insurance_users.application.domain.User;
 import com.dev.insurance_users.application.service.UserService;
 import com.dev.insurance_users.generated.api.UsersApi;
 import com.dev.insurance_users.generated.model.UserDto;
-import com.dev.insurance_users.infrastructure.rest.controller.mapper.UserDtoMapper;
+import com.dev.insurance_users.infrastructure.rest.mapper.UserDtoMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,14 +39,13 @@ public class UserController implements UsersApi {
 
     @Override
     public ResponseEntity<UserDto> findById(Long id) {
-        try {
-            Optional<User> userOptional = userService.findById(id);
-            return userOptional
-                    .map(user -> new ResponseEntity<>(userDtoMapper.fromDomainToDto(user), HttpStatus.OK))
-                    .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
-        } catch (NumberFormatException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        if (id <= 0) {
+            return ResponseEntity.badRequest().build();
         }
+        Optional<User> userOptional = userService.findById(id);
+        return userOptional
+                .map(user -> new ResponseEntity<>(userDtoMapper.fromDomainToDto(user), HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @Override

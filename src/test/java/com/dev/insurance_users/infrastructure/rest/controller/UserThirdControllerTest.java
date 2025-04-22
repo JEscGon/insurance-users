@@ -3,7 +3,7 @@ package com.dev.insurance_users.infrastructure.rest.controller;
 import com.dev.insurance_users.application.domain.UserThird;
 import com.dev.insurance_users.application.service.UserThirdService;
 import com.dev.insurance_users.generated.model.UserThirdDto;
-import com.dev.insurance_users.infrastructure.rest.controller.mapper.UserThirdDtoMapper;
+import com.dev.insurance_users.infrastructure.rest.mapper.UserThirdDtoMapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

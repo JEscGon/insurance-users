@@ -4,7 +4,7 @@ import com.dev.insurance_users.application.domain.VehicleThird;
 import com.dev.insurance_users.application.service.VehicleThirdService;
 import com.dev.insurance_users.generated.api.ThirdVehiclesApi;
 import com.dev.insurance_users.generated.model.VehicleThirdDto;
-import com.dev.insurance_users.infrastructure.rest.controller.mapper.VehicleThirdDtoMapper;
+import com.dev.insurance_users.infrastructure.rest.mapper.VehicleThirdDtoMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -66,8 +66,6 @@ public class VehicleThirdController implements ThirdVehiclesApi {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
-    //TODO : findAllThirdVehiclesByUserId Contract.yml
-
 
     @Override
     public ResponseEntity<VehicleThirdDto> findByMatriculaThird(String matricula) {

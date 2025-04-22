@@ -1,10 +1,9 @@
 package com.dev.insurance_users.infrastructure.rest.controller;
 
 import com.dev.insurance_users.application.domain.UserThird;
-import com.dev.insurance_users.application.domain.VehicleThird;
 import com.dev.insurance_users.application.service.UserThirdService;
 import com.dev.insurance_users.generated.api.ThirdUsersApi;
-import com.dev.insurance_users.infrastructure.rest.controller.mapper.UserThirdDtoMapper;
+import com.dev.insurance_users.infrastructure.rest.mapper.UserThirdDtoMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,6 +23,9 @@ public class UserThirdController implements ThirdUsersApi {
 
     @Override
     public ResponseEntity<Void> deleteThirdUserById(Long id){
+        if (id <= 0) {
+            return ResponseEntity.badRequest().build();
+        }
         userThirdService.deleteUserById(id);
         return ResponseEntity.noContent().build();
     }
@@ -38,14 +40,13 @@ public class UserThirdController implements ThirdUsersApi {
     }
 
     @Override
-    public ResponseEntity<UserThirdDto> findThirdUserById(Long id){
-        try{
-            Optional<UserThird> userThirdOpt = userThirdService.findById(id);
-            return userThirdOpt
-                    .map(userThird -> new ResponseEntity<>(userThirdDtoMapper.fromDomainToDto(userThird), HttpStatus.OK))
-                    .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
-        } catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    public ResponseEntity<UserThirdDto> findThirdUserById(Long id) {
+        Optional<UserThird> userThirdOpt = userThirdService.findById(id);
+        if (userThirdOpt.isPresent()) {
+            UserThirdDto userThirdDto = userThirdDtoMapper.fromDomainToDto(userThirdOpt.get());
+            return new ResponseEntity<>(userThirdDto, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 

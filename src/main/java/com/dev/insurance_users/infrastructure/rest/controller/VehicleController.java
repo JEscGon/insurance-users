@@ -4,7 +4,7 @@ import com.dev.insurance_users.application.domain.Vehicle;
 import com.dev.insurance_users.application.service.VehicleService;
 import com.dev.insurance_users.generated.api.VehiclesApi;
 import com.dev.insurance_users.generated.model.VehicleDto;
-import com.dev.insurance_users.infrastructure.rest.controller.mapper.VehicleDtoMapper;
+import com.dev.insurance_users.infrastructure.rest.mapper.VehicleDtoMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
