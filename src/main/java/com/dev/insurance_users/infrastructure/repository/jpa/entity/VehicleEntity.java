@@ -25,7 +25,7 @@ public class VehicleEntity {
 
     @ManyToOne
     @JoinColumn(name = "user_id",nullable = false)
-    private UserEntity user; //TODO: cambiar a userId  ¿?¿?
+    private UserEntity user;
 
     @Column(unique = true , nullable = false)
     private String matricula;
