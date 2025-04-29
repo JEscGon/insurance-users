@@ -1,6 +1,7 @@
 package com.dev.insurance_users.infrastructure.repository;
 
 import com.dev.insurance_users.application.domain.VehicleThird;
+import com.dev.insurance_users.application.exception.ResourceNotFoundException;
 import com.dev.insurance_users.application.repository.VehicleThirdRepository;
 import com.dev.insurance_users.infrastructure.repository.jpa.entity.UserThirdEntity;
 import com.dev.insurance_users.infrastructure.repository.jpa.entity.VehicleThirdEntity;
@@ -8,6 +9,7 @@ import com.dev.insurance_users.infrastructure.repository.jpa.UserThirdJpaReposit
 import com.dev.insurance_users.infrastructure.repository.jpa.VehicleThirdJpaRepository;
 import com.dev.insurance_users.infrastructure.repository.mapper.VehicleThirdMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -27,22 +29,26 @@ public class VehicleThirdRepositoryImpl implements VehicleThirdRepository {
         VehicleThirdEntity vehicleThirdEntity = vehicleThirdMapper.fromDomainToEntity(vehicle);
         if(vehicle.getId() == null) { // nuevo vehículo
             UserThirdEntity userThirdEntity = userThirdJpaRepository.findById(vehicle.getUserThirdId())
-                    .orElseThrow(() -> new RuntimeException("Usuario no encontrado con id: " + vehicle.getUserThirdId()));
+                    .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con id: " + vehicle.getUserThirdId()));
             vehicleThirdEntity.setUserThird(userThirdEntity);
             vehicleThirdJpaRepository.save(vehicleThirdEntity);
         } else { // actualización
             VehicleThirdEntity existingVehicle = vehicleThirdJpaRepository.findById(vehicle.getId())
-                    .orElseThrow(() -> new RuntimeException("Vehículo no encontrado con id: " + vehicle.getId()));
+                    .orElseThrow(() -> new ResourceNotFoundException("Vehículo no encontrado con id: " + vehicle.getId()));
             vehicleThirdMapper.updateVehicleThirdFromExisting(existingVehicle, vehicleThirdEntity);
-            existingVehicle.setUserThird(existingVehicle.getUserThird()); // mantiene la referencia original del usuario
+            existingVehicle.setUserThird(existingVehicle.getUserThird());
             vehicleThirdJpaRepository.save(existingVehicle);
         }
     }
 
     @Override
     public Optional<VehicleThird> findById(Long id) {
-        return vehicleThirdJpaRepository.findById(id)
-                .map(vehicleThirdMapper::fromEntityToDomain);
+        try {
+            return vehicleThirdJpaRepository.findById(id)
+                    .map(vehicleThirdMapper::fromEntityToDomain);
+        } catch (Exception e) {
+            throw new ResourceNotFoundException("Error al buscar el vehículo con id: " + id);
+        }
     }
 
     @Override
@@ -54,12 +60,20 @@ public class VehicleThirdRepositoryImpl implements VehicleThirdRepository {
 
     @Override
     public void deleteById(Long id) {
-        vehicleThirdJpaRepository.deleteById(id);
+        try {
+            vehicleThirdJpaRepository.deleteById(id);
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResourceNotFoundException("No se encontró el vehiculo con id: " + id + " para eliminar.");
+        }
     }
 
     @Override
     public Optional<VehicleThird> findByMatricula(String matricula) {
-        return vehicleThirdJpaRepository.findByMatricula(matricula)
-                .map(vehicleThirdMapper::fromEntityToDomain);
+        try {
+            return vehicleThirdJpaRepository.findByMatricula(matricula)
+                    .map(vehicleThirdMapper::fromEntityToDomain);
+        } catch (Exception e) {
+            throw new ResourceNotFoundException("Error al buscar el vehículo con matrícula: " + matricula);
+        }
     }
 }

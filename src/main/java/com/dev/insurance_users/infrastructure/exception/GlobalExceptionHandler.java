@@ -14,15 +14,6 @@ import java.time.LocalDateTime;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ErrorMessage> handleResourceNotFoundException(ResourceNotFoundException ex, WebRequest request) {
-        ErrorMessage message = new ErrorMessage(
-                HttpStatus.NOT_FOUND.value(),
-                ex.getMessage(),
-                request.getDescription(false)
-        );
-        return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
-    }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorMessage> handleGlobalException(Exception ex, WebRequest request) {
@@ -34,10 +25,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<String> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
-        return ResponseEntity.status(HttpStatus.CONFLICT).body("Error: Clave duplicada.");
-    }
+
 
     public static class ErrorMessage {
         private int statusCode;
@@ -52,7 +40,6 @@ public class GlobalExceptionHandler {
             this.timestamp = LocalDateTime.now();
         }
 
-        // Getters
         public int getStatusCode() {
             return statusCode;
         }

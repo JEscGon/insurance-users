@@ -56,7 +56,7 @@ public class UserApiIntegracionTest {
     @Test
     public void findUserByNonExistentEmailTest() throws Exception {
         mockMvc.perform(get("/users/email/ju31an@example.com"))
-            .andExpect(status().isNoContent());
+            .andExpect(status().isNotFound());
     }
 
     @Test
@@ -91,7 +91,7 @@ public class UserApiIntegracionTest {
                 "surname": "González",
                 "phone": "654321987",
                 "email": "carlos.gonzalez@example.com",
-                "dni": "87654321B",
+                "dni": "81113221B",
                 "password": "securePass456",
                 "city": "Sevilla",
                 "country": "Spain",
@@ -104,7 +104,7 @@ public class UserApiIntegracionTest {
             .content(newUserJson))
             .andExpect(status().isCreated());
     }
-    @Test
+    @Test // TODO : FIX ERR 409
     public void createUserDuplicateKeyTest() throws Exception {
         String existingUserJson = """
             {

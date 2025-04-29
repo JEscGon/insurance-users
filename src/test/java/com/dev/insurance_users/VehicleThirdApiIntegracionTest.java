@@ -72,7 +72,7 @@ public class VehicleThirdApiIntegracionTest {
                         .content(newThirdVehicle))
                 .andExpect(status().isCreated());
     }
-    @Test
+    @Test //TODO : FIX ERR 409 // (500)
     public void saveThirdVehicleDuplicateKeyTest() throws Exception {
         String newThirdVehicle = """
                 {

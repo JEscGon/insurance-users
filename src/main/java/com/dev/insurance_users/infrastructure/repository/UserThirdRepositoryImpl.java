@@ -1,11 +1,15 @@
 package com.dev.insurance_users.infrastructure.repository;
 
 import com.dev.insurance_users.application.domain.UserThird;
+import com.dev.insurance_users.application.exception.DuplicateResourceException;
+import com.dev.insurance_users.application.exception.ResourceNotFoundException;
 import com.dev.insurance_users.application.repository.UserThirdRepository;
 import com.dev.insurance_users.infrastructure.repository.jpa.entity.UserThirdEntity;
 import com.dev.insurance_users.infrastructure.repository.jpa.UserThirdJpaRepository;
 import com.dev.insurance_users.infrastructure.repository.mapper.UserThirdMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -21,20 +25,32 @@ public class UserThirdRepositoryImpl implements UserThirdRepository {
 
     @Override
     public void save(UserThird user) {
-        UserThirdEntity userAux = userThirdMapper.fromDomainToEntity(user);
-        if(user.getId() == null) {
-            userThirdJpaRepository.save(userAux);
-        } else {
-            var aux = userThirdJpaRepository.findById(user.getId());
-            userThirdMapper.updateUserThirdFromExisting(aux.get(), userAux);
-            userThirdJpaRepository.save(aux.get());
+        try {
+            UserThirdEntity userAux = userThirdMapper.fromDomainToEntity(user);
+            if (user.getId() == null) {
+                if (userThirdJpaRepository.findByDni(user.getDni()).isPresent()) {
+                    throw new DuplicateResourceException("Ya existe un usuario tercero con DNI: " + user.getDni());
+                }
+                userThirdJpaRepository.save(userAux);
+            } else {
+                var aux = userThirdJpaRepository.findById(user.getId())
+                        .orElseThrow(() -> new ResourceNotFoundException("Usuario tercero no encontrado con id: " + user.getId()));
+                userThirdMapper.updateUserThirdFromExisting(aux, userAux);
+                userThirdJpaRepository.save(aux);
+            }
+        } catch (DataIntegrityViolationException e) {
+            throw new DuplicateResourceException("Error de integridad de datos al guardar usuario. Detalles: " + e.getMessage());
         }
     }
 
     @Override
     public Optional<UserThird> findById(Long id) {
-        return userThirdJpaRepository.findById(id)
-                .map(userThirdMapper::fromEntityToDomain);
+        try {
+            return userThirdJpaRepository.findById(id)
+                    .map(userThirdMapper::fromEntityToDomain);
+        } catch (Exception e) {
+            throw new ResourceNotFoundException("Error al buscar el usuario con id: " + id + ". Detalles: " + e.getMessage());
+        }
     }
 
     @Override
@@ -46,16 +62,30 @@ public class UserThirdRepositoryImpl implements UserThirdRepository {
 
     @Override
     public void deleteById(Long id) {
-        userThirdJpaRepository.deleteById(id);
+        try {
+            userThirdJpaRepository.deleteById(id);
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResourceNotFoundException("No se encontró el usuario tercero con id: " + id + " para eliminar.");
+        }
     }
 
     @Override
     public Optional<UserThird> findByDni(String dni) {
-        return Optional.empty();
+        try {
+            return userThirdJpaRepository.findByDni(dni)
+                    .map(userThirdMapper::fromEntityToDomain);
+        } catch (Exception e) {
+            throw new ResourceNotFoundException("Error al buscar el usuario con DNI: " + dni + ". Detalles: " + e.getMessage());
+        }
     }
 
     @Override
     public Optional<UserThird> findByEmail(String email) {
-        return Optional.empty();
+        try {
+            return userThirdJpaRepository.findByEmail(email)
+                    .map(userThirdMapper::fromEntityToDomain);
+        } catch (Exception e) {
+            throw new ResourceNotFoundException("Error al buscar el usuario con email: " + email + ". Detalles: " + e.getMessage());
+        }
     }
 }

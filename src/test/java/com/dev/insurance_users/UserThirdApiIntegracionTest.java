@@ -79,7 +79,7 @@ public class UserThirdApiIntegracionTest {
                 .content(existingThirdUser))
                 .andExpect(status().isCreated());
     }
-    @Test
+    @Test //TODO: FIX ERR 409(500)
     public void saveThirdUserDuplicateKeyTest() throws Exception {
         String existingThirdUser = """
                 {
@@ -103,7 +103,6 @@ public class UserThirdApiIntegracionTest {
                 .content(existingThirdUser))
                 .andExpect(status().isConflict());
     }
-
     @Test
     public void updateThirdUserTest() throws Exception {
         String updatedThirdUser = """
