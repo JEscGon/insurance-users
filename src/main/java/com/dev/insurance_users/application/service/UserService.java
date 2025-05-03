@@ -15,11 +15,11 @@ public class UserService {
 
     public void save(User user) { userRepository.save(user); }
 
-    public Optional<User> findById(Long id) {
+    public User findById(Long id) {
         return userRepository.findById(id);
     }
 
-    public Optional<User> getUserByDni(String dni) {
+    public User getUserByDni(String dni) {
         return userRepository.findByDni(dni);
     }
 
@@ -31,7 +31,7 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public Optional<User> getUserByEmail(String email) {
+    public User getUserByEmail(String email) {
         return userRepository.findByEmail(email);
     }
 

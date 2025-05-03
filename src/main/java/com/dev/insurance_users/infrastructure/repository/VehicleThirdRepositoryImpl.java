@@ -1,6 +1,7 @@
 package com.dev.insurance_users.infrastructure.repository;
 
 import com.dev.insurance_users.application.domain.VehicleThird;
+import com.dev.insurance_users.application.exception.DuplicateResourceException;
 import com.dev.insurance_users.application.exception.ResourceNotFoundException;
 import com.dev.insurance_users.application.repository.VehicleThirdRepository;
 import com.dev.insurance_users.infrastructure.repository.jpa.entity.UserThirdEntity;
@@ -27,10 +28,12 @@ public class VehicleThirdRepositoryImpl implements VehicleThirdRepository {
     @Override
     public void save(VehicleThird vehicle) {
         VehicleThirdEntity vehicleThirdEntity = vehicleThirdMapper.fromDomainToEntity(vehicle);
-        if(vehicle.getId() == null) { // nuevo vehículo
-            UserThirdEntity userThirdEntity = userThirdJpaRepository.findById(vehicle.getUserThirdId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con id: " + vehicle.getUserThirdId()));
-            vehicleThirdEntity.setUserThird(userThirdEntity);
+        if (vehicle.getId() == null) { // nuevo vehículo
+            if (vehicleThirdJpaRepository.findByMatricula(vehicle.getMatricula()).isPresent()) {
+                throw new DuplicateResourceException("Ya existe un vehiculo con esa matricula: " + vehicle.getMatricula());
+            }
+            var userThird = userThirdJpaRepository.findById(vehicle.getUserThirdId()).orElseThrow(() -> new ResourceNotFoundException("Usuario de terceros no encontrado para el id " + vehicle.getUserThirdId()));
+
             vehicleThirdJpaRepository.save(vehicleThirdEntity);
         } else { // actualización
             VehicleThirdEntity existingVehicle = vehicleThirdJpaRepository.findById(vehicle.getId())

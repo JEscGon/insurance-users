@@ -1,6 +1,7 @@
 package com.dev.insurance_users.infrastructure.rest.controller;
 
 import com.dev.insurance_users.application.domain.User;
+import com.dev.insurance_users.application.exception.ResourceNotFoundException;
 import com.dev.insurance_users.application.service.UserService;
 import com.dev.insurance_users.generated.model.UserDto;
 import com.dev.insurance_users.infrastructure.rest.mapper.UserDtoMapper;
@@ -79,7 +80,7 @@ class UserControllerTest {
         User user = createUser();
         UserDto userDto = createUserDto();
 
-        when(userService.findById(1L)).thenReturn(Optional.of(user));
+        when(userService.findById(1L)).thenReturn(user);
         when(userDtoMapper.fromDomainToDto(user)).thenReturn(userDto);
 
         // WHEN/THEN
@@ -94,7 +95,7 @@ class UserControllerTest {
     @Test
     void getUserById_deberiaDevolverNotFound_cuandoUsuarioNoExiste() throws Exception {
         // GIVEN
-        when(userService.findById(99L)).thenReturn(Optional.empty());
+        when(userService.findById(99L)).thenThrow(ResourceNotFoundException.class);
 
         // WHEN/THEN
         mockMvc.perform(get("/users/99"))
@@ -154,7 +155,7 @@ class UserControllerTest {
         User user = createUser();
         UserDto userDto = createUserDto();
 
-        when(userService.getUserByDni(dni)).thenReturn(Optional.of(user));
+        when(userService.getUserByDni(dni)).thenReturn(user);
         when(userDtoMapper.fromDomainToDto(user)).thenReturn(userDto);
 
         // WHEN/THEN
@@ -173,7 +174,7 @@ class UserControllerTest {
         User user = createUser();
         UserDto userDto = createUserDto();
 
-        when(userService.getUserByEmail(email)).thenReturn(Optional.of(user));
+        when(userService.getUserByEmail(email)).thenReturn(user);
         when(userDtoMapper.fromDomainToDto(user)).thenReturn(userDto);
 
         // WHEN/THEN
@@ -222,7 +223,7 @@ class UserControllerTest {
     void getUserByDni_deberiaDevolverNotFound_cuandoUsuarioNoExiste() throws Exception {
         // GIVEN
         String dni = "99999999X";
-        when(userService.getUserByDni(dni)).thenReturn(Optional.empty());
+        when(userService.getUserByDni(dni)).thenThrow(ResourceNotFoundException.class);
 
         // WHEN/THEN
         mockMvc.perform(get("/users/dni/{dni}", dni))
@@ -235,7 +236,7 @@ class UserControllerTest {
     void getUserByEmail_deberiaDevolverNotFound_cuandoUsuarioNoExiste() throws Exception {
         // GIVEN
         String email = "noexiste@example.com";
-        when(userService.getUserByEmail(email)).thenReturn(Optional.empty());
+        when(userService.getUserByEmail(email)).thenThrow(ResourceNotFoundException.class);
 
         // WHEN/THEN
         mockMvc.perform(get("/users/email/{email}", email))

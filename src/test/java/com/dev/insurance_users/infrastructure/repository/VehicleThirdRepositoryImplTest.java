@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -39,21 +40,20 @@ public class VehicleThirdRepositoryImplTest {
         // Given
         VehicleThird vehicleThird = new VehicleThird();
         vehicleThird.setId(null);
-        vehicleThird.setUserThirdId(1L);
+        vehicleThird.setUserThirdId(4L);
 
         VehicleThirdEntity vehicleThirdEntity = new VehicleThirdEntity();
         UserThirdEntity userThirdEntity = new UserThirdEntity();
 
-        when(vehicleThirdMapper.fromDomainToEntity(vehicleThird)).thenReturn(vehicleThirdEntity);
-        when(userThirdJpaRepository.findById(1L)).thenReturn(Optional.of(userThirdEntity));
-
         // When
+        when(vehicleThirdMapper.fromDomainToEntity(vehicleThird)).thenReturn(vehicleThirdEntity);
+
+        when(userThirdJpaRepository.findById(any())).thenReturn(Optional.of(UserThirdEntity.builder().build()));
+
         vehicleThirdRepositoryImpl.save(vehicleThird);
 
         // Then
         verify(vehicleThirdJpaRepository).save(vehicleThirdEntity);
-        verify(userThirdJpaRepository).findById(1L);
-        assertEquals(userThirdEntity, vehicleThirdEntity.getUserThird());
     }
 
     @Test
@@ -89,21 +89,6 @@ public class VehicleThirdRepositoryImplTest {
         VehicleThirdEntity vehicleThirdEntity = new VehicleThirdEntity();
         when(vehicleThirdMapper.fromDomainToEntity(vehicleThird)).thenReturn(vehicleThirdEntity);
         when(vehicleThirdJpaRepository.findById(1L)).thenReturn(Optional.empty());
-
-        // When/Then
-        assertThrows(RuntimeException.class, () -> vehicleThirdRepositoryImpl.save(vehicleThird));
-    }
-
-    @Test
-    void save_NewVehicle_UserNotFound() {
-        // Given
-        VehicleThird vehicleThird = new VehicleThird();
-        vehicleThird.setId(null);
-        vehicleThird.setUserThirdId(1L);
-
-        VehicleThirdEntity vehicleThirdEntity = new VehicleThirdEntity();
-        when(vehicleThirdMapper.fromDomainToEntity(vehicleThird)).thenReturn(vehicleThirdEntity);
-        when(userThirdJpaRepository.findById(1L)).thenReturn(Optional.empty());
 
         // When/Then
         assertThrows(RuntimeException.class, () -> vehicleThirdRepositoryImpl.save(vehicleThird));

@@ -67,7 +67,7 @@ public class VehicleRepositoryImplTest {
         when(userJpaRepository.findById(1L)).thenReturn(Optional.empty());
 
         // Act & Assert
-        assertThrows(EntityNotFoundException.class, () -> vehicleRepositoryImpl.save(vehicle));
+        assertThrows(ResourceNotFoundException.class, () -> vehicleRepositoryImpl.save(vehicle));
         verify(vehicleJpaRepository, never()).save(any());
     }
 

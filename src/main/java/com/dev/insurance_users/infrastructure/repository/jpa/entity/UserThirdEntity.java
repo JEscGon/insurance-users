@@ -2,6 +2,7 @@ package com.dev.insurance_users.infrastructure.repository.jpa.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -10,6 +11,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.LocalDate;
 import java.util.List;
 
+@Builder
 @Data
 @Entity
 @EntityListeners(AuditingEntityListener.class)
@@ -29,13 +31,13 @@ public class UserThirdEntity {
     @Column(nullable = false)
     private String surname;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String phone;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String email;
 
-    @Column(unique = true, nullable = false)
+    @Column
     private String dni;
 
     @Column(nullable = false)

@@ -1,6 +1,7 @@
 package com.dev.insurance_users.infrastructure.repository;
 
 import com.dev.insurance_users.application.domain.User;
+import com.dev.insurance_users.application.exception.ResourceNotFoundException;
 import com.dev.insurance_users.infrastructure.repository.jpa.entity.UserEntity;
 import com.dev.insurance_users.infrastructure.repository.jpa.UserJpaRepository;
 import com.dev.insurance_users.infrastructure.repository.mapper.UserMapper;
@@ -14,8 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -39,18 +39,17 @@ public class UserRepositoryImplTest {
         when(userJpaRepository.findById(2L)).thenReturn(Optional.of(userEntity));
         when(userMapper.fromEntityToDomain(userEntity)).thenReturn(user);
 
-        Optional<User> result = userRepositoryImpl.findById(2L);
+        User result = userRepositoryImpl.findById(2L);
 
-        assertTrue(result.isPresent());
-        assertEquals(2L, result.get().getId());
+        assertNotNull(result);
+        assertEquals(2L, result.getId());
     }
     @Test
     void findById_UserDoesNotExist_ReturnsEmpty() {
-        when(userJpaRepository.findById(99L)).thenReturn(Optional.empty());
+        when(userJpaRepository.findById(99L)).thenThrow(ResourceNotFoundException.class);
 
-        Optional<User> result = userRepositoryImpl.findById(99L);
+        assertThrows(ResourceNotFoundException.class, () -> userRepositoryImpl.findById(99L));
 
-        assertTrue(result.isEmpty());
     }
     @Test
     void findByDni_UserExists_ReturnsUser() {
@@ -62,18 +61,17 @@ public class UserRepositoryImplTest {
         when(userJpaRepository.findByDni("12345678A")).thenReturn(Optional.of(userEntity));
         when(userMapper.fromEntityToDomain(userEntity)).thenReturn(user);
 
-        Optional<User> result = userRepositoryImpl.findByDni("12345678A");
+        User result = userRepositoryImpl.findByDni("12345678A");
 
-        assertTrue(result.isPresent());
-        assertEquals("12345678A", result.get().getDni());
+        assertNotNull(result);
+        assertEquals("12345678A", result.getDni());
     }
     @Test
     void findByDni_UserDoesNotExist_ReturnsEmpty() {
-        when(userJpaRepository.findByDni("99999999Z")).thenReturn(Optional.empty());
+        when(userJpaRepository.findByDni("99999999Z")).thenThrow(ResourceNotFoundException.class);
 
-        Optional<User> result = userRepositoryImpl.findByDni("99999999Z");
+        assertThrows(ResourceNotFoundException.class, () -> userRepositoryImpl.findByDni("99999999Z"));
 
-        assertTrue(result.isEmpty());
     }
     @Test
     void findByEmail_UserExists_ReturnsUser() {
@@ -85,18 +83,15 @@ public class UserRepositoryImplTest {
         when(userJpaRepository.findByEmail("user@test.com")).thenReturn(Optional.of(userEntity));
         when(userMapper.fromEntityToDomain(userEntity)).thenReturn(user);
 
-        Optional<User> result = userRepositoryImpl.findByEmail("user@test.com");
+        User result = userRepositoryImpl.findByEmail("user@test.com");
 
-        assertTrue(result.isPresent());
-        assertEquals("user@test.com", result.get().getEmail());
+        assertNotNull(result);
+        assertEquals("user@test.com", result.getEmail());
     }
     @Test
     void findByEmail_UserDoesNotExist_ReturnsEmpty() {
-        when(userJpaRepository.findByEmail("nonexistent@test.com")).thenReturn(Optional.empty());
-
-        Optional<User> result = userRepositoryImpl.findByEmail("nonexistent@test.com");
-
-        assertTrue(result.isEmpty());
+        when(userJpaRepository.findByEmail("nonexistent@test.com")).thenThrow(ResourceNotFoundException.class);
+        assertThrows(ResourceNotFoundException.class, () -> userRepositoryImpl.findByEmail("nonexistent@test.com"));
     }
     @Test
     void findAll_ReturnsListOfUsers() {

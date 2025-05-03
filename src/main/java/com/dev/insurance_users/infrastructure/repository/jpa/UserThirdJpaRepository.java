@@ -16,6 +16,7 @@ public interface UserThirdJpaRepository extends JpaRepository<UserThirdEntity, L
 
     void deleteById(Long id);
 
+
     Optional<UserThirdEntity> findByDni(String dni);
 
     Optional<UserThirdEntity> findByEmail(String email);

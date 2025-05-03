@@ -7,6 +7,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -14,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@DirtiesContext
 @SpringBootTest(classes = InsuranceUsersApplication.class,
         webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @ExtendWith(SpringExtension.class)
@@ -31,6 +33,7 @@ public class UserThirdApiIntegracionTest {
         mockMvc.perform(delete("/third_users/2"))
                 .andExpect(status().isNoContent());
     }
+
     @Test
     public void deleteUserThirdNotFoundTest() throws Exception {
         mockMvc.perform(delete("/third_users/999"))
@@ -44,15 +47,11 @@ public class UserThirdApiIntegracionTest {
     }
 
     @Test
-    public void findUserThirdByIdTest() throws Exception {
-        mockMvc.perform(delete("/third_users/1"))
-                .andExpect(status().isNoContent());
-    }
-    @Test
     public void findUserThirdByIdNotFoundTest() throws Exception {
         mockMvc.perform(delete("/third_users/999"))
                 .andExpect(status().isNoContent());
     }
+
     @Test
     public void findUserThirdByInvalidIdTest() throws Exception {
         mockMvc.perform(delete("/third_users/0"))
@@ -67,7 +66,7 @@ public class UserThirdApiIntegracionTest {
                     "surname": "Gomez",
                     "phone": "123456789",
                     "email": "juan.gomez@example.com",
-                    "dni": "12345678A",
+                    "dni": "52896881D",
                     "city": "Madrid",
                     "country": "Spain",
                     "address": "Calle Falsa 123",
@@ -75,10 +74,11 @@ public class UserThirdApiIntegracionTest {
                 }
                 """;
         mockMvc.perform(post("/third_users")
-                .contentType("application/json")
-                .content(existingThirdUser))
+                        .contentType("application/json")
+                        .content(existingThirdUser))
                 .andExpect(status().isCreated());
     }
+
     @Test //TODO: FIX ERR 409(500)
     public void saveThirdUserDuplicateKeyTest() throws Exception {
         String existingThirdUser = """
@@ -95,14 +95,15 @@ public class UserThirdApiIntegracionTest {
                 }
                 """;
         mockMvc.perform(post("/third_users")
-                .contentType("application/json")
-                .content(existingThirdUser))
+                        .contentType("application/json")
+                        .content(existingThirdUser))
                 .andExpect(status().isCreated());
         mockMvc.perform(post("/third_users")
-                .contentType("application/json")
-                .content(existingThirdUser))
+                        .contentType("application/json")
+                        .content(existingThirdUser))
                 .andExpect(status().isConflict());
     }
+
     @Test
     public void updateThirdUserTest() throws Exception {
         String updatedThirdUser = """
@@ -111,16 +112,28 @@ public class UserThirdApiIntegracionTest {
                     "surname": "Gomez Updated",
                     "phone": "987654321",
                     "email": "juan.updated@example.com",
-                    "dni": "12345678A",
+                    "dni": "87654321F",
                     "city": "Barcelona",
                     "country": "Spain",
                     "address": "Calle Nueva 456",
-                    "dateOfBirth": "1990-01-01"
+                    "dateOfBirth": "1990-01-01",
+                    "vehicles": [{
+                                   "id": 1,
+                                   "userThirdId": 101,
+                                   "matricula": "ABC123",
+                                   "km": 25000,
+                                   "marca": "Toyota",
+                                   "aseguradora": "Mapfre",
+                                   "color": "Rojo",
+                                   "fechaFabricacion": "2018-06-15",
+                                   "dateOfRegistration": "2018-07-01",
+                                   "dateOfLastUpdate": "2025-05-03"
+                                 }]
                 }
                 """;
-        mockMvc.perform(put("/third_users/1")
-                .contentType("application/json")
-                .content(updatedThirdUser))
+        mockMvc.perform(put("/third_users/6")
+                        .contentType("application/json")
+                        .content(updatedThirdUser))
                 .andExpect(status().isOk());
     }
 

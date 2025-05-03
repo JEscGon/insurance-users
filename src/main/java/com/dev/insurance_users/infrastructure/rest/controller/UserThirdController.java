@@ -59,14 +59,10 @@ public class UserThirdController implements ThirdUsersApi {
 
     @Override
     public ResponseEntity<Void> updateThirdUser(Long id, UserThirdDto userThirdDto){
-        try {
-            userThirdDto.setId(Math.toIntExact(id));
-            UserThird userThird = userThirdDtoMapper.fromDtoToDomain(userThirdDto);
-            userThirdService.save(userThird);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+        userThirdDto.setId(Math.toIntExact(id));
+        UserThird userThird = userThirdDtoMapper.fromDtoToDomain(userThirdDto);
+        userThirdService.save(userThird);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 
