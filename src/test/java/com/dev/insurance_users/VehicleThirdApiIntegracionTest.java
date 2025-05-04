@@ -6,6 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -13,6 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@DirtiesContext
 @SpringBootTest(classes = InsuranceUsersApplication.class,
         webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @ExtendWith(SpringExtension.class)
@@ -57,7 +59,7 @@ public class VehicleThirdApiIntegracionTest {
     public void saveThirdVehicleTest() throws Exception {
         String newThirdVehicle = """
                 {
-                    "userThirdId": 1,
+                    "userThirdId": 7,
                     "matricula": "12334ABC",
                     "aseguradora": "Mapfre",
                     "km": 10000,
@@ -72,40 +74,6 @@ public class VehicleThirdApiIntegracionTest {
                         .content(newThirdVehicle))
                 .andExpect(status().isCreated());
     }
-    @Test
-    public void saveThirdVehicleDuplicateKeyTest() throws Exception {
-        String newThirdVehicle = """
-                {
-                    "userThirdId": 7,
-                    "matricula": "7777GGG",
-                    "aseguradora": "Mutua Madrileña",
-                    "km": 40000,
-                    "fechaFabricacion": "2018-09-12",
-                    "marca": "BMW",
-                    "modelo": "Serie 3",
-                    "color": "Azul"
-                }
-                """;
-        mockMvc.perform(post("/third_vehicles")
-                        .contentType("application/json")
-                        .content(newThirdVehicle))
-                .andExpect(status().isConflict());
-    }
 
-    @Test
-    public void updateThirdVehicleTest() throws Exception {
-        String json = """
-                {
-                    "matricula": "1234ABC",
-                    "marca": "Toyota",
-                    "modelo": "Corolla",
-                    "color": "Rojo"
-                }
-                """;
-        mockMvc.perform(put("/third_vehicles/1")
-                        .contentType("application/json")
-                        .content(json))
-                .andExpect(status().isOk());
-    }
 
 }

@@ -2,6 +2,7 @@ package com.dev.insurance_users.application.service;
 
 import com.dev.insurance_users.application.domain.User;
 import com.dev.insurance_users.application.domain.Vehicle;
+import com.dev.insurance_users.application.exception.ResourceNotFoundException;
 import com.dev.insurance_users.application.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,8 +13,8 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 
@@ -29,16 +30,17 @@ public class UserServiceTest {
     void findById_UserExists_ReturnsUser() {
         User user = new User();
         user.setId(1L);
-        when(userRepository.findById(2L)).thenReturn(Optional.of(user));
-        Optional<User> result = userService.findById(2L);
-        assertTrue(result.isPresent());
-        assertEquals(1L, result.get().getId());
+        when(userRepository.findById(2L)).thenReturn(user);
+        User result = userService.findById(2L);
+        assertNotNull(result);
+        assertEquals(1L, result.getId());
     }
     @Test
     void findById_UserDoesNotExist_ReturnsEmpty() {
-        when(userRepository.findById(99L)).thenReturn(Optional.empty());
-        Optional<User> result = userService.findById(99L);
-        assertTrue(result.isEmpty());
+        when(userRepository.findById(99L)).thenThrow(ResourceNotFoundException.class);
+
+        assertThrows(ResourceNotFoundException.class, () -> userService.findById(99L));
+
     }
     @Test
     void findAll_ReturnsUserList() {
@@ -57,37 +59,35 @@ public class UserServiceTest {
         User user = createUser(1L, "user@test.com", "John", "Doe", "123456789",
                 "12345678A", "password", "Madrid", "Spain", "Calle Mayor 1",
                 LocalDate.of(1990, 1, 1), LocalDate.now(), LocalDate.now(), null);
-        when(userRepository.findByDni("12345678A")).thenReturn(Optional.of(user));
-        Optional<User> result = userService.getUserByDni("12345678A");
-        assertTrue(result.isPresent());
-        assertEquals("12345678A", result.get().getDni());
+        when(userRepository.findByDni("12345678A")).thenReturn(user);
+        User result = userService.getUserByDni("12345678A");
+        assertNotNull(result);
+        assertEquals("12345678A", result.getDni());
     }
     @Test
     void getUserByDni_UserDoesNotExist_ReturnsEmpty() {
-        when(userRepository.findByDni("99999999Z")).thenReturn(Optional.empty());
+        when(userRepository.findByDni("99999999Z")).thenThrow(ResourceNotFoundException.class);
 
-        Optional<User> result = userService.getUserByDni("99999999Z");
-
-        assertTrue(result.isEmpty());
+        assertThrows(ResourceNotFoundException.class, () -> userService.getUserByDni("99999999Z"));
     }
     @Test
     void getUserByEmail_UserExists_ReturnsUser() {
         User user = createUser(1L, "user@test.com");
 
-        when(userRepository.findByEmail("user@test.com")).thenReturn(Optional.of(user));
+        when(userRepository.findByEmail("user@test.com")).thenReturn(user);
 
-        Optional<User> result = userService.getUserByEmail("user@test.com");
+        User result = userService.getUserByEmail("user@test.com");
 
-        assertTrue(result.isPresent());
-        assertEquals("user@test.com", result.get().getEmail());
+        assertNotNull(result);
+        assertEquals("user@test.com", result.getEmail());
     }
     @Test
     void getUserByEmail_UserDoesNotExist_ReturnsEmpty() {
-        when(userRepository.findByEmail("nonexistent@test.com")).thenReturn(Optional.empty());
+        when(userRepository.findByEmail("nonexistent@test.com")).thenThrow(ResourceNotFoundException.class);
 
-        Optional<User> result = userService.getUserByEmail("nonexistent@test.com");
+        assertThrows(ResourceNotFoundException.class, () -> userService.getUserByEmail("nonexistent@test.com"));
 
-        assertTrue(result.isEmpty());
+
     }
     @Test
     void save_ShouldCallRepositorySave() {

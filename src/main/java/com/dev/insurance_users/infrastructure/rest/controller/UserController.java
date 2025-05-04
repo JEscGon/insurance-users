@@ -39,29 +39,21 @@ public class UserController implements UsersApi {
 
     @Override
     public ResponseEntity<UserDto> findById(Long id) {
-        if (id <= 0) {
-            return ResponseEntity.badRequest().build();
-        }
-        Optional<User> userOptional = userService.findById(id);
-        return userOptional
-                .map(user -> new ResponseEntity<>(userDtoMapper.fromDomainToDto(user), HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        User user = userService.findById(id);
+        return new ResponseEntity<>(userDtoMapper.fromDomainToDto(user), HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<UserDto> getUserByDni(String dni) {
-        Optional<User> userOptional = userService.getUserByDni(dni);
-        return userOptional
-                .map(user -> new ResponseEntity<>(userDtoMapper.fromDomainToDto(user), HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        User user = userService.getUserByDni(dni);
+        return new ResponseEntity<>(userDtoMapper.fromDomainToDto(user), HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<UserDto> getUserByEmail(String email) {
-        Optional<User> userOptional = userService.getUserByEmail(email);
-        return userOptional
-                .map(user -> new ResponseEntity<>(userDtoMapper.fromDomainToDto(user), HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        User user = userService.getUserByEmail(email);
+        return new ResponseEntity<>(userDtoMapper.fromDomainToDto(user), HttpStatus.OK);
+
     }
 
     @Override

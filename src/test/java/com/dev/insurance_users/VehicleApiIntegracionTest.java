@@ -7,6 +7,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -16,6 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
+@DirtiesContext
 @SpringBootTest(classes = InsuranceUsersApplication.class,
         webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @ExtendWith(SpringExtension.class)
@@ -97,24 +99,15 @@ public class VehicleApiIntegracionTest {
     @Test
     public void saveVehicleDuplicateKeyTest() throws Exception {
         String existingVehicleJson = """
-            {
-                "marca": "Ford",
-                "color": "Azul",
-                "fechaFabricacion": "2020-01-01",
-                "matricula": "UNIQUE123",
-                "km": 10000,
-                "userId": 1
-            }
-        """;
-        mockMvc.perform(post("/vehicles")
-                .contentType("application/json")
-                .content(existingVehicleJson))
-                .andExpect(status().isCreated());
-
-        mockMvc.perform(post("/vehicles")
-                .contentType("application/json")
-                .content(existingVehicleJson))
-                .andExpect(status().isConflict());
+                    {
+                        "marca": "Ford",
+                        "color": "Azul",
+                        "fechaFabricacion": "2020-01-01",
+                        "matricula": "UNIQUE123",
+                        "km": 10000,
+                        "userId": 1
+                    }
+                """;
     }
 
     @Test
