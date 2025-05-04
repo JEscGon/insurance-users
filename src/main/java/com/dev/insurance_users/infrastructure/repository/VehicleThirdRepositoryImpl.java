@@ -32,7 +32,8 @@ public class VehicleThirdRepositoryImpl implements VehicleThirdRepository {
             if (vehicleThirdJpaRepository.findByMatricula(vehicle.getMatricula()).isPresent()) {
                 throw new DuplicateResourceException("Ya existe un vehiculo con esa matricula: " + vehicle.getMatricula());
             }
-            var userThird = userThirdJpaRepository.findById(vehicle.getUserThirdId()).orElseThrow(() -> new ResourceNotFoundException("Usuario de terceros no encontrado para el id " + vehicle.getUserThirdId()));
+            var userThird = userThirdJpaRepository.findById(vehicle.getUserThirdId()).orElseThrow(
+                    () -> new ResourceNotFoundException("Usuario de terceros no encontrado para el id " + vehicle.getUserThirdId()));
 
             vehicleThirdJpaRepository.save(vehicleThirdEntity);
         } else { // actualización

@@ -36,7 +36,6 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>42.5.0</version>
-            <scope>runtime</scope>
         </dependency>
 <!-- FLYWAY: https://mvnrepository.com/artifact/org.flywaydb/flyway-core -->
         <dependency>
@@ -67,6 +66,7 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-junit-jupiter</artifactId>
+            <scope>test</scope>
             <version>5.14.1</version>
         </dependency>
 <!-- Spring Boot Test -->
@@ -91,7 +91,7 @@
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-            <scope>runtime</scope>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

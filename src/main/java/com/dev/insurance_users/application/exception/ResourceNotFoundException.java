@@ -14,13 +14,5 @@ public class ResourceNotFoundException extends RuntimeException {
         super(message);
     }
 
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<GlobalExceptionHandler.ErrorMessage> handleResourceNotFoundException(ResourceNotFoundException ex, WebRequest request) {
-        GlobalExceptionHandler.ErrorMessage message = new GlobalExceptionHandler.ErrorMessage(
-                HttpStatus.NOT_FOUND.value(),
-                ex.getMessage(),
-                request.getDescription(false)
-        );
-        return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
-    }
+
 }

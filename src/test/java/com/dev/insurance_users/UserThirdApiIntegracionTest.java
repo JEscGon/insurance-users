@@ -79,7 +79,7 @@ public class UserThirdApiIntegracionTest {
                 .andExpect(status().isCreated());
     }
 
-    @Test //TODO: FIX ERR 409(500)
+    @Test
     public void saveThirdUserDuplicateKeyTest() throws Exception {
         String existingThirdUser = """
                 {

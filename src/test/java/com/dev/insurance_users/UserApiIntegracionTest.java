@@ -111,7 +111,7 @@ public class UserApiIntegracionTest {
                 .andExpect(status().isCreated());
     }
 
-    @Test // TODO : FIX ERR 409
+    @Test
     public void createUserDuplicateKeyTest() throws Exception {
         String existingUserJson = """
                     {

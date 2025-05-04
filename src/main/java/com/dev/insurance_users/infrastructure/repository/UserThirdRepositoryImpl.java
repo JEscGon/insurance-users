@@ -13,7 +13,6 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
@@ -28,9 +27,6 @@ public class UserThirdRepositoryImpl implements UserThirdRepository {
         try {
             UserThirdEntity userAux = userThirdMapper.fromDomainToEntity(user);
             if (user.getId() == null) {
-                if (userThirdJpaRepository.findByDni(user.getDni()).isPresent()) {
-                    throw new DuplicateResourceException("Ya existe un usuario tercero con DNI: " + user.getDni());
-                }
                 userThirdJpaRepository.save(userAux);
             } else {
                 var aux = userThirdJpaRepository.findById(user.getId())
@@ -44,13 +40,9 @@ public class UserThirdRepositoryImpl implements UserThirdRepository {
     }
 
     @Override
-    public Optional<UserThird> findById(Long id) {
-        try {
-            return userThirdJpaRepository.findById(id)
-                    .map(userThirdMapper::fromEntityToDomain);
-        } catch (Exception e) {
-            throw new ResourceNotFoundException("Error al buscar el usuario con id: " + id + ". Detalles: " + e.getMessage());
-        }
+    public UserThird findById(Long id) {
+        return userThirdMapper.fromEntityToDomain(userThirdJpaRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Error al buscar el usuario con id: " + id)));
     }
 
     @Override
@@ -70,22 +62,12 @@ public class UserThirdRepositoryImpl implements UserThirdRepository {
     }
 
     @Override
-    public Optional<UserThird> findByDni(String dni) {
-        try {
-            return userThirdJpaRepository.findByDni(dni)
-                    .map(userThirdMapper::fromEntityToDomain);
-        } catch (Exception e) {
-            throw new ResourceNotFoundException("Error al buscar el usuario con DNI: " + dni + ". Detalles: " + e.getMessage());
-        }
+    public UserThird findByDni(String dni) {
+        return userThirdMapper.fromEntityToDomain(userThirdJpaRepository.findByDni(dni).orElseThrow(() -> new ResourceNotFoundException("No se encontró el usuario tercero con DNI: " + dni)));
     }
 
     @Override
-    public Optional<UserThird> findByEmail(String email) {
-        try {
-            return userThirdJpaRepository.findByEmail(email)
-                    .map(userThirdMapper::fromEntityToDomain);
-        } catch (Exception e) {
-            throw new ResourceNotFoundException("Error al buscar el usuario con email: " + email + ". Detalles: " + e.getMessage());
-        }
+    public UserThird findByEmail(String email) {
+        return userThirdMapper.fromEntityToDomain(userThirdJpaRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("Error al buscar el usuario con email:" )));
     }
 }

@@ -10,12 +10,12 @@ public interface UserThirdRepository {
 
     public void save(UserThird user);
 
-    public Optional<UserThird> findById(Long id);
+    public UserThird findById(Long id);
 
     public List<UserThird> findAll();
 
     public void deleteById(Long id);
-    public Optional<UserThird> findByDni(String dni);
-    public Optional<UserThird> findByEmail(String email);
+    public UserThird findByDni(String dni);
+    public UserThird findByEmail(String email);
 
 }

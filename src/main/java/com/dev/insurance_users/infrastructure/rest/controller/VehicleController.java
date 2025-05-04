@@ -43,7 +43,7 @@ public class VehicleController implements VehiclesApi {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
-// TODO evitar capturar excepciones genericas
+
     @Override
     public ResponseEntity<Void> updateVehicle(Long id, VehicleDto vehicleDto) {
         try {

@@ -96,7 +96,7 @@ public class VehicleApiIntegracionTest {
                 .content(newVehicleJson))
                 .andExpect(status().isCreated());
     }
-    @Test //TODO: FIX ERR 409(500)
+    @Test
     public void saveVehicleDuplicateKeyTest() throws Exception {
         String existingVehicleJson = """
                     {
