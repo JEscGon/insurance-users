@@ -21,18 +21,15 @@ public class VehicleThirdService {
 
     private final VehicleThirdRepository vehicleThirdRepository;
 
-    public void save(List<VehicleThird> vehiclesThird) {
-        for (VehicleThird vehicleThird : vehiclesThird) {
-            try {
-                vehicleThirdRepository.save(vehicleThird);
-
-            } catch (DuplicateResourceException e) {
-                throw new PartSaveErrorException("Vehiculo ya existe: " + vehicleThird.getMatricula() + e.getMessage(), PartSaveErrorType.EXISTING_VEHICLE);
-            } catch (ResourceNotFoundException e) {
-                throw new PartSaveErrorException("Usuario terceros no existe: " + vehicleThird.getUserThirdId() + e.getMessage(), PartSaveErrorType.USER_THIRD_PARTY_NOT_FOUND);
-            } catch (Exception e) {
-                throw new PartSaveErrorException("Error saving vehicle: " + vehicleThird.getMatricula() + e.getMessage(), PartSaveErrorType.INTERNAL_SERVER_ERROR);
-            }
+    public Integer save(VehicleThird vehicleThird) {
+        try {
+           return vehicleThirdRepository.save(vehicleThird);
+        } catch (DuplicateResourceException e) {
+            throw new PartSaveErrorException("Vehiculo ya existe: " + vehicleThird.getMatricula() + e.getMessage(), PartSaveErrorType.EXISTING_VEHICLE);
+        } catch (ResourceNotFoundException e) {
+            throw new PartSaveErrorException("Usuario terceros no existe: " + vehicleThird.getUserThirdId() + e.getMessage(), PartSaveErrorType.USER_THIRD_PARTY_NOT_FOUND);
+        } catch (Exception e) {
+            throw new PartSaveErrorException("Error saving vehicle: " + vehicleThird.getMatricula() + e.getMessage(), PartSaveErrorType.INTERNAL_SERVER_ERROR);
         }
     }
 

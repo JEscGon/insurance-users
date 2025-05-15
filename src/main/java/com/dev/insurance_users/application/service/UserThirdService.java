@@ -18,9 +18,9 @@ public class UserThirdService {
 
     private final UserThirdRepository userThirdRepository;
 
-    public void save(UserThird userThird) {
+    public Integer save(UserThird userThird) {
         try {
-            userThirdRepository.save(userThird);
+            return userThirdRepository.save(userThird);
         } catch (DuplicateResourceException e) {
             throw new PartSaveErrorException("Usuario tercero ya existe: " + userThird.getDni() + e.getMessage(), PartSaveErrorType.EXISTING_USER);
         } catch (Exception e) {

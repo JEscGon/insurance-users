@@ -4,7 +4,6 @@ import com.dev.insurance_users.application.domain.VehicleThird;
 import com.dev.insurance_users.application.exception.DuplicateResourceException;
 import com.dev.insurance_users.application.exception.ResourceNotFoundException;
 import com.dev.insurance_users.application.repository.VehicleThirdRepository;
-import com.dev.insurance_users.infrastructure.repository.jpa.entity.UserThirdEntity;
 import com.dev.insurance_users.infrastructure.repository.jpa.entity.VehicleThirdEntity;
 import com.dev.insurance_users.infrastructure.repository.jpa.UserThirdJpaRepository;
 import com.dev.insurance_users.infrastructure.repository.jpa.VehicleThirdJpaRepository;
@@ -25,8 +24,8 @@ public class VehicleThirdRepositoryImpl implements VehicleThirdRepository {
     private final VehicleThirdJpaRepository vehicleThirdJpaRepository;
     private final UserThirdJpaRepository userThirdJpaRepository;
 
-    @Override
-    public void save(VehicleThird vehicle) {
+    @Override //TODO:
+    public Integer save(VehicleThird vehicle) {
         VehicleThirdEntity vehicleThirdEntity = vehicleThirdMapper.fromDomainToEntity(vehicle);
         if (vehicle.getId() == null) { // nuevo vehículo
             if (vehicleThirdJpaRepository.findByMatricula(vehicle.getMatricula()).isPresent()) {
@@ -34,7 +33,6 @@ public class VehicleThirdRepositoryImpl implements VehicleThirdRepository {
             }
             var userThird = userThirdJpaRepository.findById(vehicle.getUserThirdId()).orElseThrow(
                     () -> new ResourceNotFoundException("Usuario de terceros no encontrado para el id " + vehicle.getUserThirdId()));
-
             vehicleThirdJpaRepository.save(vehicleThirdEntity);
         } else { // actualización
             VehicleThirdEntity existingVehicle = vehicleThirdJpaRepository.findById(vehicle.getId())
@@ -43,6 +41,7 @@ public class VehicleThirdRepositoryImpl implements VehicleThirdRepository {
             existingVehicle.setUserThird(existingVehicle.getUserThird());
             vehicleThirdJpaRepository.save(existingVehicle);
         }
+        return Math.toIntExact(vehicleThirdEntity.getId());
     }
 
     @Override
@@ -80,4 +79,6 @@ public class VehicleThirdRepositoryImpl implements VehicleThirdRepository {
             throw new ResourceNotFoundException("Error al buscar el vehículo con matrícula: " + matricula);
         }
     }
+
+
 }

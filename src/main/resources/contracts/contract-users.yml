@@ -356,6 +356,13 @@ paths:
       responses:
         '201':
           description: Tercer usuario creado
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: integer
+
     get:
       tags:
         - third_users
@@ -471,6 +478,12 @@ paths:
       responses:
         '201':
           description: Tercer vehículo creado correctamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: integer
     get:
       tags:
         - third_vehicles

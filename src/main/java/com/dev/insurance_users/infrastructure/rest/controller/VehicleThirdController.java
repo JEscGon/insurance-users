@@ -51,12 +51,28 @@ public class VehicleThirdController implements ThirdVehiclesApi {
     }
 
     @Override
-    public ResponseEntity<Void> saveThirdVehicle(ThirdPartyVehiclesWrapperDto vehicleThirdDto){
-        var vehiculos = vehicleThirdDto.getVehicles();
-        var vehiculosDomain = vehiculos.stream().map(element ->  vehicleThirdDtoMapper.fromDtoToDomain(element)).collect(Collectors.toList());
+    public ResponseEntity<List<Integer>> saveThirdVehicle(ThirdPartyVehiclesWrapperDto vehicleThirdDto) {
+        if (vehicleThirdDto == null || vehicleThirdDto.getVehicles() == null || vehicleThirdDto.getVehicles().isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
 
-        vehicleThirdService.save(vehiculosDomain);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        List<VehicleThird> vehiclesToSave = vehicleThirdDto.getVehicles().stream()
+                .map(vehicleThirdDtoMapper::fromDtoToDomain)
+                .collect(Collectors.toList());
+
+        List<Integer> savedVehicles = vehiclesToSave.stream()
+                .map(vehicleThirdService::save)
+                .collect(Collectors.toList());
+
+        if (savedVehicles.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+
+        List<Integer> savedVehicleIds = savedVehicles.stream()
+                .map(Math::toIntExact)
+                .collect(Collectors.toList());
+
+        return new ResponseEntity<>(savedVehicleIds, HttpStatus.CREATED);
     }
 
  //TODO : FIX ID
@@ -64,7 +80,7 @@ public class VehicleThirdController implements ThirdVehiclesApi {
     public ResponseEntity<Void> updateThirdVehicle(Long id ,ThirdPartyVehicleDto vehicleThirdDto){
         VehicleThird vehicle = vehicleThirdDtoMapper.fromDtoToDomain(vehicleThirdDto);
         vehicle.setId(id);
-        vehicleThirdService.save(List.of(vehicle));
+        vehicleThirdService.save(vehicle);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

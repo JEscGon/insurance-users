@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface VehicleThirdRepository {
 
-    public void save(VehicleThird vehicle);
+    public Integer save(VehicleThird vehicle);
 
     public Optional<VehicleThird> findById(Long id);
 
@@ -16,4 +16,5 @@ public interface VehicleThirdRepository {
     public void deleteById(Long id);
 
     Optional<VehicleThird> findByMatricula(String matricula);
+
 }

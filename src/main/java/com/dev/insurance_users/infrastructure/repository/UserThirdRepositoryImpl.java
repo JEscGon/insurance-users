@@ -4,6 +4,7 @@ import com.dev.insurance_users.application.domain.UserThird;
 import com.dev.insurance_users.application.exception.DuplicateResourceException;
 import com.dev.insurance_users.application.exception.ResourceNotFoundException;
 import com.dev.insurance_users.application.repository.UserThirdRepository;
+import com.dev.insurance_users.application.repository.VehicleThirdRepository;
 import com.dev.insurance_users.infrastructure.repository.jpa.entity.UserThirdEntity;
 import com.dev.insurance_users.infrastructure.repository.jpa.UserThirdJpaRepository;
 import com.dev.insurance_users.infrastructure.repository.mapper.UserThirdMapper;
@@ -20,19 +21,30 @@ import java.util.stream.Collectors;
 public class UserThirdRepositoryImpl implements UserThirdRepository {
 
     private final UserThirdJpaRepository userThirdJpaRepository;
+    private final VehicleThirdRepository vehicleRepository;
     private final UserThirdMapper userThirdMapper;
 
+     //TODO: manejo de excepciones al guardar varios userThird que explote el adecuado
     @Override
-    public void save(UserThird user) {
+    public Integer save(UserThird user) {
         try {
             UserThirdEntity userAux = userThirdMapper.fromDomainToEntity(user);
             if (user.getId() == null) {
-                userThirdJpaRepository.save(userAux);
+                UserThirdEntity savedUser = userThirdJpaRepository.save(userAux);
+                user.setId(savedUser.getId()); // Asignar el ID generado al dominio
+                if (user.getVehicles() != null && !user.getVehicles().isEmpty()) {
+                    user.getVehicles().forEach(vehicle -> {
+                        vehicle.setUserThirdId(user.getId());
+                        vehicleRepository.save(vehicle);
+                    });
+                }
+                return user.getId().intValue();
             } else {
                 var aux = userThirdJpaRepository.findById(user.getId())
                         .orElseThrow(() -> new ResourceNotFoundException("Usuario tercero no encontrado con id: " + user.getId()));
                 userThirdMapper.updateUserThirdFromExisting(aux, userAux);
-                userThirdJpaRepository.save(aux);
+                UserThirdEntity updatedEntity = userThirdJpaRepository.save(aux);
+                return updatedEntity.getId().intValue();
             }
         } catch (DataIntegrityViolationException e) {
             throw new DuplicateResourceException("Error de integridad de datos al guardar usuario. Detalles: " + e.getMessage());
@@ -70,4 +82,6 @@ public class UserThirdRepositoryImpl implements UserThirdRepository {
     public UserThird findByEmail(String email) {
         return userThirdMapper.fromEntityToDomain(userThirdJpaRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("Error al buscar el usuario con email:" )));
     }
+
+
 }

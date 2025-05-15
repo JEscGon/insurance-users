@@ -50,11 +50,28 @@ public class UserThirdController implements ThirdUsersApi {
     }
 
     @Override
-    public ResponseEntity<Void> saveThirdUser(ThirdPartyUserWrapperDto usersThirdDto){
-        usersThirdDto.getUsers().stream()
+    public ResponseEntity<List<Integer>> saveThirdUser(ThirdPartyUserWrapperDto usersThirdDto) {
+        if (usersThirdDto == null || usersThirdDto.getUsers() == null || usersThirdDto.getUsers().isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        List<UserThird> usersToSave = usersThirdDto.getUsers().stream()
                 .map(userThirdDtoMapper::fromDtoToDomain)
-                .forEach(userThirdService::save);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+                .collect(Collectors.toList());
+
+        List<Integer> savedUsers = usersToSave.stream()
+                .map(userThirdService::save)
+                .collect(Collectors.toList());
+
+        if (savedUsers.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+
+        List<Integer> savedUserIds = savedUsers.stream()
+            .map(Math::toIntExact)
+            .collect(Collectors.toList());
+
+        return new ResponseEntity<>(savedUserIds, HttpStatus.CREATED);
     }
 
 
