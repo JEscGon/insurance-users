@@ -1,4 +1,4 @@
-package com.dev.insurance_users.infrastructure.repository.mapper;
+package com.dev.insurance_users.infrastructure.rest.mapper;
 
 import com.dev.insurance_users.application.domain.UserThird;
 import com.dev.insurance_users.infrastructure.repository.jpa.entity.UserThirdEntity;

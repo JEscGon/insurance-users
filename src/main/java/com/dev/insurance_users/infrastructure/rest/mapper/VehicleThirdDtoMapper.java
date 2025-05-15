@@ -1,13 +1,13 @@
 package com.dev.insurance_users.infrastructure.rest.mapper;
 
 import com.dev.insurance_users.application.domain.VehicleThird;
-import com.dev.insurance_users.generated.model.ThirdPartyVehicleDto;
+import com.dev.insurance_users.generated.model.VehicleThirdDto;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface VehicleThirdDtoMapper {
 
-    VehicleThird fromDtoToDomain(ThirdPartyVehicleDto vehicleThirdDto);
+    VehicleThird fromDtoToDomain(VehicleThirdDto vehicleThirdDto);
 
-    ThirdPartyVehicleDto fromDomainToDto(VehicleThird vehicleThird);
+    VehicleThirdDto fromDomainToDto(VehicleThird vehicleThird);
 }

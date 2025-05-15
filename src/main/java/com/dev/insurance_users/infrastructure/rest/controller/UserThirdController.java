@@ -3,8 +3,8 @@ package com.dev.insurance_users.infrastructure.rest.controller;
 import com.dev.insurance_users.application.domain.UserThird;
 import com.dev.insurance_users.application.service.UserThirdService;
 import com.dev.insurance_users.generated.api.ThirdUsersApi;
-import com.dev.insurance_users.generated.model.ThirdPartyUserDto;
 import com.dev.insurance_users.generated.model.ThirdPartyUserWrapperDto;
+import com.dev.insurance_users.generated.model.UserThirdDto;
 import com.dev.insurance_users.infrastructure.rest.mapper.UserThirdDtoMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -33,7 +33,7 @@ public class UserThirdController implements ThirdUsersApi {
     @Override
     public ResponseEntity<ThirdPartyUserWrapperDto> findAllThirdUsers() {
         List<UserThird> vehicles = userThirdService.findAll();
-        List<ThirdPartyUserDto> userThirdDtos = vehicles.stream()
+        List<UserThirdDto> userThirdDtos = vehicles.stream()
                 .map(userThirdDtoMapper::fromDomainToDto)
                 .collect(Collectors.toList());
 
@@ -43,9 +43,9 @@ public class UserThirdController implements ThirdUsersApi {
     }
 
     @Override
-    public ResponseEntity<ThirdPartyUserDto> findThirdUserById(Long id) {
+    public ResponseEntity<UserThirdDto> findThirdUserById(Long id) {
         UserThird userThirdOpt = userThirdService.findById(id);
-        ThirdPartyUserDto userThirdDto = userThirdDtoMapper.fromDomainToDto(userThirdOpt);
+        UserThirdDto userThirdDto = userThirdDtoMapper.fromDomainToDto(userThirdOpt);
         return new ResponseEntity<>(userThirdDto, HttpStatus.OK);
     }
 
@@ -76,7 +76,7 @@ public class UserThirdController implements ThirdUsersApi {
 
 
     @Override
-    public ResponseEntity<Void> updateThirdUser(Long id, ThirdPartyUserDto userThirdDto){
+    public ResponseEntity<Void> updateThirdUser(Long id, UserThirdDto userThirdDto){
         userThirdDto.setId(Math.toIntExact(id));
         UserThird userThird = userThirdDtoMapper.fromDtoToDomain(userThirdDto);
         userThirdService.save(userThird);

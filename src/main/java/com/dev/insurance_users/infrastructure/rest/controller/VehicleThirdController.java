@@ -3,8 +3,9 @@ package com.dev.insurance_users.infrastructure.rest.controller;
 import com.dev.insurance_users.application.domain.VehicleThird;
 import com.dev.insurance_users.application.service.VehicleThirdService;
 import com.dev.insurance_users.generated.api.ThirdVehiclesApi;
-import com.dev.insurance_users.generated.model.ThirdPartyVehicleDto;
+
 import com.dev.insurance_users.generated.model.ThirdPartyVehiclesWrapperDto;
+import com.dev.insurance_users.generated.model.VehicleThirdDto;
 import com.dev.insurance_users.infrastructure.rest.mapper.VehicleThirdDtoMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -31,7 +32,7 @@ public class VehicleThirdController implements ThirdVehiclesApi {
     public ResponseEntity<ThirdPartyVehiclesWrapperDto> getAllThirdVehicles(){
         List<VehicleThird> vehicles = vehicleThirdService.findAll();
         var wrapper = new ThirdPartyVehiclesWrapperDto();
-        List<ThirdPartyVehicleDto> vehiclesDto = vehicles.stream()
+        List<VehicleThirdDto> vehiclesDto = vehicles.stream()
                 .map(vehicleThirdDtoMapper::fromDomainToDto)
                 .collect(Collectors.toList());
         wrapper.setVehicles(vehiclesDto);
@@ -39,7 +40,7 @@ public class VehicleThirdController implements ThirdVehiclesApi {
     }
 
     @Override
-    public ResponseEntity<ThirdPartyVehicleDto> getThirdVehicleById(Long id){
+    public ResponseEntity<VehicleThirdDto> getThirdVehicleById(Long id){
         try {
             Optional<VehicleThird> vehicleOpt = vehicleThirdService.findById(id);
             return vehicleOpt.map(vehicleThird ->
@@ -77,7 +78,7 @@ public class VehicleThirdController implements ThirdVehiclesApi {
 
  //TODO : FIX ID
     @Override
-    public ResponseEntity<Void> updateThirdVehicle(Long id ,ThirdPartyVehicleDto vehicleThirdDto){
+    public ResponseEntity<Void> updateThirdVehicle(Long id ,VehicleThirdDto vehicleThirdDto){
         VehicleThird vehicle = vehicleThirdDtoMapper.fromDtoToDomain(vehicleThirdDto);
         vehicle.setId(id);
         vehicleThirdService.save(vehicle);
@@ -85,7 +86,7 @@ public class VehicleThirdController implements ThirdVehiclesApi {
     }
 
     @Override
-    public ResponseEntity<ThirdPartyVehicleDto> findByMatriculaThird(String matricula) {
+    public ResponseEntity<VehicleThirdDto> findByMatriculaThird(String matricula) {
         Optional<VehicleThird> vehicleOpt = vehicleThirdService.findByMatriculaThird(matricula);
         return vehicleOpt
             .map(vehicleThirdDtoMapper::fromDomainToDto)

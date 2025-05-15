@@ -6,9 +6,8 @@ import com.dev.insurance_users.application.exception.ResourceNotFoundException;
 import com.dev.insurance_users.application.repository.UserRepository;
 import com.dev.insurance_users.infrastructure.repository.jpa.entity.UserEntity;
 import com.dev.insurance_users.infrastructure.repository.jpa.UserJpaRepository;
-import com.dev.insurance_users.infrastructure.repository.mapper.UserMapper;
+import com.dev.insurance_users.infrastructure.rest.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Repository;
 

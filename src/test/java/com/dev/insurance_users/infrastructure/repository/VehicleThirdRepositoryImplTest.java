@@ -5,7 +5,7 @@ import com.dev.insurance_users.infrastructure.repository.jpa.entity.UserThirdEnt
 import com.dev.insurance_users.infrastructure.repository.jpa.entity.VehicleThirdEntity;
 import com.dev.insurance_users.infrastructure.repository.jpa.UserThirdJpaRepository;
 import com.dev.insurance_users.infrastructure.repository.jpa.VehicleThirdJpaRepository;
-import com.dev.insurance_users.infrastructure.repository.mapper.VehicleThirdMapper;
+import com.dev.insurance_users.infrastructure.rest.mapper.VehicleThirdMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

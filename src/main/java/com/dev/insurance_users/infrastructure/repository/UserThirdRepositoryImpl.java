@@ -7,7 +7,7 @@ import com.dev.insurance_users.application.repository.UserThirdRepository;
 import com.dev.insurance_users.application.repository.VehicleThirdRepository;
 import com.dev.insurance_users.infrastructure.repository.jpa.entity.UserThirdEntity;
 import com.dev.insurance_users.infrastructure.repository.jpa.UserThirdJpaRepository;
-import com.dev.insurance_users.infrastructure.repository.mapper.UserThirdMapper;
+import com.dev.insurance_users.infrastructure.rest.mapper.UserThirdMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;

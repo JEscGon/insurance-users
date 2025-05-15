@@ -4,7 +4,7 @@ import com.dev.insurance_users.application.domain.User;
 import com.dev.insurance_users.application.exception.ResourceNotFoundException;
 import com.dev.insurance_users.infrastructure.repository.jpa.entity.UserEntity;
 import com.dev.insurance_users.infrastructure.repository.jpa.UserJpaRepository;
-import com.dev.insurance_users.infrastructure.repository.mapper.UserMapper;
+import com.dev.insurance_users.infrastructure.rest.mapper.UserMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
