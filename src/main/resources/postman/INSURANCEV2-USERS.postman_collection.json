@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "757685d9-1949-4ce0-b942-bd16d835deab",
-		"name": "INSURANCEV2-USERS",
+		"name": "INSURANCEV2-USERS  :: 80",
 		"description": "Crear un usuario: POST [http://localhost:8080/users](http://localhost:8080/users)  \nObtener un usuario por ID: GET [http://localhost:8080/users/{id}](http://localhost:8080/users/{id})  \nObtener todos los usuarios: GET [http://localhost:8080/users](http://localhost:8080/users)  \nActualizar un usuario por ID: PUT [http://localhost:8080/users/{id}](http://localhost:8080/users/{id})  \nEliminar un usuario por ID: DELETE [http://localhost:8080/users/{id}](http://localhost:8080/users/{id})",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
 		"_exporter_id": "21757430"
@@ -68,7 +68,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"John Doe\",\n  \"surname\": \"pepo\",\n  \"email\": \"john.33@example.com\",\n  \"dni\": \"1233845A\",\n  \"dateOfBirth\": \"1990-01-01\",\n  \"address\": \"123 Main St, Anytown, USA\",\n  \"city\": \"narnia\",\n  \"country\": \"kakaka\",\n  \"password\": \"123412341234\",\n  \"phone\": \"1233398\"\n}",
+							"raw": "{\n  \"name\": \"DRENA\",\n  \"surname\": \"BOLAS\",\n  \"email\": \"DRENABOLAS@example.com\",\n  \"dni\": \"23456256\",\n  \"dateOfBirth\": \"1992-01-01\",\n  \"address\": \"123 Main St, Anytown, ESP\",\n  \"city\": \"Mordor\",\n  \"country\": \"Middle-earth\",\n  \"password\": \"UNKNOWN\",\n  \"phone\": \"698741235\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -102,14 +102,14 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"John Doe\",\n  \"surname\": \"pepo\",\n  \"email\": \"john.de@exaaample.com\",\n  \"dni\": \"\",\n  \"dateOfBirth\": \"1990-01-01\",\n  \"address\": \"123 Main St, Anytown, USA\",\n  \"city\": \"narnia\",\n  \"country\": \"kakaka\",\n  \"password\": \"123412341234\",\n  \"phone\": \"12341998\"\n}",
+							"raw": "{\n  \"name\": \"mierder\",\n  \"surname\": \"mierder\",\n  \"email\": \"mierder@example.com\",\n  \"dni\": \"42287615\",\n  \"dateOfBirth\": \"1992-01-01\",\n  \"address\": \"123 Main St, Anytown, ESP\",\n  \"city\": \"Mordor\",\n  \"country\": \"Middle-earth\",\n  \"password\": \"mierder\",\n  \"phone\": \"66911322\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
 								}
 							}
 						},
-						"url": "http://localhost:8080/users/3",
+						"url": "http://localhost:8080/users/27",
 						"description": "This is a PUT request and it is used to overwrite an existing piece of data. For instance, after you create an entity with a POST request, you may want to modify that later. You can do that using a PUT request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful PUT request typically returns a `200 OK`, `201 Created`, or `204 No Content` response code."
 					},
 					"response": []
@@ -143,7 +143,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:8080/users/1",
+						"url": "http://localhost:8080/users/50",
 						"description": "This is a DELETE request, and it is used to delete data that was previously created via a POST request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful DELETE request typically returns a `200 OK`, `202 Accepted`, or `204 No Content` response code."
 					},
 					"response": []
@@ -153,7 +153,7 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "http://localhost:8080/users/1"
+						"url": "http://localhost:8080/users/3"
 					},
 					"response": []
 				},
@@ -162,7 +162,7 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "http://localhost:8080/users/dni/1233845A"
+						"url": "http://localhost:8080/users/dni/12345678T"
 					},
 					"response": []
 				},
@@ -171,15 +171,11 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "http://localhost:8080/users/email/john.33@example.com"
+						"url": "http://localhost:8080/users/email/marta@example.com"
 					},
 					"response": []
 				}
 			]
-		},
-		{
-			"name": "Auth-JWT",
-			"item": []
 		},
 		{
 			"name": "Vehicles",
@@ -191,7 +187,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"idUser\": 2,\r\n  \"matricula\": \"1233ABC\",\r\n  \"km\": 50000,\r\n  \"marca\": \"Hyundai\",\r\n  \"fechaFabricacion\": \"2000-03-10\"\r\n}",
+							"raw": "{\r\n  \"userId\": 27,\r\n  \"matricula\": \"131313XY\",\r\n  \"color\": \"NO-WHITE\",\r\n  \"km\": 200000,\r\n  \"marca\": \"Hyundai\",\r\n  \"fechaFabricacion\": \"2006-01-01\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -207,7 +203,7 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "http://localhost:8080/vehicles/1"
+						"url": "http://localhost:8080/vehicles/5"
 					},
 					"response": []
 				},
@@ -225,7 +221,7 @@
 					"request": {
 						"method": "DELETE",
 						"header": [],
-						"url": "http://localhost:8080/vehicles/2"
+						"url": "http://localhost:8080/vehicles/22"
 					},
 					"response": []
 				},
@@ -236,14 +232,14 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"idUser\": 1,\r\n  \"matricula\": \"1231214C\",\r\n  \"km\": 5020020,\r\n  \"marca\": \"1111\",\r\n  \"fechaFabricacion\": \"2000-03-10\"\r\n}",
+							"raw": "\r\n{\r\n  \"userId\": 19,\r\n  \"matricula\": \"12223XY\",\r\n  \"color\": \"White\",\r\n  \"km\": 20000,\r\n  \"marca\": \"Hyundai\",\r\n  \"fechaFabricacion\": \"2006-01-01\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
 								}
 							}
 						},
-						"url": "http://localhost:8080/vehicles/3"
+						"url": "http://localhost:8080/vehicles/19"
 					},
 					"response": []
 				},
@@ -253,6 +249,142 @@
 						"method": "GET",
 						"header": [],
 						"url": "http://localhost:8080/vehicles"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ThirdUsers",
+			"item": [
+				{
+					"name": "FindAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/third_users"
+					},
+					"response": []
+				},
+				{
+					"name": "FindById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/third_users/13"
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteById",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:8080/third_users/13"
+					},
+					"response": []
+				},
+				{
+					"name": "Save",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"users\": [\r\n    {\r\n    \"name\": \"Juan\",\r\n    \"surname\": \"Pérez\",\r\n    \"phone\": \"3345666\",\r\n    \"email\": \"per433ez@example.com\",\r\n    \"dni\": \"76534\",\r\n    \"city\": \"Madrid\",\r\n    \"country\": \"España\",\r\n    \"address\": \"Calle Falsa 123\",\r\n    \"dateOfBirth\": \"1990-01-01\",\r\n    \"vehicles\": [\r\n        {\r\n        \"matricula\": \"222333\",\r\n        \"km\": 50000,\r\n        \"marca\": \"Toyota\",\r\n        \"aseguradora\": \"Mapfre\",\r\n        \"color\": \"Rojo\",\r\n        \"fechaFabricacion\": \"2020-01-01\"\r\n        }\r\n    ]\r\n    },\r\n        {\r\n        \"name\": \"Ana\",\r\n        \"surname\": \"García\",\r\n        \"phone\": \"321312\",\r\n        \"email\": \"123124q@example.com\",\r\n        \"dni\": \"7657456\",\r\n        \"city\": \"Barcelona\",\r\n        \"country\": \"España\",\r\n        \"address\": \"Avenida Siempre Viva 456\",\r\n        \"dateOfBirth\": \"1985-06-15\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/third_users"
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Pepito\",\r\n  \"surname\": \"Pérez\",\r\n  \"phone\": \"666889977\",\r\n  \"email\": \"pepito.per3z@example.com\",\r\n  \"dni\": \"11869364A\",\r\n  \"city\": \"Madrid\",\r\n  \"country\": \"España\",\r\n  \"address\": \"Calle Falsa 123\",\r\n  \"dateOfBirth\": \"1990-06-12\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/third_users/21"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ThirdVehicles",
+			"item": [
+				{
+					"name": "FindAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/third_vehicles"
+					},
+					"response": []
+				},
+				{
+					"name": "FindById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/third_vehicles/1"
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteById",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:8080/third_vehicles/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Save",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"vehicles\": [\r\n    {\r\n      \"matricula\": \"5678XYZ\",\r\n      \"km\": 120000,\r\n      \"marca\": \"Ford\",\r\n      \"aseguradora\": \"AXA\",\r\n      \"color\": \"Azul\",\r\n      \"fechaFabricacion\": \"2018-06-15\",\r\n      \"userThirdId\": 2\r\n    },\r\n    {\r\n      \"matricula\": \"9101DEF\",\r\n      \"km\": 80000,\r\n      \"marca\": \"Honda\",\r\n      \"aseguradora\": \"Allianz\",\r\n      \"color\": \"Negro\",\r\n      \"fechaFabricacion\": \"2019-09-20\",\r\n      \"userThirdId\": 3\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/third_vehicles"
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"userThirdId\": 21,\r\n  \"matricula\": \"1312AB\",\r\n  \"km\": 121312,\r\n  \"marca\": \"CitroenX\",\r\n  \"color\": \"NEGRO\",\r\n  \"aseguradora\": \"Securitas Direct\",\r\n  \"fechaFabricacion\": \"2020-12-13\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/third_vehicles/14"
 					},
 					"response": []
 				}

@@ -16,8 +16,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
@@ -33,10 +33,8 @@ class UserThirdControllerTest {
 
     @Mock
     private UserThirdService userThirdService;
-
     @Mock
     private UserThirdDtoMapper userThirdDtoMapper;
-
     @InjectMocks
     private UserThirdController userThirdController;
 
@@ -78,9 +76,9 @@ class UserThirdControllerTest {
         mockMvc.perform(get("/third_users"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$", hasSize(2)))
-                .andExpect(jsonPath("$[0].id", is(1)))
-                .andExpect(jsonPath("$[1].id", is(2)));
+        .andExpect(jsonPath("$.users", hasSize(2)))
+        .andExpect(jsonPath("$.users[0].id", is(1)))
+        .andExpect(jsonPath("$.users[1].id", is(2)));
     }
 
     @Test
@@ -130,12 +128,12 @@ class UserThirdControllerTest {
         user.setName("New User");
 
         when(userThirdDtoMapper.fromDtoToDomain(any(UserThirdDto.class))).thenReturn(user);
-        doNothing().when(userThirdService).save(user);
+        when(userThirdService.save(any(UserThird.class))).thenReturn(1);
 
         // When & Then
         mockMvc.perform(post("/third_users")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(dto)))
+                .content(objectMapper.writeValueAsString(Collections.singletonMap("users", Collections.singletonList(dto)))))
                 .andExpect(status().isCreated());
     }
 
@@ -152,7 +150,7 @@ class UserThirdControllerTest {
         user.setName("Updated User");
 
         when(userThirdDtoMapper.fromDtoToDomain(any(UserThirdDto.class))).thenReturn(user);
-        doNothing().when(userThirdService).save(user);
+        when(userThirdService.save(any(UserThird.class))).thenReturn(1);
 
         // When & Then
         mockMvc.perform(put("/third_users/{id}", userId)

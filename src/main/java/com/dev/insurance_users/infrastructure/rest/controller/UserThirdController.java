@@ -44,9 +44,13 @@ public class UserThirdController implements ThirdUsersApi {
 
     @Override
     public ResponseEntity<UserThirdDto> findThirdUserById(Long id) {
-        UserThird userThirdOpt = userThirdService.findById(id);
-        UserThirdDto userThirdDto = userThirdDtoMapper.fromDomainToDto(userThirdOpt);
-        return new ResponseEntity<>(userThirdDto, HttpStatus.OK);
+        try {
+            UserThird userThirdOpt = userThirdService.findById(id);
+            UserThirdDto userThirdDto = userThirdDtoMapper.fromDomainToDto(userThirdOpt);
+            return new ResponseEntity<>(userThirdDto, HttpStatus.OK);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 
     @Override

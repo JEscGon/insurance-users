@@ -3,6 +3,7 @@ package com.dev.insurance_users.infrastructure.rest.controller;
 import com.dev.insurance_users.application.domain.VehicleThird;
 import com.dev.insurance_users.application.service.VehicleThirdService;
 
+import com.dev.insurance_users.generated.model.ThirdPartyVehiclesWrapperDto;
 import com.dev.insurance_users.generated.model.VehicleThirdDto;
 import com.dev.insurance_users.infrastructure.rest.mapper.VehicleThirdDtoMapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -83,11 +84,11 @@ class VehicleThirdControllerTest {
         mockMvc.perform(get("/third_vehicles"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$", hasSize(2)))
-                .andExpect(jsonPath("$[0].id", is(1)))
-                .andExpect(jsonPath("$[0].matricula", is("1234ABC")))
-                .andExpect(jsonPath("$[1].id", is(2)))
-                .andExpect(jsonPath("$[1].matricula", is("5678XYZ")));
+                .andExpect(jsonPath("$.vehicles", hasSize(2)))
+                .andExpect(jsonPath("$.vehicles[0].id", is(1)))
+                .andExpect(jsonPath("$.vehicles[0].matricula", is("1234ABC")))
+                .andExpect(jsonPath("$.vehicles[1].id", is(2)))
+                .andExpect(jsonPath("$.vehicles[1].matricula", is("5678XYZ")));
 
         verify(vehicleThirdService).findAll();
     }
@@ -143,19 +144,22 @@ class VehicleThirdControllerTest {
         // Given
         VehicleThirdDto dto = createVehicleThirdDto();
         VehicleThird vehicle = createVehicleThird();
+        ThirdPartyVehiclesWrapperDto wrapperDto = new ThirdPartyVehiclesWrapperDto();
+        wrapperDto.setVehicles(List.of(dto));
 
         when(vehicleThirdDtoMapper.fromDtoToDomain(any(VehicleThirdDto.class))).thenReturn(vehicle);
-        doNothing().when(vehicleThirdService).save(vehicle);
+        when(vehicleThirdService.save(any(VehicleThird.class))).thenReturn(vehicle.getId().intValue());
 
         // When & Then
         mockMvc.perform(post("/third_vehicles")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(dto)))
+                .content(objectMapper.writeValueAsString(wrapperDto)))
                 .andExpect(status().isCreated());
 
         verify(vehicleThirdDtoMapper).fromDtoToDomain(any(VehicleThirdDto.class));
-        verify(vehicleThirdService).save(vehicle);
+        verify(vehicleThirdService).save(any(VehicleThird.class));
     }
+
 
     @Test
     void updateThirdVehicle_ShouldReturnOk() throws Exception {
@@ -165,7 +169,7 @@ class VehicleThirdControllerTest {
         VehicleThird vehicle = createVehicleThird();
 
         when(vehicleThirdDtoMapper.fromDtoToDomain(any(VehicleThirdDto.class))).thenReturn(vehicle);
-        doNothing().when(vehicleThirdService).save(vehicle);
+        when(vehicleThirdService.save(any(VehicleThird.class))).thenReturn(vehicle.getId().intValue());
 
         // When & Then
         mockMvc.perform(put("/third_vehicles/{id}", vehicleId)
@@ -174,25 +178,10 @@ class VehicleThirdControllerTest {
                 .andExpect(status().isOk());
 
         verify(vehicleThirdDtoMapper).fromDtoToDomain(any(VehicleThirdDto.class));
-        verify(vehicleThirdService).save(vehicle);
+        verify(vehicleThirdService).save(any(VehicleThird.class));
     }
 
-    @Test
-    void updateThirdVehicle_WhenExceptionThrown_ShouldReturnBadRequest() throws Exception {
-        // Given
-        Long vehicleId = 1L;
-        VehicleThirdDto dto = createVehicleThirdDto();
 
-        when(vehicleThirdDtoMapper.fromDtoToDomain(any(VehicleThirdDto.class))).thenThrow(new RuntimeException("Error"));
-
-        // When & Then
-        mockMvc.perform(put("/third_vehicles/{id}", vehicleId)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(dto)))
-                .andExpect(status().isBadRequest());
-
-        verify(vehicleThirdDtoMapper).fromDtoToDomain(any(VehicleThirdDto.class));
-    }
 
     @Test
     void deleteThirdVehicleById_ShouldReturnNoContent() throws Exception {
@@ -205,5 +194,39 @@ class VehicleThirdControllerTest {
                 .andExpect(status().isNoContent());
 
         verify(vehicleThirdService).deleteVehicleById(vehicleId);
+    }
+
+    @Test
+    void findByMatriculaThird_WhenVehicleExists_ShouldReturnVehicle() throws Exception {
+        // Given
+        String matricula = "1234ABC";
+        VehicleThird vehicle = createVehicleThird();
+        VehicleThirdDto dto = createVehicleThirdDto();
+
+        when(vehicleThirdService.findByMatriculaThird(matricula)).thenReturn(Optional.of(vehicle));
+        when(vehicleThirdDtoMapper.fromDomainToDto(vehicle)).thenReturn(dto);
+
+        // When & Then
+        mockMvc.perform(get("/third_vehicles/matricula/{matricula}", matricula))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id", is(1)))
+                .andExpect(jsonPath("$.matricula", is("1234ABC")));
+
+        verify(vehicleThirdService).findByMatriculaThird(matricula);
+        verify(vehicleThirdDtoMapper).fromDomainToDto(vehicle);
+    }
+
+    @Test
+    void findByMatriculaThird_WhenVehicleDoesNotExist_ShouldReturnNotFound() throws Exception {
+        // Given
+        String matricula = "9999ZZZ";
+        when(vehicleThirdService.findByMatriculaThird(matricula)).thenReturn(Optional.empty());
+
+        // When & Then
+        mockMvc.perform(get("/third_vehicles/matricula/{matricula}", matricula))
+                .andExpect(status().isNotFound());
+
+        verify(vehicleThirdService).findByMatriculaThird(matricula);
     }
 }

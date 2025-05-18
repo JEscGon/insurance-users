@@ -13,6 +13,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @DirtiesContext
@@ -60,28 +61,9 @@ public class UserThirdApiIntegracionTest {
 
     @Test
     public void saveThirdUserTest() throws Exception {
-        String existingThirdUser = """
-                {
-                    "name": "Juan",
-                    "surname": "Gomez",
-                    "phone": "123456789",
-                    "email": "juan.gomez@example.com",
-                    "dni": "52896881D",
-                    "city": "Madrid",
-                    "country": "Spain",
-                    "address": "Calle Falsa 123",
-                    "dateOfBirth": "1990-01-01"
-                }
-                """;
-        mockMvc.perform(post("/third_users")
-                        .contentType("application/json")
-                        .content(existingThirdUser))
-                .andExpect(status().isCreated());
-    }
-
-    @Test
-    public void saveThirdUserDuplicateKeyTest() throws Exception {
-        String existingThirdUser = """
+        String newThirdUser = """
+        {
+            "users": [
                 {
                     "name": "Juan",
                     "surname": "Gomez",
@@ -93,7 +75,35 @@ public class UserThirdApiIntegracionTest {
                     "address": "Calle Falsa 123",
                     "dateOfBirth": "1990-01-01"
                 }
-                """;
+            ]
+        }
+        """;
+            mockMvc.perform(post("/third_users")
+                            .contentType("application/json")
+                            .content(newThirdUser))
+                    .andExpect(status().isCreated())
+                    .andExpect(jsonPath("$").isArray());
+    }
+
+    @Test
+    public void saveThirdUserDuplicateKeyTest() throws Exception {
+        String existingThirdUser = """
+        {
+            "users": [
+                {
+                    "name": "Juan",
+                    "surname": "Gomez",
+                    "phone": "123456789",
+                    "email": "juan.gomez@example.com",
+                    "dni": "12345678A",
+                    "city": "Madrid",
+                    "country": "Spain",
+                    "address": "Calle Falsa 123",
+                    "dateOfBirth": "1990-01-01"
+                }
+            ]
+        }
+        """;
         mockMvc.perform(post("/third_users")
                         .contentType("application/json")
                         .content(existingThirdUser))

@@ -12,6 +12,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @DirtiesContext
@@ -56,23 +57,37 @@ public class VehicleThirdApiIntegracionTest {
     }
 
     @Test
-    public void saveThirdVehicleTest() throws Exception {
-        String newThirdVehicle = """
+    public void saveThirdVehiclesTest() throws Exception {
+        String newThirdVehicles = """
+        {
+            "vehicles": [
                 {
-                    "userThirdId": 7,
-                    "matricula": "12334ABC",
-                    "aseguradora": "Mapfre",
-                    "km": 10000,
-                    "fechaFabricacion": "2020-01-01",
-                    "marca": "Toyota",
-                    "modelo": "Corolla",
-                    "color": "Rojo"
+                    "matricula": "23333",
+                    "km": 120000,
+                    "marca": "Ford",
+                    "aseguradora": "AXA",
+                    "color": "Azul",
+                    "fechaFabricacion": "2018-06-15",
+                    "userThirdId": 2
+                },
+                {
+                    "matricula": "444444",
+                    "km": 80000,
+                    "marca": "Honda",
+                    "aseguradora": "Allianz",
+                    "color": "Negro",
+                    "fechaFabricacion": "2019-09-20",
+                    "userThirdId": 3
                 }
-                """;
+            ]
+        }
+        """;
         mockMvc.perform(post("/third_vehicles")
                         .contentType("application/json")
-                        .content(newThirdVehicle))
-                .andExpect(status().isCreated());
+                        .content(newThirdVehicles))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$[0]").isNumber());
     }
 
 

@@ -2,6 +2,7 @@ package com.dev.insurance_users.infrastructure.repository;
 
 
 import com.dev.insurance_users.application.domain.UserThird;
+import com.dev.insurance_users.application.exception.ResourceNotFoundException;
 import com.dev.insurance_users.infrastructure.repository.jpa.entity.UserThirdEntity;
 import com.dev.insurance_users.infrastructure.repository.jpa.UserThirdJpaRepository;
 import com.dev.insurance_users.infrastructure.rest.mapper.UserThirdMapper;
@@ -30,37 +31,48 @@ public class UserThirdRepositoryImplTest {
     private UserThirdRepositoryImpl userThirdRepositoryImpl;
 
     @Test
-    void save_WhenNewUser_ShouldSaveEntity() {
+    void save_WhenUserIsNew_ShouldSaveAndReturnId() {
         // Arrange
-        UserThird userThird = new UserThird();
+        UserThird user = new UserThird();
+        user.setName("New User");
         UserThirdEntity entity = new UserThirdEntity();
-        when(userThirdMapper.fromDomainToEntity(userThird)).thenReturn(entity);
+        entity.setId(1L);
+
+        when(userThirdMapper.fromDomainToEntity(user)).thenReturn(entity);
+        when(userThirdJpaRepository.save(entity)).thenReturn(entity);
 
         // Act
-        userThirdRepositoryImpl.save(userThird);
+        Integer result = userThirdRepositoryImpl.save(user);
 
         // Assert
+        assertEquals(1, result);
         verify(userThirdJpaRepository).save(entity);
     }
 
     @Test
-    void save_WhenExistingUser_ShouldUpdateAndSave() {
+    void save_WhenUserAlreadyExists_ShouldUpdateAndReturnId() {
         // Arrange
-        UserThird userThird = new UserThird();
-        userThird.setId(1L);
-        UserThirdEntity entity = new UserThirdEntity();
+        UserThird user = new UserThird();
+        user.setId(1L);
+        user.setName("Updated User");
         UserThirdEntity existingEntity = new UserThirdEntity();
+        UserThirdEntity updatedEntity = new UserThirdEntity();
+        updatedEntity.setId(1L);
 
-        when(userThirdMapper.fromDomainToEntity(userThird)).thenReturn(entity);
         when(userThirdJpaRepository.findById(1L)).thenReturn(Optional.of(existingEntity));
+        when(userThirdJpaRepository.save(existingEntity)).thenReturn(updatedEntity);
+        when(userThirdMapper.fromDomainToEntity(user)).thenReturn(updatedEntity);
 
         // Act
-        userThirdRepositoryImpl.save(userThird);
+        Integer result = userThirdRepositoryImpl.save(user);
 
         // Assert
-        verify(userThirdMapper).updateUserThirdFromExisting(existingEntity, entity);
+        assertEquals(1, result);
+        verify(userThirdJpaRepository).findById(1L);
         verify(userThirdJpaRepository).save(existingEntity);
     }
+
+
 
     @Test
     void findById_WhenUserExists_ShouldReturnUser() {
@@ -81,16 +93,13 @@ public class UserThirdRepositoryImplTest {
     }
 
     @Test
-    void findById_WhenUserDoesNotExist_ShouldReturnEmpty() {
+    void findById_WhenUserDoesNotExist_ShouldThrowResourceNotFoundException() {
         // Arrange
         Long id = 1L;
         when(userThirdJpaRepository.findById(id)).thenReturn(Optional.empty());
 
-        // Act
-        Optional<UserThird> result = Optional.ofNullable(userThirdRepositoryImpl.findById(id));
-
-        // Assert
-        assertFalse(result.isPresent());
+        // Act & Assert
+        assertThrows(ResourceNotFoundException.class, () -> userThirdRepositoryImpl.findById(id));
     }
 
     @Test
@@ -128,20 +137,23 @@ public class UserThirdRepositoryImplTest {
     }
 
     @Test
-    void findByDni_ShouldReturnEmpty() {
-        // Act
-        Optional<UserThird> result = Optional.ofNullable(userThirdRepositoryImpl.findByDni("12345678X"));
+    void findByDni_ShouldThrowResourceNotFoundException() {
+        // Arrange
+        String dni = "12345678X";
+        when(userThirdJpaRepository.findByDni(dni)).thenReturn(Optional.empty());
 
-        // Assert
-        assertFalse(result.isPresent());
+        // Act & Assert
+        assertThrows(ResourceNotFoundException.class, () -> userThirdRepositoryImpl.findByDni(dni));
     }
 
     @Test
-    void findByEmail_ShouldReturnEmpty() {
-        // Act
-        Optional<UserThird> result = Optional.ofNullable(userThirdRepositoryImpl.findByEmail("test@example.com"));
+    void findByEmail_WhenEmailDoesNotExist_ShouldReturnEmpty() {
+        // Arrange
+        String email = "test@example.com";
+        when(userThirdJpaRepository.findByEmail(email)).thenReturn(Optional.empty());
 
-        // Assert
-        assertFalse(result.isPresent());
+        // Act & Assert
+        assertThrows(ResourceNotFoundException.class, () -> userThirdRepositoryImpl.findByEmail(email));
     }
+
 }

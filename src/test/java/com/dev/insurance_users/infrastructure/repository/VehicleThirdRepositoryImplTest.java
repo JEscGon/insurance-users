@@ -39,45 +39,24 @@ public class VehicleThirdRepositoryImplTest {
     void save_NewVehicle_Success() {
         // Given
         VehicleThird vehicleThird = new VehicleThird();
-        vehicleThird.setId(null);
-        vehicleThird.setUserThirdId(4L);
+        vehicleThird.setMatricula("ABC123");
+        vehicleThird.setUserThirdId(1L);
 
         VehicleThirdEntity vehicleThirdEntity = new VehicleThirdEntity();
-        UserThirdEntity userThirdEntity = new UserThirdEntity();
+        vehicleThirdEntity.setId(1L);
 
-        // When
+        UserThirdEntity userThirdEntity = new UserThirdEntity();
         when(vehicleThirdMapper.fromDomainToEntity(vehicleThird)).thenReturn(vehicleThirdEntity);
-
-        when(userThirdJpaRepository.findById(any())).thenReturn(Optional.of(UserThirdEntity.builder().build()));
-
-        vehicleThirdRepositoryImpl.save(vehicleThird);
-
-        // Then
-        verify(vehicleThirdJpaRepository).save(vehicleThirdEntity);
-    }
-
-    @Test
-    void save_UpdateVehicle_Success() {
-        // Given
-        VehicleThird vehicleThird = new VehicleThird();
-        vehicleThird.setId(1L);
-        vehicleThird.setUserThirdId(2L);
-
-        VehicleThirdEntity existingEntity = new VehicleThirdEntity();
-        VehicleThirdEntity updatedEntity = new VehicleThirdEntity();
-        UserThirdEntity userThirdEntity = new UserThirdEntity();
-        existingEntity.setUserThird(userThirdEntity);
-
-        when(vehicleThirdMapper.fromDomainToEntity(vehicleThird)).thenReturn(updatedEntity);
-        when(vehicleThirdJpaRepository.findById(1L)).thenReturn(Optional.of(existingEntity));
+        when(vehicleThirdJpaRepository.findByMatricula("ABC123")).thenReturn(Optional.empty());
+        when(userThirdJpaRepository.findById(1L)).thenReturn(Optional.of(userThirdEntity));
+        when(vehicleThirdJpaRepository.save(vehicleThirdEntity)).thenReturn(vehicleThirdEntity);
 
         // When
-        vehicleThirdRepositoryImpl.save(vehicleThird);
+        Integer result = vehicleThirdRepositoryImpl.save(vehicleThird);
 
         // Then
-        verify(vehicleThirdMapper).updateVehicleThirdFromExisting(existingEntity, updatedEntity);
-        verify(vehicleThirdJpaRepository).save(existingEntity);
-        assertEquals(userThirdEntity, existingEntity.getUserThird());
+        assertEquals(1, result);
+        verify(vehicleThirdJpaRepository).save(vehicleThirdEntity);
     }
 
     @Test
