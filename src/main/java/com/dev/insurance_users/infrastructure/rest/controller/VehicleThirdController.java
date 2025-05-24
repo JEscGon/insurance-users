@@ -76,7 +76,6 @@ public class VehicleThirdController implements ThirdVehiclesApi {
         return new ResponseEntity<>(savedVehicleIds, HttpStatus.CREATED);
     }
 
- //TODO : FIX ID
     @Override
     public ResponseEntity<Void> updateThirdVehicle(Long id ,VehicleThirdDto vehicleThirdDto){
         VehicleThird vehicle = vehicleThirdDtoMapper.fromDtoToDomain(vehicleThirdDto);

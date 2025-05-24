@@ -24,7 +24,6 @@ public class UserThirdRepositoryImpl implements UserThirdRepository {
     private final VehicleThirdRepository vehicleRepository;
     private final UserThirdMapper userThirdMapper;
 
-     //TODO: manejo de excepciones al guardar varios userThird que explote el adecuado
     @Override
     public Integer save(UserThird user) {
         try {

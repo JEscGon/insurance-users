@@ -21,14 +21,7 @@ public class UserThirdController implements ThirdUsersApi {
     private final UserThirdService userThirdService;
     private final UserThirdDtoMapper userThirdDtoMapper;
 
-    @Override
-    public ResponseEntity<Void> deleteThirdUserById(Long id){
-        if (id <= 0) {
-            return ResponseEntity.badRequest().build();
-        }
-        userThirdService.deleteUserById(id);
-        return ResponseEntity.noContent().build();
-    }
+
 
     @Override
     public ResponseEntity<ThirdPartyUserWrapperDto> findAllThirdUsers() {
@@ -55,28 +48,60 @@ public class UserThirdController implements ThirdUsersApi {
 
     @Override
     public ResponseEntity<List<Integer>> saveThirdUser(ThirdPartyUserWrapperDto usersThirdDto) {
-        if (usersThirdDto == null || usersThirdDto.getUsers() == null || usersThirdDto.getUsers().isEmpty()) {
-            return ResponseEntity.badRequest().build();
-        }
 
-        List<UserThird> usersToSave = usersThirdDto.getUsers().stream()
-                .map(userThirdDtoMapper::fromDtoToDomain)
-                .collect(Collectors.toList());
+        //CAMBIAR CONTRATO DE ESTE ENDPOINT
 
-        List<Integer> savedUsers = usersToSave.stream()
-                .map(userThirdService::save)
-                .collect(Collectors.toList());
+        //LLAMAR AL SERCIVIO DE USER THIRD PARA SALVAR EL USUARIO DE TERCERO
 
-        if (savedUsers.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        //DENTRO DEL SERVICIO, SI EL USUARIO DE TERCERO TIENE VEHICULO, SE SALVA. CAMBIAR BBBDD PARA QUE VEHICULO DE TERCEROS APUNTE A USUARIO THIRD. SI NO TIENE NO SE SALVA
 
-        List<Integer> savedUserIds = savedUsers.stream()
-            .map(Math::toIntExact)
-            .collect(Collectors.toList());
+        //(BORRAR ENDPOINTS DE VEHICULOS DE TERCEROS)
 
-        return new ResponseEntity<>(savedUserIds, HttpStatus.CREATED);
+        return null;
     }
+
+    @Override
+    public ResponseEntity<Void> deleteThirdUserById(Long id) {
+        // LLAMAR AL SERVICIO DE ELIMINAR USUARIO DE TERCEROS. BUSCAR PRIMERO LOS VEHICULOS DE TERCEROS QUE TIENE ASOCIADOS EN BBDD Y ELIMINARLOS TAMBIEN, Y LUEGO ELIMINAR EL USUARIO DE TERCEROS
+
+
+
+        return null;
+    }
+
+//    @Override
+//    public ResponseEntity<Void> deleteThirdUserById(Long id){
+//        if (id <= 0) {
+//            return ResponseEntity.badRequest().build();
+//        }
+//        userThirdService.deleteUserById(id);
+//        return ResponseEntity.noContent().build();
+//    }
+
+//    @Override
+//    public ResponseEntity<List<Integer>> saveThirdUser(ThirdPartyUserWrapperDto usersThirdDto) {
+//        if (usersThirdDto == null || usersThirdDto.getUsers() == null || usersThirdDto.getUsers().isEmpty()) {
+//            return ResponseEntity.badRequest().build();
+//        }
+//
+//        List<UserThird> usersToSave = usersThirdDto.getUsers().stream()
+//                .map(userThirdDtoMapper::fromDtoToDomain)
+//                .collect(Collectors.toList());
+//
+//        List<Integer> savedUsers = usersToSave.stream()
+//                .map(userThirdService::save)
+//                .collect(Collectors.toList());
+//
+//        if (savedUsers.isEmpty()) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+//        }
+//
+//        List<Integer> savedUserIds = savedUsers.stream()
+//            .map(Math::toIntExact)
+//            .collect(Collectors.toList());
+//
+//        return new ResponseEntity<>(savedUserIds, HttpStatus.CREATED);
+//    }
 
 
     @Override

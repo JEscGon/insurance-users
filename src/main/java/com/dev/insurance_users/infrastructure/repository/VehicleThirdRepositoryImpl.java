@@ -24,7 +24,7 @@ public class VehicleThirdRepositoryImpl implements VehicleThirdRepository {
     private final VehicleThirdJpaRepository vehicleThirdJpaRepository;
     private final UserThirdJpaRepository userThirdJpaRepository;
 
-    @Override //TODO:
+    @Override
     public Integer save(VehicleThird vehicle) {
         VehicleThirdEntity vehicleThirdEntity = vehicleThirdMapper.fromDomainToEntity(vehicle);
         if (vehicle.getId() == null) { // nuevo vehículo
