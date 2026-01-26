@@ -1,3 +1,12 @@
 spring:
   application:
     name: insurance-users
+  profiles:
+    active: local
+  config:
+    import: "optional:configserver:http://localhost:8888"
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,env,refresh
