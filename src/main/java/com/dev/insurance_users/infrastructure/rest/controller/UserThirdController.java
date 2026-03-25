@@ -12,7 +12,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
-import com.dev.insurance_users.generated.model.UserThirdDto;
+import com.dev.insurance_users.generated.model.ThirdPartyUserDto;
+import com.dev.insurance_users.generated.model.ThirdPartyUserWrapperDto;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,19 +32,21 @@ public class UserThirdController implements ThirdUsersApi {
     }
 
     @Override
-    public ResponseEntity<List<UserThirdDto>> findAllThirdUsers() {
+    public ResponseEntity<ThirdPartyUserWrapperDto> findAllThirdUsers() {
         List<UserThird> vehicles = userThirdService.findAll();
-        List<UserThirdDto> userThirdDtos = vehicles.stream()
+        List<ThirdPartyUserDto> userThirdDtos = vehicles.stream()
                 .map(userThirdDtoMapper::fromDomainToDto)
                 .collect(Collectors.toList());
-        return new ResponseEntity<>(userThirdDtos , HttpStatus.OK);
+        ThirdPartyUserWrapperDto wrapper = new ThirdPartyUserWrapperDto();
+        wrapper.setUsers(userThirdDtos);
+        return new ResponseEntity<>(wrapper, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<UserThirdDto> findThirdUserById(Long id) {
+    public ResponseEntity<ThirdPartyUserDto> findThirdUserById(Long id) {
         Optional<UserThird> userThirdOpt = userThirdService.findById(id);
         if (userThirdOpt.isPresent()) {
-            UserThirdDto userThirdDto = userThirdDtoMapper.fromDomainToDto(userThirdOpt.get());
+            ThirdPartyUserDto userThirdDto = userThirdDtoMapper.fromDomainToDto(userThirdOpt.get());
             return new ResponseEntity<>(userThirdDto, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -51,14 +54,17 @@ public class UserThirdController implements ThirdUsersApi {
     }
 
     @Override
-    public ResponseEntity<Void> saveThirdUser(UserThirdDto userThirdDto){
-        UserThird userThird = userThirdDtoMapper.fromDtoToDomain(userThirdDto);
-        userThirdService.save(userThird);
+    public ResponseEntity<Void> saveThirdUser(ThirdPartyUserWrapperDto wrapperDto){
+        if (wrapperDto.getUsers() != null && !wrapperDto.getUsers().isEmpty()) {
+            ThirdPartyUserDto userDto = wrapperDto.getUsers().get(0);
+            UserThird userThird = userThirdDtoMapper.fromDtoToDomain(userDto);
+            userThirdService.save(userThird);
+        }
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @Override
-    public ResponseEntity<Void> updateThirdUser(Long id, UserThirdDto userThirdDto){
+    public ResponseEntity<Void> updateThirdUser(Long id, ThirdPartyUserDto userThirdDto){
         try {
             userThirdDto.setId(Math.toIntExact(id));
             UserThird userThird = userThirdDtoMapper.fromDtoToDomain(userThirdDto);

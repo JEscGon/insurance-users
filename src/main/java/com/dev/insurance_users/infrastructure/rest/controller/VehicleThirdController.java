@@ -3,7 +3,8 @@ package com.dev.insurance_users.infrastructure.rest.controller;
 import com.dev.insurance_users.application.domain.VehicleThird;
 import com.dev.insurance_users.application.service.VehicleThirdService;
 import com.dev.insurance_users.generated.api.ThirdVehiclesApi;
-import com.dev.insurance_users.generated.model.VehicleThirdDto;
+import com.dev.insurance_users.generated.model.ThirdPartyVehicleDto;
+import com.dev.insurance_users.generated.model.ThirdPartyVehiclesWrapperDto;
 import com.dev.insurance_users.infrastructure.rest.mapper.VehicleThirdDtoMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,16 +28,18 @@ public class VehicleThirdController implements ThirdVehiclesApi {
     }
 
     @Override
-    public ResponseEntity<List<VehicleThirdDto>> getAllThirdVehicles(){
+    public ResponseEntity<ThirdPartyVehiclesWrapperDto> getAllThirdVehicles(){
         List<VehicleThird> vehicles = vehicleThirdService.findAll();
-        List<VehicleThirdDto> vehiclesDto = vehicles.stream()
+        List<ThirdPartyVehicleDto> vehiclesDto = vehicles.stream()
                 .map(vehicleThirdDtoMapper::fromDomainToDto)
                 .collect(Collectors.toList());
-        return new ResponseEntity<>(vehiclesDto, HttpStatus.OK);
+        ThirdPartyVehiclesWrapperDto wrapper = new ThirdPartyVehiclesWrapperDto();
+        wrapper.setVehicles(vehiclesDto);
+        return new ResponseEntity<>(wrapper, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<VehicleThirdDto> getThirdVehicleById(Long id){
+    public ResponseEntity<ThirdPartyVehicleDto> getThirdVehicleById(Long id){
         try {
             Optional<VehicleThird> vehicleOpt = vehicleThirdService.findById(id);
             return vehicleOpt.map(vehicleThird ->
@@ -48,18 +51,19 @@ public class VehicleThirdController implements ThirdVehiclesApi {
     }
 
     @Override
-    public ResponseEntity<Void> saveThirdVehicle(VehicleThirdDto vehicleThirdDto){
-        VehicleThird vehicle = vehicleThirdDtoMapper.fromDtoToDomain(vehicleThirdDto);
-        vehicleThirdService.save(vehicle);
+    public ResponseEntity<Void> saveThirdVehicle(ThirdPartyVehiclesWrapperDto wrapperDto){
+        if (wrapperDto.getVehicles() != null && !wrapperDto.getVehicles().isEmpty()) {
+            ThirdPartyVehicleDto vehicleDto = wrapperDto.getVehicles().get(0);
+            VehicleThird vehicle = vehicleThirdDtoMapper.fromDtoToDomain(vehicleDto);
+            vehicleThirdService.save(vehicle);
+        }
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
- //TODO : FIX ID
     @Override
-    public ResponseEntity<Void> updateThirdVehicle(Long id ,VehicleThirdDto vehicleThirdDto){
+    public ResponseEntity<Void> updateThirdVehicle(Long id ,ThirdPartyVehicleDto vehicleThirdDto){
         try {
             VehicleThird vehicle = vehicleThirdDtoMapper.fromDtoToDomain(vehicleThirdDto);
-            vehicle.setId(id);
             vehicleThirdService.save(vehicle);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e){
@@ -68,7 +72,7 @@ public class VehicleThirdController implements ThirdVehiclesApi {
     }
 
     @Override
-    public ResponseEntity<VehicleThirdDto> findByMatriculaThird(String matricula) {
+    public ResponseEntity<ThirdPartyVehicleDto> findByMatriculaThird(String matricula) {
         Optional<VehicleThird> vehicleOpt = vehicleThirdService.findByMatriculaThird(matricula);
         return vehicleOpt
             .map(vehicleThirdDtoMapper::fromDomainToDto)
